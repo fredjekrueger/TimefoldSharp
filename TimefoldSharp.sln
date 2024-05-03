@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimefoldSharp.Core", "Timefold8\TimefoldSharp.Core.csproj", "{B8876EB0-A1D3-476F-99EF-0BB57B00F180}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimefoldSharp.Examples.SchoolTimeTabling", "TimefoldSharp.Examples.SchoolTimeTabling\TimefoldSharp.Examples.SchoolTimeTabling.csproj", "{43F91922-F891-4624-B91C-EDD98055A982}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B8876EB0-A1D3-476F-99EF-0BB57B00F180}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8876EB0-A1D3-476F-99EF-0BB57B00F180}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8876EB0-A1D3-476F-99EF-0BB57B00F180}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8876EB0-A1D3-476F-99EF-0BB57B00F180}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43F91922-F891-4624-B91C-EDD98055A982}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43F91922-F891-4624-B91C-EDD98055A982}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43F91922-F891-4624-B91C-EDD98055A982}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43F91922-F891-4624-B91C-EDD98055A982}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DB195B10-8B19-4505-9C06-70E3B4F9DC83}
+	EndGlobalSection
+EndGlobal
