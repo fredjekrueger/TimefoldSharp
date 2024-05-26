@@ -8,10 +8,8 @@ namespace TimefoldSharp.Core.Config.Heuristics.Selector.Move.Composite
     public class CartesianProductMoveSelectorConfig : MoveSelectorConfig<CartesianProductMoveSelectorConfig>, AbstractMoveSelectorConfig
     {
         private bool? ignoreEmptyChildIterators = null;
-        SelectionCacheType? cacheType = null;
-        SelectionOrder? selectionOrder = null;
-        Type filterClass = null;
-        long? selectedCountLimit = null;
+
+        public MoveSelectorConfigImpl MoveSelectorConfigImpl { get; set; } = new MoveSelectorConfigImpl();
 
         private List<AbstractMoveSelectorConfig> moveSelectorConfigList = null;
 
@@ -53,66 +51,6 @@ namespace TimefoldSharp.Core.Config.Heuristics.Selector.Move.Composite
         public bool? GetIgnoreEmptyChildIterators()
         {
             return ignoreEmptyChildIterators;
-        }
-
-        public SelectionCacheType? GetCacheType()
-        {
-            return cacheType;
-        }
-
-        public Type GetFilterClass()
-        {
-            return filterClass;
-        }
-
-        public Type GetProbabilityWeightFactoryClass()
-        {
-            throw new NotImplementedException();
-        }
-
-        public long? GetSelectedCountLimit()
-        {
-            return selectedCountLimit;
-        }
-
-        public SelectionOrder? GetSelectionOrder()
-        {
-            return selectionOrder;
-        }
-
-        public Type GetSorterClass()
-        {
-            throw new NotImplementedException();
-        }
-
-        public SelectionSorterOrder? GetSorterOrder()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Type GetSorterWeightFactoryClass()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Type GetSorterComparatorClass()
-        {
-            throw new NotImplementedException();
-        }
-
-        public double? GetFixedProbabilityWeight()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void InheritFolded(MoveSelectorConfig<CartesianProductMoveSelectorConfig> foldedConfig)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void InheritFolded(MoveSelectorConfig<AbstractMoveSelectorConfig> foldedConfig)
-        {
-            throw new NotImplementedException();
         }
     }
 }

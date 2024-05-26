@@ -1,5 +1,6 @@
 ﻿using TimefoldSharp.Core.API.Score.Stream;
 using TimefoldSharp.Core.API.Score.Stream.Bi;
+using TimefoldSharp.Core.API.Score.Stream.Uni;
 using TimefoldSharp.Core.Constraints.Streams.Common.Bi;
 using TimefoldSharp.Core.Constraints.Streams.Common.Uni;
 using TimefoldSharp.Core.Impl.Domain.Common.Accessor;
@@ -31,6 +32,18 @@ namespace TimefoldSharp.Core.Constraints.Streams.Common
             BiJoinerComber<A, A, Property_> joinerComber = BiJoinerComber<A, A, Property_>.Comb(joiners);
             joinerComber.AddJoiner(BuildLessThanId<A, Property_>(typeof(A)));
             return ((InnerUniConstraintStream<A>)ForEach<A>(typeof(A))).Join(ForEach<A>(typeof(A)), joinerComber);
+        }
+
+        public BiConstraintStream<A, A> ForEachUniquePair<A, Property_>(Type sourceClass, BiJoiner<A, A, Property_> joiner1, BiJoiner<A, A, Property_> joiner2)
+        {
+            return ForEachUniquePair(sourceClass, new BiJoiner<A,A, Property_>[] { joiner1, joiner2 });
+        }
+
+        public BiConstraintStream<A, A> ForEachUniquePair<A, Property_>(Type sourceClass, params BiJoiner<A, A, Property_>[] joiners)
+        {
+            BiJoinerComber<A, A, Property_> joinerComber = BiJoinerComber<A, A, Property_>.Comb(joiners);
+            joinerComber.AddJoiner(BuildLessThanId<A, Property_>(sourceClass));
+            return ((InnerUniConstraintStream<A>)ForEach<A>(sourceClass)).Join(ForEach<A>(sourceClass), joinerComber);
         }
 
         public abstract SolutionDescriptor GetSolutionDescriptor();

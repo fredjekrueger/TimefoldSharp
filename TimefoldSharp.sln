@@ -5,7 +5,9 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimefoldSharp.Core", "Timefold8\TimefoldSharp.Core.csproj", "{B8876EB0-A1D3-476F-99EF-0BB57B00F180}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimefoldSharp.Examples.SchoolTimeTabling", "TimefoldSharp.Examples.SchoolTimeTabling\TimefoldSharp.Examples.SchoolTimeTabling.csproj", "{43F91922-F891-4624-B91C-EDD98055A982}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimefoldSharp.Examples.SchoolTimeTabling", "TimefoldSharp.Examples.SchoolTimeTabling\TimefoldSharp.Examples.SchoolTimeTabling.csproj", "{43F91922-F891-4624-B91C-EDD98055A982}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimefoldSharp.Examples.EmployeeScheduling", "TimefoldSharp.Examples.EmployeeScheduling\TimefoldSharp.Examples.EmployeeScheduling.csproj", "{D287BF33-3143-4167-A448-E26893DEA90D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{43F91922-F891-4624-B91C-EDD98055A982}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43F91922-F891-4624-B91C-EDD98055A982}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43F91922-F891-4624-B91C-EDD98055A982}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D287BF33-3143-4167-A448-E26893DEA90D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D287BF33-3143-4167-A448-E26893DEA90D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D287BF33-3143-4167-A448-E26893DEA90D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D287BF33-3143-4167-A448-E26893DEA90D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

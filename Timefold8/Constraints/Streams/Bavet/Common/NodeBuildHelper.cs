@@ -159,7 +159,8 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common
             return nodeList;
         }
 
-        internal void PutInsertUpdateRetract<A, B>(BavetFilterBiConstraintStream<A, B> stream, List<BavetAbstractConstraintStream> childStreamList, Func<TupleLifecycle, ConditionalBiTupleLifecycle<A, B>> tupleLifecycleFunction)
+        public void PutInsertUpdateRetract(ConstraintStream stream, List<BavetAbstractConstraintStream> childStreamList, Func<TupleLifecycle,
+            TupleLifecycle> tupleLifecycleFunction)
         {
             TupleLifecycle tupleLifecycle = GetAggregatedTupleLifecycle(childStreamList);
             PutInsertUpdateRetract(stream, tupleLifecycleFunction.Invoke(tupleLifecycle));

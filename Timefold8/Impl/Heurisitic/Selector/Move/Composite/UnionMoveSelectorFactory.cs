@@ -39,7 +39,7 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move.Composite
                 {
                     var innerMoveSelectorConfig = uMoveConfig.GetMoveSelectorList()[i];
                     MoveSelector moveSelector = moveSelectorList[i];
-                    double? fixedProbabilityWeight = innerMoveSelectorConfig.GetFixedProbabilityWeight();
+                    double? fixedProbabilityWeight = innerMoveSelectorConfig.MoveSelectorConfigImpl.FixedProbabilityWeight;
                     if (fixedProbabilityWeight != null)
                     {
                         fixedProbabilityWeightMap.Add(moveSelector, fixedProbabilityWeight);

@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.Reflection;
-using TimefoldSharp.Core.API.Domain.Common;
 using TimefoldSharp.Core.API.Domain.ConstraintWeight;
 using TimefoldSharp.Core.API.Domain.Entity;
 using TimefoldSharp.Core.API.Domain.Solution;
@@ -62,7 +61,6 @@ namespace TimefoldSharp.Core.Impl.Domain.Solution.Descriptor
         }
 
         private readonly ConcurrentDictionary<Type, MemberAccessor> planningIdMemberAccessorMap = new ConcurrentDictionary<Type, MemberAccessor>();
-        private DomainAccessType domainAccessType;
         public Type SolutionClass;
 
         public SolutionDescriptor(Type solutionClass, Dictionary<string, MemberAccessor> memberAccessorMap)
@@ -74,11 +72,6 @@ namespace TimefoldSharp.Core.Impl.Domain.Solution.Descriptor
         public MemberAccessorFactory GetMemberAccessorFactory()
         {
             return MemberAccessorFactory;
-        }
-
-        public DomainAccessType GetDomainAccessType()
-        {
-            return domainAccessType;
         }
 
         public API.Score.Score GetScore(ISolution solution)
@@ -137,7 +130,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Solution.Descriptor
             MemberAccessor memberAccessor = planningIdMemberAccessorMap.GetValueOrDefault(factClass);
             if (memberAccessor == null)
             {
-                memberAccessor = ConfigUtils.FindPlanningIdMemberAccessor(factClass, GetMemberAccessorFactory(), GetDomainAccessType());
+                memberAccessor = ConfigUtils.FindPlanningIdMemberAccessor(factClass, GetMemberAccessorFactory());
                 MemberAccessor nonNullMemberAccessor = memberAccessor ?? DummyMemberAccessor.INSTANCE;
                 planningIdMemberAccessorMap.AddOrUpdate(factClass, nonNullMemberAccessor, (k, v) => nonNullMemberAccessor);
                 return memberAccessor;
@@ -157,12 +150,11 @@ namespace TimefoldSharp.Core.Impl.Domain.Solution.Descriptor
             return scoreDescriptor.ScoreDefinition;
         }
 
-        internal static SolutionDescriptor BuildSolutionDescriptor(DomainAccessType domainAccessType, Type solutionClass, Dictionary<string, MemberAccessor> memberAccessorMap, Dictionary<string, SolutionCloner> solutionClonerMap, List<Type> entityClassList)
+        internal static SolutionDescriptor BuildSolutionDescriptor(Type solutionClass, Dictionary<string, MemberAccessor> memberAccessorMap, Dictionary<string, SolutionCloner> solutionClonerMap, List<Type> entityClassList)
         {
             solutionClonerMap = solutionClonerMap ?? new Dictionary<string, SolutionCloner>();
             SolutionDescriptor solutionDescriptor = new SolutionDescriptor(solutionClass, memberAccessorMap);
             DescriptorPolicy descriptorPolicy = new DescriptorPolicy();
-            descriptorPolicy.DomainAccessType = domainAccessType;
             descriptorPolicy.GeneratedSolutionClonerMap = solutionClonerMap;
             descriptorPolicy.MemberAccessorFactory = solutionDescriptor.MemberAccessorFactory;
 
@@ -255,17 +247,8 @@ namespace TimefoldSharp.Core.Impl.Domain.Solution.Descriptor
             }
             if (solutionCloner == null)
             {
-                switch (descriptorPolicy.DomainAccessType)
-                {
-                    case DomainAccessType.GIZMO:
-                        solutionCloner = GizmoSolutionClonerFactory.Build(this, MemberAccessorFactory.GetGizmoClassLoader());
-                        break;
-                    case DomainAccessType.REFLECTION:
-                        solutionCloner = new FieldAccessingSolutionCloner(this);
-                        break;
-                    default:
-                        throw new Exception("The domainAccessType (" + domainAccessType + ") is not implemented.");
-                }
+
+                solutionCloner = new FieldAccessingSolutionCloner(this);
             }
         }
 
@@ -374,8 +357,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Solution.Descriptor
 
         private void ProcessAnnotations(DescriptorPolicy descriptorPolicy, List<Type> entityClassList)
         {
-            domainAccessType = descriptorPolicy.DomainAccessType;
-            classAndPlanningIdComparator = new ClassAndPlanningIdComparator(MemberAccessorFactory, domainAccessType, false);
+            classAndPlanningIdComparator = new ClassAndPlanningIdComparator(MemberAccessorFactory, false);
             ProcessSolutionAnnotations(descriptorPolicy);
             List<MethodInfo> potentiallyOverwritingMethodList = new List<MethodInfo>();
 
@@ -451,7 +433,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Solution.Descriptor
         private void ProcessPlanningEntityPropertyAnnotation(Type clazz, DescriptorPolicy descriptorPolicy, MemberInfo member, Type annotationClass)
         {
             MemberAccessor memberAccessor = descriptorPolicy.MemberAccessorFactory.BuildAndCacheMemberAccessor(clazz, member, MemberAccessorType.PROPERTY_OR_GETTER_METHOD
-               , annotationClass, descriptorPolicy.DomainAccessType);
+               , annotationClass);
             //assertNoFieldAndGetterDuplicationOrConflict(memberAccessor, annotationClass);
             if (annotationClass == typeof(PlanningEntityPropertyAttribute))
             {
@@ -479,7 +461,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Solution.Descriptor
         private void ProcessProblemFactPropertyAnnotation(Type clazz, DescriptorPolicy descriptorPolicy, MemberInfo member, Type annotationClass)
         {
             MemberAccessor memberAccessor = descriptorPolicy.MemberAccessorFactory.BuildAndCacheMemberAccessor(clazz, member,
-               MemberAccessorType.PROPERTY_OR_READ_METHOD, annotationClass, descriptorPolicy.DomainAccessType);
+               MemberAccessorType.PROPERTY_OR_READ_METHOD, annotationClass);
             //assertNoFieldAndGetterDuplicationOrConflict(memberAccessor, annotationClass);
             if (annotationClass == typeof(ProblemFactPropertyAttribute))
             {
@@ -585,7 +567,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Solution.Descriptor
             if (Attribute.IsDefined(member, typeof(ValueRangeProviderAttribute)))
             {
                 MemberAccessor memberAccessor = descriptorPolicy.MemberAccessorFactory.BuildAndCacheMemberAccessor(clazz, member,
-                        MemberAccessorType.PROPERTY_OR_READ_METHOD, typeof(ValueRangeProviderAttribute), descriptorPolicy.DomainAccessType);
+                        MemberAccessorType.PROPERTY_OR_READ_METHOD, typeof(ValueRangeProviderAttribute));
                 descriptorPolicy.AddFromSolutionValueRangeProvider(memberAccessor);
             }
         }

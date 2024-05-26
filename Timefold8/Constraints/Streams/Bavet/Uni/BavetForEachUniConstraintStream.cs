@@ -65,7 +65,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
                 return false;
             }
             BavetForEachUniConstraintStream<A> that = (BavetForEachUniConstraintStream<A>)other;
-            return forEachClass.Equals(that.forEachClass) && filter.Equals(that.filter);
+            return forEachClass.Equals(that.forEachClass) &&((filter == null && that.filter == null) || filter.Equals(that.filter));
         }
 
     }

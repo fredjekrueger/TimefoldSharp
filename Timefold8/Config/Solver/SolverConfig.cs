@@ -1,5 +1,4 @@
-﻿using TimefoldSharp.Core.API.Domain.Common;
-using TimefoldSharp.Core.API.Domain.Solution;
+﻿using TimefoldSharp.Core.API.Domain.Solution;
 using TimefoldSharp.Core.Config.Score.Director;
 using TimefoldSharp.Core.Config.Solver.Monitoring;
 using TimefoldSharp.Core.Config.Solver.Random;
@@ -53,7 +52,6 @@ namespace TimefoldSharp.Core.Config.Solver
         public long? RandomSeed { get; set; }
         public string MoveThreadCount { get; set; }
         public int MoveThreadBufferSize { get; set; }
-        public DomainAccessType? DomainAccessType { get; set; }
         public Dictionary<string, MemberAccessor> GizmoMemberAccessorMap { get; set; } = new Dictionary<string, MemberAccessor>();
         public Dictionary<string, SolutionCloner> GizmoSolutionClonerMap { get; set; } = new Dictionary<string, SolutionCloner>();
         public MonitoringConfig MonitoringConfig { get; set; }
@@ -102,7 +100,6 @@ namespace TimefoldSharp.Core.Config.Solver
             ThreadFactoryClass = ConfigUtils.InheritOverwritableProperty(ThreadFactoryClass, inheritedConfig.ThreadFactoryClass);
             SolutionClass = ConfigUtils.InheritOverwritableProperty(SolutionClass, inheritedConfig.SolutionClass);
             EntityClassList = ConfigUtils.InheritMergeableListProperty(EntityClassList, inheritedConfig.EntityClassList);
-            DomainAccessType = ConfigUtils.InheritOverwritableProperty(DomainAccessType, inheritedConfig.DomainAccessType);
             GizmoMemberAccessorMap = ConfigUtils.InheritMergeableMapProperty(GizmoMemberAccessorMap, inheritedConfig.GizmoMemberAccessorMap);
             GizmoSolutionClonerMap = ConfigUtils.InheritMergeableMapProperty(GizmoSolutionClonerMap, inheritedConfig.GizmoSolutionClonerMap);
 
@@ -172,11 +169,6 @@ namespace TimefoldSharp.Core.Config.Solver
             }
             TerminationConfig.SpentLimit = spentLimit;
             return this;
-        }
-
-        public DomainAccessType DetermineDomainAccessType()
-        {
-            return DomainAccessType.HasValue ? DomainAccessType.Value : API.Domain.Common.DomainAccessType.REFLECTION;
         }
     }
 }

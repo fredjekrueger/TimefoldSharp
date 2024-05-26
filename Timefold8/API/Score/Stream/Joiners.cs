@@ -3,11 +3,6 @@ using TimefoldSharp.Core.Impl.Score.Stream;
 
 namespace TimefoldSharp.Core.API.Score.Stream
 {
-    /*public interface IJoinerProperty
-    {
-
-    }*/
-
     public sealed class Joiners
     {
         public static BiJoiner<A, A, Property_> Equal<A, Property_>(Func<A, Property_> mapping)
@@ -25,11 +20,30 @@ namespace TimefoldSharp.Core.API.Score.Stream
             return LessThan(mapping, mapping);
         }
 
-        public static BiJoiner<A, B, Property_> LessThan<A, B, Property_>(
-            Func<A, Property_> leftMapping, Func<B, Property_> rightMapping)
+        public static BiJoiner<A, B, Property_> LessThan<A, B, Property_>(Func<A, Property_> leftMapping, Func<B, Property_> rightMapping)
         {
-            return JoinerSupport.GetJoinerService()
-                    .NewBiJoiner(leftMapping, JoinerType.LESS_THAN, rightMapping);
+            return JoinerSupport.GetJoinerService().NewBiJoiner(leftMapping, JoinerType.LESS_THAN, rightMapping);
+        }
+
+        public static BiJoiner<A, B, Property_> GreaterThan<A, B, Property_>(Func<A, Property_> leftMapping, Func<B, Property_> rightMapping)
+        {
+            return JoinerSupport.GetJoinerService().NewBiJoiner(leftMapping, JoinerType.GREATER_THAN, rightMapping);
+        }
+
+        public static BiJoiner<A, A, Property_> Overlapping<A, Property_>(Func<A, Property_> startMapping, Func<A, Property_> endMapping)
+        {
+            return Overlapping(startMapping, endMapping, startMapping, endMapping);
+        }
+
+        public static BiJoiner<A, B, Property_> Overlapping<A, B, Property_>(Func<A, Property_> leftStartMapping, Func<A, Property_> leftEndMapping,
+            Func<B, Property_> rightStartMapping, Func<B, Property_> rightEndMapping)
+        {
+            return Joiners.LessThan(leftStartMapping, rightEndMapping).And(Joiners.GreaterThan(leftEndMapping, rightStartMapping));
+        }
+
+        public static BiJoiner<A, B, Property_> LessThanOrEqual<A, B, Property_>(Func<A, Property_> leftMapping, Func<B, Property_> rightMapping)
+        {
+            return JoinerSupport.GetJoinerService().NewBiJoiner(leftMapping, JoinerType.LESS_THAN_OR_EQUAL, rightMapping);
         }
     }
 }

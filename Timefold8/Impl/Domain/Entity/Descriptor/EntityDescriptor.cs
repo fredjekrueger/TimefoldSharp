@@ -3,6 +3,7 @@ using TimefoldSharp.Core.API.Domain.Entity;
 using TimefoldSharp.Core.API.Domain.ValueRange;
 using TimefoldSharp.Core.API.Domain.Variable;
 using TimefoldSharp.Core.API.Score;
+using TimefoldSharp.Core.API.Solver;
 using TimefoldSharp.Core.Config.Util;
 using TimefoldSharp.Core.Impl.Domain.Common.Accessor;
 using TimefoldSharp.Core.Impl.Domain.Policy;
@@ -281,7 +282,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Entity.Descriptor
             if (Attribute.IsDefined(member, typeof(PlanningPinAttribute)))
             {
                 MemberAccessor memberAccessor = descriptorPolicy.MemberAccessorFactory.BuildAndCacheMemberAccessor(EntityClass, member,
-                        MemberAccessorType.PROPERTY_OR_READ_METHOD, typeof(PlanningPinAttribute), descriptorPolicy.DomainAccessType);
+                        MemberAccessorType.PROPERTY_OR_READ_METHOD, typeof(PlanningPinAttribute));
                 var type = memberAccessor.GetClass();
                 if (!(type == typeof(bool)))
                 {
@@ -310,7 +311,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Entity.Descriptor
                     memberAccessorType = MemberAccessorType.PROPERTY_OR_GETTER_METHOD_WITH_SETTER;
                 }
                 MemberAccessor memberAccessor = descriptorPolicy.MemberAccessorFactory.BuildAndCacheMemberAccessor(EntityClass, member,
-                        memberAccessorType, variableAnnotationClass, descriptorPolicy.DomainAccessType);
+                        memberAccessorType, variableAnnotationClass);
                 RegisterVariableAccessor(variableAnnotationClass, memberAccessor);
             }
         }
@@ -320,7 +321,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Entity.Descriptor
             if (Attribute.IsDefined(member, typeof(ValueRangeProviderAttribute)))
             {
                 MemberAccessor memberAccessor = descriptorPolicy.MemberAccessorFactory.BuildAndCacheMemberAccessor(EntityClass, member,
-                        MemberAccessorType.PROPERTY_OR_READ_METHOD, typeof(ValueRangeProviderAttribute), descriptorPolicy.DomainAccessType);
+                        MemberAccessorType.PROPERTY_OR_READ_METHOD, typeof(ValueRangeProviderAttribute));
                 descriptorPolicy.AddFromEntityValueRangeProvider(memberAccessor);
             }
         }
@@ -343,8 +344,9 @@ namespace TimefoldSharp.Core.Impl.Domain.Entity.Descriptor
             bool hasPinningFilter = pinningFilterClass != typeof(NullPinningFilter);
             if (hasPinningFilter)
             {
-                PinningFilter<object> pinningFilter = ConfigUtils.NewInstance<PinningFilter<object>>("pinningFilterClass", pinningFilterClass);
-                //declaredMovableEntitySelectionFilter = (scoreDirector, selection) => !pinningFilter.accept(scoreDirector.GetWorkingSolution(), selection);
+                IPinningFilter pinningFilter = ConfigUtils.NewInstance<IPinningFilter>("pinningFilterClass", pinningFilterClass);
+                declaredMovableEntitySelectionFilter = new SelectionFilter<object>();
+                declaredMovableEntitySelectionFilter.Accept = (scoreDirector, selection) => !pinningFilter.Accept(scoreDirector.GetWorkingSolution(), selection);
             }
         }
 

@@ -8,13 +8,22 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Common.Decorator
         public CompositeSelectionFilter(SelectionFilter<T>[] selectionFilterArray)
         {
             this.selectionFilterArray = selectionFilterArray;
+            Accept = AcceptInt;
         }
 
-        public static SelectionFilter<T> NOOP => throw new NotImplementedException();
+        public static SelectionFilter<T> NOOP
+        {
+            get
+            {
+                return new SelectionFilter<T>() { Accept = (s, e) => true };
+            }
+        }
 
         public SelectionFilter<T>[] selectionFilterArray;
 
-        public override bool Accept(ScoreDirector scoreDirector, T selection)
+        public override Func<ScoreDirector, T, bool> Accept { get; set; }
+
+        public bool AcceptInt(ScoreDirector scoreDirector, T selection)
         {
             throw new NotImplementedException();
         }

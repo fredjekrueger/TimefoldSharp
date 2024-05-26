@@ -1,6 +1,11 @@
-﻿using System.Collections;
+﻿using Serilog.Core;
+using System.Collections;
+using TimefoldSharp.Core.API.Score;
 using TimefoldSharp.Core.Impl.Domain.Entity.Descriptor;
 using TimefoldSharp.Core.Impl.Heurisitic.Selector.Common.Decorator;
+using TimefoldSharp.Core.Impl.Heurisitic.Selector.Common.Iterator;
+using TimefoldSharp.Core.Impl.Phase.Scope;
+using TimefoldSharp.Core.Impl.Score.Director;
 
 namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Entity.Decorator
 {
@@ -10,6 +15,7 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Entity.Decorator
         private readonly EntitySelector childEntitySelector;
         private readonly SelectionFilter<Object> selectionFilter;
         private readonly bool bailOutEnabled;
+        private ScoreDirector scoreDirector = null;
 
         public FilteringEntitySelector(EntitySelector childEntitySelector, List<SelectionFilter<object>> filterList)
         {
@@ -29,27 +35,36 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Entity.Decorator
 
         public EntityDescriptor GetEntityDescriptor()
         {
-            throw new NotImplementedException();
+            return childEntitySelector.GetEntityDescriptor();
         }
 
         public IEnumerator<object> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return new JustInTimeFilteringEntityIterator(childEntitySelector.GetEnumerator(), DetermineBailOutSize(), this);
+        }
+
+        private long DetermineBailOutSize()
+        {
+            if (!bailOutEnabled)
+            {
+                return -1L;
+            }
+            return childEntitySelector.GetSize() * 10L;
         }
 
         public long GetSize()
         {
-            throw new NotImplementedException();
+            return childEntitySelector.GetSize();
         }
 
         public override bool IsCountable()
         {
-            throw new NotImplementedException();
+            return childEntitySelector.IsCountable();
         }
 
         public override bool IsNeverEnding()
         {
-            throw new NotImplementedException();
+            return childEntitySelector.IsNeverEnding();
         }
 
         public IEnumerator<object> ListIterator()
@@ -70,6 +85,59 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Entity.Decorator
         public override int GetHashCode()
         {
             throw new NotImplementedException();
+        }
+
+        public override void PhaseStarted(AbstractPhaseScope phaseScope)
+        {
+            base.PhaseStarted(phaseScope);
+            scoreDirector = phaseScope.GetScoreDirector();
+        }
+
+        public override void PhaseEnded(AbstractPhaseScope phaseScope)
+        {
+            base.PhaseEnded(phaseScope);
+            scoreDirector = null;
+        }
+
+
+        public class JustInTimeFilteringEntityIterator : UpcomingSelectionIterator<object>
+        {
+
+            private IEnumerator<object> childEntityIterator;
+            private long bailOutSize;
+            FilteringEntitySelector parent;
+
+            public JustInTimeFilteringEntityIterator(IEnumerator<object> childEntityIterator, long bailOutSize, FilteringEntitySelector parent)
+            {
+                this.childEntityIterator = childEntityIterator;
+                this.bailOutSize = bailOutSize;
+                this.parent = parent;
+            }
+
+            protected override object CreateUpcomingSelection()
+            {
+                object next;
+                long attemptsBeforeBailOut = bailOutSize;
+                do
+                {
+                    if (!childEntityIterator.MoveNext())
+                    {
+                        return NoUpcomingSelection();
+                    }
+                    if (parent.bailOutEnabled)
+                    {
+                        // if childEntityIterator is neverEnding and nothing is accepted, bail out of the infinite loop
+                        if (attemptsBeforeBailOut <= 0L)
+                        {
+                            return NoUpcomingSelection();
+                        }
+                        attemptsBeforeBailOut--;
+                    }
+                    next = childEntityIterator.Current;
+                }
+                while (!parent.selectionFilter.Accept(parent.scoreDirector, next));
+                return next;
+            }
         }
     }
 }

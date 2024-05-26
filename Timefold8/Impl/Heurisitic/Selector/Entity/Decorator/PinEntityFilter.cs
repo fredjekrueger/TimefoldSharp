@@ -1,5 +1,6 @@
 ﻿using TimefoldSharp.Core.Impl.Domain.Common.Accessor;
 using TimefoldSharp.Core.Impl.Heurisitic.Selector.Common.Decorator;
+using TimefoldSharp.Core.Impl.LocalSearch.Decider.Forager;
 using TimefoldSharp.Core.Impl.Score.Director;
 
 namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Entity.Decorator
@@ -11,9 +12,12 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Entity.Decorator
         public PinEntityFilter(MemberAccessor memberAccessor)
         {
             this.memberAccessor = memberAccessor;
+            Accept  = AcceptInt;
         }
 
-        public override bool Accept(ScoreDirector scoreDirector, object entity)
+        public override Func<ScoreDirector, object, bool> Accept { get; set; } 
+
+        bool AcceptInt(ScoreDirector scoreDirector, object entity)
         {
             bool pinned = (bool)memberAccessor.ExecuteGetter(entity);
 

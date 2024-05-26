@@ -1,6 +1,5 @@
 ﻿using System.Collections.Concurrent;
 using System.Reflection;
-using TimefoldSharp.Core.API.Domain.Common;
 using TimefoldSharp.Core.API.Domain.Solution;
 using TimefoldSharp.Core.Config.Util;
 using TimefoldSharp.Core.Impl.Domain.Common.Accessor;
@@ -12,7 +11,6 @@ namespace TimefoldSharp.Core.Impl.Domain.Lookup
     {
 
         private readonly LookUpStrategyType lookUpStrategyType;
-        private readonly DomainAccessType domainAccessType;
         private readonly MemberAccessorFactory memberAccessorFactory;
 
         private readonly ConcurrentDictionary<Type, LookUpStrategy> decisionCache = new ConcurrentDictionary<Type, LookUpStrategy>();
@@ -20,7 +18,6 @@ namespace TimefoldSharp.Core.Impl.Domain.Lookup
         public LookUpStrategyResolver(DescriptorPolicy descriptorPolicy, LookUpStrategyType lookUpStrategyType)
         {
             this.lookUpStrategyType = lookUpStrategyType;
-            this.domainAccessType = descriptorPolicy.DomainAccessType;
             this.memberAccessorFactory = descriptorPolicy.MemberAccessorFactory;
 
             decisionCache.AddOrUpdate(typeof(bool), new ImmutableLookUpStrategy(), (k, v) => new ImmutableLookUpStrategy());
@@ -49,7 +46,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Lookup
                 {
                     case LookUpStrategyType.PLANNING_ID_OR_NONE:
                         MemberAccessor memberAccessor1 =
-                                ConfigUtils.FindPlanningIdMemberAccessor(objectClass, memberAccessorFactory, domainAccessType);
+                                ConfigUtils.FindPlanningIdMemberAccessor(objectClass, memberAccessorFactory);
                         if (memberAccessor1 == null)
                         {
                             return new NoneLookUpStrategy();
@@ -57,7 +54,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Lookup
                         return new PlanningIdLookUpStrategy(memberAccessor1);
                     case LookUpStrategyType.PLANNING_ID_OR_FAIL_FAST:
                         MemberAccessor memberAccessor2 =
-                                ConfigUtils.FindPlanningIdMemberAccessor(objectClass, memberAccessorFactory, domainAccessType);
+                                ConfigUtils.FindPlanningIdMemberAccessor(objectClass, memberAccessorFactory);
                         if (memberAccessor2 == null)
                         {
                             throw new Exception("The class .");

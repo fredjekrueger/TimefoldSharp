@@ -2,7 +2,7 @@
 
 namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Common.Decorator
 {
-    public abstract class SelectionFilter<T> //was interface
+    public class SelectionFilter<T> //was interface
     {
 
         public static SelectionFilter<T> Compose(List<SelectionFilter<T>> filterList)
@@ -36,6 +36,6 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Common.Decorator
             }
         }
 
-        public abstract bool Accept(ScoreDirector scoreDirector, T selection);
+        public virtual Func<ScoreDirector, T, bool> Accept { get; set; }
     }
 }

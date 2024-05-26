@@ -13,73 +13,15 @@ namespace TimefoldSharp.Core.Config.Heuristics.Selector.Move.Generic
 
         private EntitySelectorConfig entitySelectorConfig = null;
         private ValueSelectorConfig valueSelectorConfig = null;
-        protected SelectionCacheType? cacheType = null;
-        protected SelectionOrder? selectionOrder = null;
-        protected Type filterClass;
-        protected long? selectedCountLimit = null;
-        protected Type sorterComparatorClass;
-        protected Type sorterWeightFactoryClass;
-        protected SelectionSorterOrder? sorterOrder = null;
-        protected Type sorterClass = null;
-        protected Type probabilityWeightFactoryClass = null;
-        private double? fixedProbabilityWeight = null;
 
         private EntitySelectorConfig secondaryEntitySelectorConfig = null;
         private List<string> variableNameIncludeList = null;
 
+        public MoveSelectorConfigImpl MoveSelectorConfigImpl { get; set; } = new MoveSelectorConfigImpl();
+
         public SwapMoveSelectorConfig CopyConfig()
         {
             throw new NotImplementedException();
-        }
-
-        public SelectionCacheType? GetCacheType()
-        {
-            return cacheType;
-        }
-
-        public Type GetFilterClass()
-        {
-            return filterClass;
-        }
-
-        public double? GetFixedProbabilityWeight()
-        {
-            return fixedProbabilityWeight;
-        }
-
-        public Type GetProbabilityWeightFactoryClass()
-        {
-            return probabilityWeightFactoryClass;
-        }
-
-        public long? GetSelectedCountLimit()
-        {
-            return selectedCountLimit;
-        }
-
-        public SelectionOrder? GetSelectionOrder()
-        {
-            return selectionOrder;
-        }
-
-        public Type GetSorterClass()
-        {
-            return sorterClass;
-        }
-
-        public Type GetSorterComparatorClass()
-        {
-            return sorterComparatorClass;
-        }
-
-        public SelectionSorterOrder? GetSorterOrder()
-        {
-            return sorterOrder;
-        }
-
-        public Type GetSorterWeightFactoryClass()
-        {
-            return sorterWeightFactoryClass;
         }
 
         public SwapMoveSelectorConfig Inherit(SwapMoveSelectorConfig inheritedConfig)
@@ -92,15 +34,6 @@ namespace TimefoldSharp.Core.Config.Heuristics.Selector.Move.Generic
             throw new NotImplementedException();
         }
 
-        public void InheritFolded(MoveSelectorConfig<SwapMoveSelectorConfig> foldedConfig)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void InheritFolded(MoveSelectorConfig<AbstractMoveSelectorConfig> foldedConfig)
-        {
-            InheritCommon(foldedConfig);
-        }
 
         public void VisitReferencedClasses(Action<Type> classVisitor)
         {
@@ -140,21 +73,6 @@ namespace TimefoldSharp.Core.Config.Heuristics.Selector.Move.Generic
         public List<string> GetVariableNameIncludeList()
         {
             return variableNameIncludeList;
-        }
-
-        private void InheritCommon(MoveSelectorConfig<AbstractMoveSelectorConfig> inheritedConfig)
-        {
-            cacheType = ConfigUtils.InheritOverwritableProperty(cacheType, inheritedConfig.GetCacheType());
-            selectionOrder = ConfigUtils.InheritOverwritableProperty(selectionOrder, inheritedConfig.GetSelectionOrder());
-            filterClass = ConfigUtils.InheritOverwritableProperty(filterClass, inheritedConfig.GetFilterClass());
-            sorterComparatorClass = ConfigUtils.InheritOverwritableProperty(sorterComparatorClass, inheritedConfig.GetSorterComparatorClass());
-            sorterWeightFactoryClass = ConfigUtils.InheritOverwritableProperty(sorterWeightFactoryClass, inheritedConfig.GetSorterWeightFactoryClass());
-            sorterOrder = ConfigUtils.InheritOverwritableProperty(sorterOrder, inheritedConfig.GetSorterOrder());
-            sorterClass = ConfigUtils.InheritOverwritableProperty(sorterClass, inheritedConfig.GetSorterClass());
-            probabilityWeightFactoryClass = ConfigUtils.InheritOverwritableProperty(probabilityWeightFactoryClass, inheritedConfig.GetProbabilityWeightFactoryClass());
-            selectedCountLimit = ConfigUtils.InheritOverwritableProperty(selectedCountLimit, inheritedConfig.GetSelectedCountLimit());
-
-            fixedProbabilityWeight = ConfigUtils.InheritOverwritableProperty(fixedProbabilityWeight, inheritedConfig.GetFixedProbabilityWeight());
         }
     }
 }

@@ -7,6 +7,8 @@ namespace TimefoldSharp.Core.Config.Heuristics.Selector.Move.Generic.List
 {
     public class ListChangeMoveSelectorConfig : MoveSelectorConfig<AbstractMoveSelectorConfig>
     {
+        public MoveSelectorConfigImpl MoveSelectorConfigImpl { get; set; } = new MoveSelectorConfigImpl();
+
         private ValueSelectorConfig valueSelectorConfig = null;
 
         public ListChangeMoveSelectorConfig Inherit(ListChangeMoveSelectorConfig inheritedConfig)
@@ -30,67 +32,12 @@ namespace TimefoldSharp.Core.Config.Heuristics.Selector.Move.Generic.List
             this.valueSelectorConfig = valueSelectorConfig;
         }
 
-        public SelectionCacheType? GetCacheType()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Type GetFilterClass()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Type GetProbabilityWeightFactoryClass()
-        {
-            throw new NotImplementedException();
-        }
-
-        public long? GetSelectedCountLimit()
-        {
-            throw new NotImplementedException();
-        }
-
-        public SelectionOrder? GetSelectionOrder()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Type GetSorterClass()
-        {
-            throw new NotImplementedException();
-        }
-
-        public SelectionSorterOrder? GetSorterOrder()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Type GetSorterWeightFactoryClass()
-        {
-            throw new NotImplementedException();
-        }
-
-        public double? GetFixedProbabilityWeight()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Type GetSorterComparatorClass()
-        {
-            throw new NotImplementedException();
-        }
-
         public AbstractMoveSelectorConfig Inherit(AbstractMoveSelectorConfig inheritedConfig)
         {
             throw new NotImplementedException();
         }
 
         public AbstractMoveSelectorConfig CopyConfig()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void InheritFolded(MoveSelectorConfig<AbstractMoveSelectorConfig> foldedConfig)
         {
             throw new NotImplementedException();
         }

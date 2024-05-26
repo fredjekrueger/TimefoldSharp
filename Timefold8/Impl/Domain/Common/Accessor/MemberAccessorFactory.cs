@@ -1,6 +1,5 @@
 ﻿using System.Collections.Concurrent;
 using System.Reflection;
-using TimefoldSharp.Core.API.Domain.Common;
 using TimefoldSharp.Core.Impl.Domain.Common.Accessor.Gizmo;
 
 namespace TimefoldSharp.Core.Impl.Domain.Common.Accessor
@@ -24,25 +23,16 @@ namespace TimefoldSharp.Core.Impl.Domain.Common.Accessor
             return gizmoClassLoader;
         }
 
-        public MemberAccessor BuildAndCacheMemberAccessor(Type type, MemberInfo member, MemberAccessorType memberAccessorType, Type annotationClass, DomainAccessType domainAccessType)
+        public MemberAccessor BuildAndCacheMemberAccessor(Type type, MemberInfo member, MemberAccessorType memberAccessorType, Type annotationClass)
         {
             string generatedClassName = GizmoMemberAccessorFactory.GetGeneratedClassName(member, type);
             return memberAccessorCache.GetOrAdd(generatedClassName,
-                    k => MemberAccessorFactory.BuildMemberAccessor(member, memberAccessorType, annotationClass, domainAccessType, gizmoClassLoader));
+                    k => MemberAccessorFactory.BuildMemberAccessor(member, memberAccessorType, annotationClass, gizmoClassLoader));
         }
 
-        public static MemberAccessor BuildMemberAccessor(MemberInfo member, MemberAccessorType memberAccessorType,
-            Type annotationClass, DomainAccessType domainAccessType, ClassLoaderJDEF classLoader)
+        public static MemberAccessor BuildMemberAccessor(MemberInfo member, MemberAccessorType memberAccessorType,  Type annotationClass, ClassLoaderJDEF classLoader)
         {
-            switch (domainAccessType)
-            {
-                case DomainAccessType.GIZMO:
-                    return GizmoMemberAccessorFactory.BuildGizmoMemberAccessor(member, annotationClass, (GizmoClassLoader)classLoader);
-                case DomainAccessType.REFLECTION:
-                    return BuildReflectiveMemberAccessor(member, memberAccessorType, annotationClass);
-                default:
-                    throw new Exception("The domainAccessType (" + domainAccessType + ") is not implemented.");
-            }
+            return BuildReflectiveMemberAccessor(member, memberAccessorType, annotationClass);
         }
 
         private static MemberAccessor BuildReflectiveMemberAccessor(MemberInfo member, MemberAccessorType memberAccessorType, Type annotationClass)

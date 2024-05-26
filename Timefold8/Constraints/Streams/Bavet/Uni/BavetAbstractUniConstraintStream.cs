@@ -1,9 +1,12 @@
-﻿using TimefoldSharp.Core.API.Score.Stream.Bi;
+﻿using TimefoldSharp.Core.API.Score;
+using TimefoldSharp.Core.API.Score.Stream.Bi;
+using TimefoldSharp.Core.API.Score.Stream.Uni;
 using TimefoldSharp.Core.Constraints.Streams.Bavet.Bi;
 using TimefoldSharp.Core.Constraints.Streams.Bavet.Common;
 using TimefoldSharp.Core.Constraints.Streams.Common;
 using TimefoldSharp.Core.Constraints.Streams.Common.Bi;
 using TimefoldSharp.Core.Constraints.Streams.Common.Uni;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
 {
@@ -41,12 +44,12 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
 
         protected override IndictedObjectsMapping_ GetDefaultIndictedObjectsMapping<IndictedObjectsMapping_>()
         {
-            throw new NotImplementedException();
+            return default(IndictedObjectsMapping_);
         }
 
         protected override JustificationMapping_ GetDefaultJustificationMapping<JustificationMapping_>()
         {
-            throw new NotImplementedException();
+            return default(JustificationMapping_);
         }
 
         public BiConstraintStream<A, B> Join<B, Property_>(Type otherClass, BiJoiner<A, B, Property_> joiner1, BiJoiner<A, B, Property_> joiner2)
@@ -73,5 +76,35 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
             BiJoinerComber<A, B, Property_> joinerComber = BiJoinerComber<A, B, Property_>.Comb(joiners);
             return Join(otherStream, joinerComber);
         }
+
+        public UniConstraintStream<A> Filter(Func<A, bool> predicate)
+        {
+            return ShareAndAddChild(new BavetFilterUniConstraintStream<A>(constraintFactory, this, predicate));
+        }
+
+        public UniConstraintBuilder<A> Penalize(Score constraintWeight)
+        {
+            return Penalize(constraintWeight, a => 1);
+        }
+
+        public UniConstraintBuilder<A> Penalize(Score constraintWeight, Func<A, int> matchWeigher)
+        {
+            return InnerImpact(constraintWeight, matchWeigher, ScoreImpactType.PENALTY);
+        }
+
+        public UniConstraintBuilder<A> InnerImpact(Score constraintWeight, Func<A, int> matchWeigher, ScoreImpactType scoreImpactType)
+        {
+            var stream = ShareAndAddChild(new BavetScoringUniConstraintStream<A>(constraintFactory, this, matchWeigher));
+            return NewTerminator(stream, constraintWeight, scoreImpactType);
+        }
+
+        private UniConstraintBuilderImpl<A> NewTerminator(BavetScoringConstraintStream stream, Score constraintWeight, ScoreImpactType impactType)
+        {
+            return new UniConstraintBuilderImpl<A>(
+                    (constraintPackage, constraintName, constraintWeight_, impactType_, justificationMapping, indictedObjectsMapping)
+                    => BuildConstraint(constraintPackage, constraintName, constraintWeight_, impactType_, justificationMapping, indictedObjectsMapping, stream),
+                    impactType, constraintWeight);
+        }
+
     }
 }

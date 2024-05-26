@@ -21,9 +21,5 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
             InnerUpdate(a, tuple);
         }
 
-        public override Propagator GetPropagator()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

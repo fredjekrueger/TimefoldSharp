@@ -1,5 +1,4 @@
-﻿using TimefoldSharp.Core.API.Domain.Common;
-using TimefoldSharp.Core.API.Domain.Solution;
+﻿using TimefoldSharp.Core.API.Domain.Solution;
 using TimefoldSharp.Core.API.Domain.ValueRange;
 using TimefoldSharp.Core.Impl.Domain.Common.Accessor;
 
@@ -7,7 +6,6 @@ namespace TimefoldSharp.Core.Impl.Domain.Policy
 {
     public class DescriptorPolicy
     {
-        public DomainAccessType DomainAccessType { get; set; } = DomainAccessType.REFLECTION;
         public Dictionary<string, SolutionCloner> GeneratedSolutionClonerMap { get; set; } = new Dictionary<string, SolutionCloner>();
         public MemberAccessorFactory MemberAccessorFactory { get; set; }
         private readonly HashSet<MemberAccessor> anonymousFromSolutionValueRangeProviderSet = new HashSet<MemberAccessor>();

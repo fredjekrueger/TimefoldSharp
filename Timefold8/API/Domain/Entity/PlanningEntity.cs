@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using TimefoldSharp.Core.API.Score;
 
 namespace TimefoldSharp.Core.API.Domain.Entity
 {
@@ -12,8 +13,12 @@ namespace TimefoldSharp.Core.API.Domain.Entity
 
     }
 
-    public interface PinningFilter<Entity_> { }
-    public interface NullPinningFilter : PinningFilter<object> { }
+    public interface IPinningFilter
+    {
+        bool Accept(ISolution solution, object entity);
+    }
+
+    public interface NullPinningFilter : IPinningFilter { }
     public interface NullDifficultyComparator : IComparer { }
     public interface SelectionSorterWeightFactory { }
     public interface NullDifficultyWeightFactory : SelectionSorterWeightFactory { }

@@ -12,16 +12,8 @@ namespace TimefoldSharp.Core.Config.Heuristics.Selector.Move.Generic
 
         private EntitySelectorConfig entitySelectorConfig = null;
         private ValueSelectorConfig valueSelectorConfig = null;
-        protected SelectionCacheType? cacheType = null;
-        protected SelectionOrder? selectionOrder = null;
-        protected Type filterClass;
-        protected long? selectedCountLimit = null;
-        protected Type sorterComparatorClass;
-        protected Type sorterWeightFactoryClass;
-        protected SelectionSorterOrder? sorterOrder = null;
-        protected Type sorterClass = null;
-        protected Type probabilityWeightFactoryClass = null;
-        private double? fixedProbabilityWeight = null;
+
+        public MoveSelectorConfigImpl MoveSelectorConfigImpl { get; set; } = new MoveSelectorConfigImpl();
 
         public void SetEntitySelectorConfig(EntitySelectorConfig entitySelectorConfig)
         {
@@ -70,66 +62,6 @@ namespace TimefoldSharp.Core.Config.Heuristics.Selector.Move.Generic
         }
 
         ChangeMoveSelectorConfig AbstractConfig<ChangeMoveSelectorConfig>.CopyConfig()
-        {
-            throw new NotImplementedException();
-        }
-
-        public SelectionCacheType? GetCacheType()
-        {
-            return cacheType;
-        }
-
-        public Type GetFilterClass()
-        {
-            return filterClass;
-        }
-
-        public Type GetProbabilityWeightFactoryClass()
-        {
-            return probabilityWeightFactoryClass;
-        }
-
-        public long? GetSelectedCountLimit()
-        {
-            return selectedCountLimit;
-        }
-
-        public SelectionOrder? GetSelectionOrder()
-        {
-            return selectionOrder;
-        }
-
-        public Type GetSorterClass()
-        {
-            return sorterClass;
-        }
-
-        public SelectionSorterOrder? GetSorterOrder()
-        {
-            return sorterOrder;
-        }
-
-        public Type GetSorterWeightFactoryClass()
-        {
-            return sorterWeightFactoryClass;
-        }
-
-        public Type GetSorterComparatorClass()
-        {
-            return sorterComparatorClass;
-        }
-
-        public double? GetFixedProbabilityWeight()
-        {
-            return fixedProbabilityWeight;
-        }
-
-        public void InheritFolded(MoveSelectorConfig<ChangeMoveSelectorConfig> foldedConfig)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void InheritFolded(MoveSelectorConfig<AbstractMoveSelectorConfig> foldedConfig)
         {
             throw new NotImplementedException();
         }

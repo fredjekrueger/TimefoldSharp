@@ -11,9 +11,12 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Value.Decorator
         public MovableChainedTrailingValueFilter(GenuineVariableDescriptor variableDescriptor)
         {
             this.variableDescriptor = variableDescriptor;
+            Accept = AcceptInt;
         }
 
-        public override bool Accept(ScoreDirector scoreDirector, object selection)
+        public override Func<ScoreDirector, object, bool> Accept { get; set; }
+
+        public bool AcceptInt(ScoreDirector scoreDirector, object selection)
         {
             throw new NotImplementedException();
         }

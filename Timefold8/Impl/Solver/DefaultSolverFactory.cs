@@ -57,7 +57,7 @@ namespace TimefoldSharp.Core.Impl.Solver
                         "it should have been filled in already.");
             }
             SolutionDescriptor solutionDescriptor =
-                    SolutionDescriptor.BuildSolutionDescriptor(solverConfig.DetermineDomainAccessType(),
+                    SolutionDescriptor.BuildSolutionDescriptor(
                             solverConfig.SolutionClass,
                             solverConfig.GizmoMemberAccessorMap,
                             /*solverConfig.GizmoSolutionClonerMap,*/ null, //prob met generic

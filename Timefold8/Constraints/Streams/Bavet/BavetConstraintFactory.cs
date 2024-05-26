@@ -1,8 +1,8 @@
-﻿using TimefoldSharp.Core.Config.Solver;
+﻿using TimefoldSharp.Core.API.Score.Stream.Uni;
+using TimefoldSharp.Core.Config.Solver;
 using TimefoldSharp.Core.Constraints.Streams.Bavet.Common;
 using TimefoldSharp.Core.Constraints.Streams.Bavet.Uni;
 using TimefoldSharp.Core.Constraints.Streams.Common;
-using TimefoldSharp.Core.Constraints.Streams.Common.Uni;
 using TimefoldSharp.Core.Impl.Domain.ConstraintWeight.Descriptor;
 using TimefoldSharp.Core.Impl.Domain.Entity.Descriptor;
 using TimefoldSharp.Core.Impl.Domain.Solution.Descriptor;

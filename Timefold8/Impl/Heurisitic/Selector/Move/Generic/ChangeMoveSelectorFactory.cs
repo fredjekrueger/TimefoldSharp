@@ -115,7 +115,7 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move.Generic
             {
                 unfoldedMoveSelectorConfig = new UnionMoveSelectorConfig(moveSelectorConfigList);
             }
-            unfoldedMoveSelectorConfig.InheritFolded(config);
+            unfoldedMoveSelectorConfig.MoveSelectorConfigImpl.InheritFolded(config);
             return unfoldedMoveSelectorConfig;
         }
 

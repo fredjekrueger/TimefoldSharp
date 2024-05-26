@@ -97,8 +97,8 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move
                         .BuildMoveSelector(configPolicy, minimumCacheType, inheritedSelectionOrder, skipNonDoableMoves);
             }
 
-            SelectionCacheType resolvedCacheType = SelectionCacheTypeHelper.Resolve(config.GetCacheType(), minimumCacheType);
-            SelectionOrder? resolvedSelectionOrder = SelectionOrderHelper.Resolve(config.GetSelectionOrder(), inheritedSelectionOrder);
+            SelectionCacheType resolvedCacheType = SelectionCacheTypeHelper.Resolve(config.MoveSelectorConfigImpl.CacheType, minimumCacheType);
+            SelectionOrder? resolvedSelectionOrder = SelectionOrderHelper.Resolve(config.MoveSelectorConfigImpl.SelectionOrder, inheritedSelectionOrder);
 
             bool randomMoveSelection = DetermineBaseRandomSelection(resolvedCacheType, resolvedSelectionOrder);
             SelectionCacheType selectionCacheType = SelectionCacheTypeHelper.Max(minimumCacheType, resolvedCacheType);
@@ -115,9 +115,9 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move
 
         private MoveSelector ApplySelectedLimit(MoveSelector moveSelector)
         {
-            if (config.GetSelectedCountLimit() != null)
+            if (config.MoveSelectorConfigImpl.SelectedCountLimit != null)
             {
-                moveSelector = new SelectedCountLimitMoveSelector(moveSelector, config.GetSelectedCountLimit().Value);
+                moveSelector = new SelectedCountLimitMoveSelector(moveSelector, config.MoveSelectorConfigImpl.SelectedCountLimit.Value);
             }
             return moveSelector;
         }
@@ -126,16 +126,16 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move
         {
             if (resolvedSelectionOrder == SelectionOrder.PROBABILISTIC)
             {
-                if (config.GetProbabilityWeightFactoryClass() == null)
+                if (config.MoveSelectorConfigImpl.ProbabilityWeightFactoryClass == null)
                 {
                     throw new Exception("The moveSelectorConfig (" + config
                             + ") with resolvedSelectionOrder (" + resolvedSelectionOrder
                             + ") needs a probabilityWeightFactoryClass ("
-                            + config.GetProbabilityWeightFactoryClass() + ").");
+                            + config.MoveSelectorConfigImpl.ProbabilityWeightFactoryClass + ").");
                 }
                 SelectionProbabilityWeightFactory<Heurisitic.Move.Move> probabilityWeightFactory =
                         ConfigUtils.NewInstance<SelectionProbabilityWeightFactory<Heurisitic.Move.Move>>(config, "probabilityWeightFactoryClass",
-                                config.GetProbabilityWeightFactoryClass());
+                                config.MoveSelectorConfigImpl.ProbabilityWeightFactoryClass);
                 moveSelector = new ProbabilityMoveSelector(moveSelector, resolvedCacheType, probabilityWeightFactory);
             }
             return moveSelector;
@@ -172,7 +172,7 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move
             if (HasFiltering())
             {
                 SelectionFilter<Heurisitic.Move.Move> selectionFilter =
-                        ConfigUtils.NewInstance<SelectionFilter<Heurisitic.Move.Move>>(config, "filterClass", config.GetFilterClass());
+                        ConfigUtils.NewInstance<SelectionFilter<Heurisitic.Move.Move>>(config, "filterClass", config.MoveSelectorConfigImpl.FilterClass);
                 SelectionFilter<Heurisitic.Move.Move> finalFilter =
                         baseFilter == null ? selectionFilter : SelectionFilter<Heurisitic.Move.Move>.Compose(new List<SelectionFilter<Heurisitic.Move.Move>>() { baseFilter, selectionFilter });
                 return new FilteringMoveSelector(moveSelector, finalFilter);
@@ -192,30 +192,30 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move
             if (resolvedSelectionOrder == SelectionOrder.SORTED)
             {
                 SelectionSorter<Heurisitic.Move.Move> sorter;
-                if (config.GetSorterComparatorClass() != null)
+                if (config.MoveSelectorConfigImpl.SorterComparatorClass != null)
                 {
                     Comparer<Heurisitic.Move.Move> sorterComparator = ConfigUtils.NewInstance<Comparer<Heurisitic.Move.Move>>(config,
-                            "sorterComparatorClass", config.GetSorterComparatorClass());
-                    sorter = new ComparatorSelectionSorter<Heurisitic.Move.Move>(sorterComparator, SelectionSorterOrderHelper.Resolve(config.GetSorterOrder()));
+                            "sorterComparatorClass", config.MoveSelectorConfigImpl.SorterComparatorClass);
+                    sorter = new ComparatorSelectionSorter<Heurisitic.Move.Move>(sorterComparator, SelectionSorterOrderHelper.Resolve(config.MoveSelectorConfigImpl.SorterOrder));
                 }
-                else if (config.GetSorterWeightFactoryClass() != null)
+                else if (config.MoveSelectorConfigImpl.SorterWeightFactoryClass != null)
                 {
                     SelectionSorterWeightFactory<Heurisitic.Move.Move> sorterWeightFactory =
                             ConfigUtils.NewInstance<SelectionSorterWeightFactory<Heurisitic.Move.Move>>(config, "sorterWeightFactoryClass",
-                                    config.GetSorterWeightFactoryClass());
-                    sorter = new WeightFactorySelectionSorter<Heurisitic.Move.Move>(sorterWeightFactory, SelectionSorterOrderHelper.Resolve(config.GetSorterOrder()));
+                                    config.MoveSelectorConfigImpl.SorterWeightFactoryClass);
+                    sorter = new WeightFactorySelectionSorter<Heurisitic.Move.Move>(sorterWeightFactory, SelectionSorterOrderHelper.Resolve(config.MoveSelectorConfigImpl.SorterOrder));
                 }
-                else if (config.GetSorterClass() != null)
+                else if (config.MoveSelectorConfigImpl.SorterClass != null)
                 {
-                    sorter = ConfigUtils.NewInstance<SelectionSorter<Heurisitic.Move.Move>>(config, "sorterClass", config.GetSorterClass());
+                    sorter = ConfigUtils.NewInstance<SelectionSorter<Heurisitic.Move.Move>>(config, "sorterClass", config.MoveSelectorConfigImpl.SorterClass);
                 }
                 else
                 {
                     throw new Exception("The moveSelectorConfig (" + config
                             + ") with resolvedSelectionOrder (" + resolvedSelectionOrder
-                            + ") needs a sorterComparatorClass (" + config.GetSorterComparatorClass()
-                            + ") or a sorterWeightFactoryClass (" + config.GetSorterWeightFactoryClass()
-                            + ") or a sorterClass (" + config.GetSorterClass() + ").");
+                            + ") needs a sorterComparatorClass (" + config.MoveSelectorConfigImpl.SorterComparatorClass
+                            + ") or a sorterWeightFactoryClass (" + config.MoveSelectorConfigImpl.SorterWeightFactoryClass
+                            + ") or a sorterClass (" + config.MoveSelectorConfigImpl.SorterClass + ").");
                 }
                 moveSelector = new SortingMoveSelector(moveSelector, resolvedCacheType, sorter);
             }
@@ -251,7 +251,7 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move
 
         private bool HasFiltering()
         {
-            return config.GetFilterClass() != null;
+            return config.MoveSelectorConfigImpl.FilterClass != null;
         }
 
         protected virtual AbstractMoveSelectorConfig BuildUnfoldedMoveSelectorConfig(HeuristicConfigPolicy configPolicy)

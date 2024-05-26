@@ -156,8 +156,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Score.Descriptor
             return descriptorPolicy.MemberAccessorFactory.BuildAndCacheMemberAccessor(solutionClass,
                     member,
                     MemberAccessorType.PROPERTY_OR_GETTER_METHOD_WITH_SETTER,
-                    typeof(PlanningScoreAttribute),
-                descriptorPolicy.DomainAccessType);
+                    typeof(PlanningScoreAttribute));
         }
     }
 }

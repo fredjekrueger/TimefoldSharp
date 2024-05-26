@@ -26,15 +26,14 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common.Index
                     var mapping3 = joiner.GetRightMapping(2);
                     return (Right_ right) => new ThreeIndexProperties(mapping1.Invoke(right), mapping2.Invoke(right), mapping3.Invoke(right));
                 default:
-                    /*return (Right_ right) -> {
-                        Object[] mappings = new Object[joinerCount];
+                    return (Right_ right) => {
+                        object[] mappings = new Object[joinerCount];
                         for (int i = 0; i < joinerCount; i++)
                         {
-                            mappings[i] = joiner.getRightMapping(i).apply(right);
+                            mappings[i] = joiner.GetRightMapping(i).Invoke(right);
                         }
                         return new ManyIndexProperties(mappings);
-                    };*/
-                    throw new NotImplementedException();
+                    };
             }
         }
 
@@ -59,14 +58,14 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common.Index
                     var mapping1 = joiner.GetLeftMapping(0);
                     return (A a) => new ThreeIndexProperties(mapping1.Invoke(a), mapping2.Invoke(a), mapping3.Invoke(a));
                 default:
-                    /* return (A a) => {
-                         Object[] mappings = new Object[joinerCount];
+                     return (A a) => {
+                         object[] mappings = new Object[joinerCount];
                          for (int i = 0; i < joinerCount; i++)
                          {
-                             mappings[i] = joiner.GetLeftMapping(i).apply(a);
+                             mappings[i] = joiner.GetLeftMapping(i).Invoke(a);
                          }
                          return new ManyIndexProperties(mappings);
-                     };*/
+                     };
                     throw new NotImplementedException();
             }
         }

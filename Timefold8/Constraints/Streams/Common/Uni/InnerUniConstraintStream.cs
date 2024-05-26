@@ -1,4 +1,5 @@
 ﻿using TimefoldSharp.Core.API.Score.Stream.Bi;
+using TimefoldSharp.Core.API.Score.Stream.Uni;
 using TimefoldSharp.Core.Constraints.Streams.Common.Bi;
 
 namespace TimefoldSharp.Core.Constraints.Streams.Common.Uni

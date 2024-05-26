@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using TimefoldSharp.Core.API.Domain.Common;
 using TimefoldSharp.Core.API.Domain.Lookup;
 using TimefoldSharp.Core.Config.Solver;
 using TimefoldSharp.Core.Helpers;
@@ -152,7 +151,7 @@ namespace TimefoldSharp.Core.Config.Util
             return memberList.First();
         }
 
-        public static MemberAccessor FindPlanningIdMemberAccessor(Type clazz, MemberAccessorFactory memberAccessorFactory, DomainAccessType domainAccessType)
+        public static MemberAccessor FindPlanningIdMemberAccessor(Type clazz, MemberAccessorFactory memberAccessorFactory)
         {
             MemberInfo member = GetSingleMember(clazz, typeof(PlanningIdAttribute));
             if (member == null)
@@ -160,7 +159,7 @@ namespace TimefoldSharp.Core.Config.Util
                 return null;
             }
             MemberAccessor memberAccessor =
-                    memberAccessorFactory.BuildAndCacheMemberAccessor(clazz, member, MemberAccessorFactory.MemberAccessorType.PROPERTY_OR_READ_METHOD, typeof(PlanningIdAttribute), domainAccessType);
+                    memberAccessorFactory.BuildAndCacheMemberAccessor(clazz, member, MemberAccessorFactory.MemberAccessorType.PROPERTY_OR_READ_METHOD, typeof(PlanningIdAttribute));
             return memberAccessor;
         }
 

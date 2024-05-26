@@ -11,7 +11,6 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move.Generic
 {
     public class SwapMoveSelectorFactory : AbstractMoveSelectorFactory<AbstractMoveSelectorConfig>
     {
-
         public SwapMoveSelectorConfig swapConfig => (SwapMoveSelectorConfig)config;
 
         protected override MoveSelector BuildBaseMoveSelector(HeuristicConfigPolicy configPolicy, SelectionCacheType minimumCacheType, bool randomSelection)
@@ -131,7 +130,7 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move.Generic
             {
                 unfoldedMoveSelectorConfig = new UnionMoveSelectorConfig(moveSelectorConfigList);
             }
-            unfoldedMoveSelectorConfig.InheritFolded(swapConfig);
+            unfoldedMoveSelectorConfig.MoveSelectorConfigImpl.InheritFolded<AbstractMoveSelectorConfig>(swapConfig);
             return unfoldedMoveSelectorConfig;
         }
 
