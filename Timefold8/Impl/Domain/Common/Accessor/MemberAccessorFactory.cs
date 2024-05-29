@@ -16,21 +16,14 @@ namespace TimefoldSharp.Core.Impl.Domain.Common.Accessor
 
         private readonly ConcurrentDictionary<string, MemberAccessor> memberAccessorCache = new ConcurrentDictionary<string, MemberAccessor>();
 
-        private readonly GizmoClassLoader gizmoClassLoader = new GizmoClassLoader();
-
-        public GizmoClassLoader GetGizmoClassLoader()
-        {
-            return gizmoClassLoader;
-        }
-
         public MemberAccessor BuildAndCacheMemberAccessor(Type type, MemberInfo member, MemberAccessorType memberAccessorType, Type annotationClass)
         {
             string generatedClassName = GizmoMemberAccessorFactory.GetGeneratedClassName(member, type);
             return memberAccessorCache.GetOrAdd(generatedClassName,
-                    k => MemberAccessorFactory.BuildMemberAccessor(member, memberAccessorType, annotationClass, gizmoClassLoader));
+                    k => MemberAccessorFactory.BuildMemberAccessor(member, memberAccessorType, annotationClass));
         }
 
-        public static MemberAccessor BuildMemberAccessor(MemberInfo member, MemberAccessorType memberAccessorType,  Type annotationClass, ClassLoaderJDEF classLoader)
+        public static MemberAccessor BuildMemberAccessor(MemberInfo member, MemberAccessorType memberAccessorType, Type annotationClass)
         {
             return BuildReflectiveMemberAccessor(member, memberAccessorType, annotationClass);
         }

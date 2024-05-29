@@ -350,7 +350,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Solution.Descriptor
             Type solutionClonerClass = solutionAnnotation.SolutionCloner;
             if (solutionClonerClass != typeof(NullSolutionCloner))
             {
-                solutionCloner = ConfigUtils.NewInstance<SolutionCloner>("solutionClonerClass", solutionClonerClass);
+                solutionCloner = ConfigUtils.NewInstance<SolutionCloner>(solutionClonerClass);
             }
             lookUpStrategyResolver = new LookUpStrategyResolver(descriptorPolicy, solutionAnnotation.LookUpStrategyType);
         }

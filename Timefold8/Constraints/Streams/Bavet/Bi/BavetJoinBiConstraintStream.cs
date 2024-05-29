@@ -7,16 +7,16 @@ using TimefoldSharp.Core.Helpers;
 
 namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Bi
 {
-    public sealed class BavetJoinBiConstraintStream<A, B, Property_> : BavetAbstractBiConstraintStream<A, B>, BavetJoinConstraintStream
+    public sealed class BavetJoinBiConstraintStream<A, B> : BavetAbstractBiConstraintStream<A, B>, BavetJoinConstraintStream
     {
 
         private BavetForeBridgeUniConstraintStream<A> LeftParent { get; set; }
         private BavetForeBridgeUniConstraintStream<B> RightParent { get; set; }
-        private readonly DefaultBiJoiner<A, B, Property_> joiner;
+        private readonly DefaultBiJoiner<A, B> joiner;
         private readonly Func<A, B, bool> filtering;
 
         public BavetJoinBiConstraintStream(BavetConstraintFactory constraintFactory, BavetForeBridgeUniConstraintStream<A> leftParent,
-           BavetForeBridgeUniConstraintStream<B> rightParent, DefaultBiJoiner<A, B, Property_> joiner, Func<A, B, bool> filtering) :
+           BavetForeBridgeUniConstraintStream<B> rightParent, DefaultBiJoiner<A, B> joiner, Func<A, B, bool> filtering) :
             base(constraintFactory, leftParent.GetRetrievalSemantics())
         {
 
@@ -35,7 +35,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Bi
         {
             LeftParent.CollectActiveConstraintStreams(constraintStreamSet);
             RightParent.CollectActiveConstraintStreams(constraintStreamSet);
-            constraintStreamSet.Add(this); //JDEF ADDIFNOTEXIST
+            constraintStreamSet.Add(this);
         }
 
         public override void BuildNode(NodeBuildHelper buildHelper)
@@ -82,7 +82,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Bi
             {
                 return false;
             }
-            BavetJoinBiConstraintStream<A, B, Property_> other = (BavetJoinBiConstraintStream<A, B, Property_>)o;
+            BavetJoinBiConstraintStream<A, B> other = (BavetJoinBiConstraintStream<A, B>)o;
             /*
              * Bridge streams do not implement equality because their equals() would have to point back to this stream,
              * resulting in StackOverflowError.

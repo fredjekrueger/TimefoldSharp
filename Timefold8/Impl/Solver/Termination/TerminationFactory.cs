@@ -34,7 +34,7 @@ namespace TimefoldSharp.Core.Impl.Solver.Termination
             if (terminationConfig.TerminationClass != null)
             {
                 Termination termination =
-                        ConfigUtils.NewInstance<Termination>(terminationConfig, "terminationClass", terminationConfig.TerminationClass);
+                        ConfigUtils.NewInstance<Termination>(terminationConfig.TerminationClass);
                 terminationList.Add(termination);
             }
 

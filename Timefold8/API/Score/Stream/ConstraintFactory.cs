@@ -6,9 +6,9 @@ namespace TimefoldSharp.Core.API.Score.Stream
 {
     public interface ConstraintFactory
     {
-        BiConstraintStream<A, A> ForEachUniquePair<A, Property_>(params BiJoiner<A, A, Property_>[] joiners);
-        BiConstraintStream<A, A> ForEachUniquePair<A, Property_>(Type sourceClass, BiJoiner<A, A, Property_> joiner1, BiJoiner<A, A, Property_> joiner2);
-        BiConstraintStream<A, A> ForEachUniquePair<A, Property_>(Type sourceClass, params BiJoiner<A, A, Property_>[] joiners);
+        BiConstraintStream<A, A> ForEachUniquePair<A>(params BiJoiner<A, A>[] joiners);
+        BiConstraintStream<A, A> ForEachUniquePair<A>(Type sourceClass, BiJoiner<A, A> joiner1, BiJoiner<A, A> joiner2);
+        BiConstraintStream<A, A> ForEachUniquePair<A>(Type sourceClass, params BiJoiner<A, A>[] joiners);
         UniConstraintStream<A> ForEach<A>(Type sourceClass);
         SolutionDescriptor GetSolutionDescriptor();
     }

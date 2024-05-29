@@ -45,7 +45,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Bi
 
             IWeightedScoreImpacter weightedScoreImpacter =
                 buildHelper.GetScoreInliner().BuildWeightedScoreImpacter(constraint);
-            var scorer = new BiScorer<A, B, ScoreContext>
+            var scorer = new BiScorer<A, B>
                 (weightedScoreImpacter, scoreImpacter, buildHelper.ReserveTupleStoreIndex(parent.GetTupleSource()));
             buildHelper.PutInsertUpdateRetract(this, scorer);
         }

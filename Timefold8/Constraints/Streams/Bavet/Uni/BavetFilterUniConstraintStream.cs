@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TimefoldSharp.Core.Constraints.Streams.Bavet.Common;
+﻿using TimefoldSharp.Core.Constraints.Streams.Bavet.Common;
 
 namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
 {

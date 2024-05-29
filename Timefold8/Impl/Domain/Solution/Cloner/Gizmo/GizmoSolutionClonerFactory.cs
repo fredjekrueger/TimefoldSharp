@@ -11,9 +11,9 @@ namespace TimefoldSharp.Core.Impl.Domain.Solution.Cloner.Gizmo
             return solutionDescriptor.SolutionClass.Name + "$Timefold$SolutionCloner";
         }
 
-        public static SolutionCloner Build(SolutionDescriptor solutionDescriptor, GizmoClassLoader gizmoClassLoader)
+        public static SolutionCloner Build(SolutionDescriptor solutionDescriptor)
         {
-            return GizmoSolutionClonerImplementor.CreateClonerFor(solutionDescriptor, gizmoClassLoader);
+            return GizmoSolutionClonerImplementor.CreateClonerFor(solutionDescriptor);
         }
     }
 }

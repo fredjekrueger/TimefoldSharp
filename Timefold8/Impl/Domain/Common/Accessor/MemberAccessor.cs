@@ -2,7 +2,7 @@
 {
     public interface MemberAccessor
     {
-        Func<Fact_, Result_> GetGetterFunction<Fact_, Result_>();
+        Func<Fact_, object> GetGetterFunction<Fact_>();
 
         object ExecuteGetter(Object bean);
 

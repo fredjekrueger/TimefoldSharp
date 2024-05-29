@@ -5,6 +5,6 @@ namespace TimefoldSharp.Core.Impl.Score.Stream
 {
     public interface JoinerService
     {
-        BiJoiner<A, B, Property_> NewBiJoiner<A, B, Property_>(Func<A, Property_> leftMapping, JoinerType joinerType, Func<B, Property_> rightMapping);
+        BiJoiner<A, B> NewBiJoiner<A, B>(Func<A, object> leftMapping, JoinerType joinerType, Func<B, object> rightMapping);
     }
 }

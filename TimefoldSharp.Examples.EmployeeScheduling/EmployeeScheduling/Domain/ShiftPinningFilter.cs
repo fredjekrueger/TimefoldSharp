@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TimefoldSharp.Core.API.Domain.Entity;
+﻿using TimefoldSharp.Core.API.Domain.Entity;
 using TimefoldSharp.Core.API.Score;
 
 namespace TimefoldSharp.Examples.EmployeeScheduling.EmployeeScheduling.Domain

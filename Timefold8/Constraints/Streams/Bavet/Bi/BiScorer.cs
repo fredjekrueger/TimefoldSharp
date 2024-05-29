@@ -4,8 +4,7 @@ using TimefoldSharp.Core.Constraints.Streams.Common.Inliner;
 
 namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Bi
 {
-    public sealed class BiScorer<A, B, Context_> : AbstractScorer<Context_>
-        where Context_ : ScoreContext
+    public sealed class BiScorer<A, B> : AbstractScorer
     {
 
         private readonly Func<IWeightedScoreImpacter, A, B, UndoScoreImpacter> scoreImpacter;

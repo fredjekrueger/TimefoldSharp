@@ -6,7 +6,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common.Index
     public static class JoinerUtils
     {
 
-        public static Func<Right_, IndexProperties> CombineRightMappings<Right_, Property_>(AbstractJoiner<Right_, Property_> joiner)
+        public static Func<Right_, IndexProperties> CombineRightMappings<Right_>(AbstractJoiner<Right_> joiner)
         {
             int joinerCount = joiner.GetJoinerCount();
             switch (joinerCount)
@@ -26,7 +26,8 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common.Index
                     var mapping3 = joiner.GetRightMapping(2);
                     return (Right_ right) => new ThreeIndexProperties(mapping1.Invoke(right), mapping2.Invoke(right), mapping3.Invoke(right));
                 default:
-                    return (Right_ right) => {
+                    return (Right_ right) =>
+                    {
                         object[] mappings = new Object[joinerCount];
                         for (int i = 0; i < joinerCount; i++)
                         {
@@ -38,7 +39,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common.Index
         }
 
 
-        public static Func<A, IndexProperties> CombineLeftMappings<A, B, Property_>(DefaultBiJoiner<A, B, Property_> joiner)
+        public static Func<A, IndexProperties> CombineLeftMappings<A, B>(DefaultBiJoiner<A, B> joiner)
         {
             int joinerCount = joiner.GetJoinerCount();
             switch (joinerCount)
@@ -58,14 +59,15 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common.Index
                     var mapping1 = joiner.GetLeftMapping(0);
                     return (A a) => new ThreeIndexProperties(mapping1.Invoke(a), mapping2.Invoke(a), mapping3.Invoke(a));
                 default:
-                     return (A a) => {
-                         object[] mappings = new Object[joinerCount];
-                         for (int i = 0; i < joinerCount; i++)
-                         {
-                             mappings[i] = joiner.GetLeftMapping(i).Invoke(a);
-                         }
-                         return new ManyIndexProperties(mappings);
-                     };
+                    return (A a) =>
+                    {
+                        object[] mappings = new Object[joinerCount];
+                        for (int i = 0; i < joinerCount; i++)
+                        {
+                            mappings[i] = joiner.GetLeftMapping(i).Invoke(a);
+                        }
+                        return new ManyIndexProperties(mappings);
+                    };
                     throw new NotImplementedException();
             }
         }

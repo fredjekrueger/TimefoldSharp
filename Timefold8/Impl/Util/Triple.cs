@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TimefoldSharp.Core.Impl.Util
+﻿namespace TimefoldSharp.Core.Impl.Util
 {
     public interface Triple<A, B, C>
     {

@@ -8,7 +8,7 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move
 
         public DoableMoveSelectionFilter()
         {
-            Accept = AcceptInt; 
+            Accept = AcceptInt;
         }
 
         public static readonly SelectionFilter<Core.Impl.Heurisitic.Move.Move> INSTANCE = new DoableMoveSelectionFilter();

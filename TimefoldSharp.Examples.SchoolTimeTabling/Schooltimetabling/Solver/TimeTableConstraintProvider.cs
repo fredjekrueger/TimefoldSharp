@@ -26,9 +26,9 @@ namespace TimefoldSharp.Schooltimetabling.Solver
             // A student group dislikes sequential lessons on the same subject.
             return constraintFactory
                     .ForEach<Lesson>(typeof(Lesson))
-                    .Join(typeof(Lesson), Joiners.Equal<Lesson, object>(l => l.Subject),
-                                        Joiners.Equal<Lesson, object>(l => l.StudentGroup),
-                                        Joiners.Equal<Lesson, object>(lesson => lesson.Timeslot.DayOfWeek))
+                    .Join(typeof(Lesson), Joiners.Equal<Lesson>(l => l.Subject),
+                                        Joiners.Equal<Lesson>(l => l.StudentGroup),
+                                        Joiners.Equal<Lesson>(lesson => lesson.Timeslot.DayOfWeek))
 
                  .Filter((lesson1, lesson2) =>
                  {
@@ -44,8 +44,8 @@ namespace TimefoldSharp.Schooltimetabling.Solver
             // A teacher prefers to teach sequential lessons and dislikes gaps between lessons.
             return constraintFactory
                     .ForEach<Lesson>(typeof(Lesson))
-                .Join(typeof(Lesson), Joiners.Equal<Lesson, object>(l => l.Teacher),
-                                        Joiners.Equal<Lesson, object>((lesson) => lesson.Timeslot.DayOfWeek))
+                .Join(typeof(Lesson), Joiners.Equal<Lesson>(l => l.Teacher),
+                                        Joiners.Equal<Lesson>((lesson) => lesson.Timeslot.DayOfWeek))
                 .Filter((lesson1, lesson2) =>
                 {
                     var between = lesson1.Timeslot.EndTime - lesson2.Timeslot.StartTime;
@@ -60,7 +60,7 @@ namespace TimefoldSharp.Schooltimetabling.Solver
             // A teacher prefers to teach in a single room.
             return constraintFactory
                     .ForEachUniquePair(
-                        Joiners.Equal<Lesson, object>(l => l.Teacher))
+                        Joiners.Equal<Lesson>(l => l.Teacher))
                 .Filter((lesson1, lesson2) => lesson1.Room != lesson2.Room)
                 .Penalize(HardSoftScore.ONE_SOFT)
                 .AsConstraint("Teacher room stability");
@@ -72,8 +72,8 @@ namespace TimefoldSharp.Schooltimetabling.Solver
             return constraintFactory
                     .ForEachUniquePair
                 (
-                    Joiners.Equal<Lesson, object>(l => l.Timeslot),
-                    Joiners.Equal<Lesson, object>(l => l.Room))
+                    Joiners.Equal<Lesson>(l => l.Timeslot),
+                    Joiners.Equal<Lesson>(l => l.Room))
                  .Penalize(HardSoftScore.ONE_HARD)
                 .AsConstraint("Room conflict");
         }
@@ -83,8 +83,8 @@ namespace TimefoldSharp.Schooltimetabling.Solver
             // A teacher can teach at most one lesson at the same time.
             return constraintFactory
                     .ForEachUniquePair(
-                        Joiners.Equal<Lesson, object>(l => l.Timeslot),
-                        Joiners.Equal<Lesson, object>(l => l.Teacher))
+                        Joiners.Equal<Lesson>(l => l.Timeslot),
+                        Joiners.Equal<Lesson>(l => l.Teacher))
                 .Penalize(HardSoftScore.ONE_HARD)
                 .AsConstraint("Teacher conflict");
         }
@@ -94,8 +94,8 @@ namespace TimefoldSharp.Schooltimetabling.Solver
             // A student can attend at most one lesson at the same time.
             return constraintFactory
                     .ForEachUniquePair(
-                       Joiners.Equal<Lesson, object>(l => l.Timeslot),
-                        Joiners.Equal<Lesson, object>(l => l.StudentGroup))
+                       Joiners.Equal<Lesson>(l => l.Timeslot),
+                        Joiners.Equal<Lesson>(l => l.StudentGroup))
                 .Penalize(HardSoftScore.ONE_HARD)
                 .AsConstraint("Student group conflict");
         }

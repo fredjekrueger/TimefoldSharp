@@ -11,9 +11,9 @@
 
         public abstract object ExecuteGetter(object o);
 
-        public Func<Fact_, Result_> GetGetterFunction<Fact_, Result_>()
+        public Func<Fact_, object> GetGetterFunction<Fact_>()
         {
-            return (f) => (Result_)getterFunction(f);
+            return (f) => getterFunction(f);
         }
 
         public abstract Type GetGenericType();

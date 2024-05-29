@@ -27,28 +27,28 @@ namespace TimefoldSharp.Core.Constraints.Streams.Common
 
         public abstract UniConstraintStream<A> ForEach<A>(Type sourceClass);
 
-        public BiConstraintStream<A, A> ForEachUniquePair<A, Property_>(params BiJoiner<A, A, Property_>[] joiners)
+        public BiConstraintStream<A, A> ForEachUniquePair<A>(params BiJoiner<A, A>[] joiners)
         {
-            BiJoinerComber<A, A, Property_> joinerComber = BiJoinerComber<A, A, Property_>.Comb(joiners);
-            joinerComber.AddJoiner(BuildLessThanId<A, Property_>(typeof(A)));
+            BiJoinerComber<A, A> joinerComber = BiJoinerComber<A, A>.Comb(joiners);
+            joinerComber.AddJoiner(BuildLessThanId<A>(typeof(A)));
             return ((InnerUniConstraintStream<A>)ForEach<A>(typeof(A))).Join(ForEach<A>(typeof(A)), joinerComber);
         }
 
-        public BiConstraintStream<A, A> ForEachUniquePair<A, Property_>(Type sourceClass, BiJoiner<A, A, Property_> joiner1, BiJoiner<A, A, Property_> joiner2)
+        public BiConstraintStream<A, A> ForEachUniquePair<A>(Type sourceClass, BiJoiner<A, A> joiner1, BiJoiner<A, A> joiner2)
         {
-            return ForEachUniquePair(sourceClass, new BiJoiner<A,A, Property_>[] { joiner1, joiner2 });
+            return ForEachUniquePair(sourceClass, new BiJoiner<A, A>[] { joiner1, joiner2 });
         }
 
-        public BiConstraintStream<A, A> ForEachUniquePair<A, Property_>(Type sourceClass, params BiJoiner<A, A, Property_>[] joiners)
+        public BiConstraintStream<A, A> ForEachUniquePair<A>(Type sourceClass, params BiJoiner<A, A>[] joiners)
         {
-            BiJoinerComber<A, A, Property_> joinerComber = BiJoinerComber<A, A, Property_>.Comb(joiners);
-            joinerComber.AddJoiner(BuildLessThanId<A, Property_>(sourceClass));
+            BiJoinerComber<A, A> joinerComber = BiJoinerComber<A, A>.Comb(joiners);
+            joinerComber.AddJoiner(BuildLessThanId<A>(sourceClass));
             return ((InnerUniConstraintStream<A>)ForEach<A>(sourceClass)).Join(ForEach<A>(sourceClass), joinerComber);
         }
 
         public abstract SolutionDescriptor GetSolutionDescriptor();
 
-        private DefaultBiJoiner<A, A, Property_> BuildLessThanId<A, Property_>(Type sourceClass)
+        private DefaultBiJoiner<A, A> BuildLessThanId<A>(Type sourceClass)
         {
             SolutionDescriptor solutionDescriptor = GetSolutionDescriptor();
             MemberAccessor planningIdMemberAccessor = solutionDescriptor.GetPlanningIdAccessor(sourceClass);
@@ -57,8 +57,8 @@ namespace TimefoldSharp.Core.Constraints.Streams.Common
                 throw new Exception("The fromClass  annotation,"
                     + " so the pairs cannot be made unique ([A,B] vs [B,A]).");
             }
-            Func<A, Property_> planningIdGetter = planningIdMemberAccessor.GetGetterFunction<A, Property_>(); // JDEF hier werkt cast niet
-            return (DefaultBiJoiner<A, A, Property_>)Joiners.LessThan(planningIdGetter);
+            Func<A, object> planningIdGetter = planningIdMemberAccessor.GetGetterFunction<A>();
+            return (DefaultBiJoiner<A, A>)Joiners.LessThan(planningIdGetter);
         }
     }
 }

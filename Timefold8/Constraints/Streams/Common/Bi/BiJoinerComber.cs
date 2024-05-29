@@ -2,28 +2,28 @@
 
 namespace TimefoldSharp.Core.Constraints.Streams.Common.Bi
 {
-    public sealed class BiJoinerComber<A, B, Property_>
+    public sealed class BiJoinerComber<A, B>
     {
-        private DefaultBiJoiner<A, B, Property_> mergedJoiner;
+        private DefaultBiJoiner<A, B> mergedJoiner;
 
-        public static BiJoinerComber<A, B, Property_> Comb(BiJoiner<A, B, Property_>[] joiners)
+        public static BiJoinerComber<A, B> Comb(BiJoiner<A, B>[] joiners)
         {
-            List<DefaultBiJoiner<A, B, Property_>> defaultJoinerList = new List<DefaultBiJoiner<A, B, Property_>>(joiners.Length);
+            List<DefaultBiJoiner<A, B>> defaultJoinerList = new List<DefaultBiJoiner<A, B>>(joiners.Length);
             List<Func<A, B, bool>> filteringList = new List<Func<A, B, bool>>(joiners.Length);
 
             int indexOfFirstFilter = -1;
             // Make sure all indexing joiners, if any, come before filtering joiners. This is necessary for performance.
             for (int i = 0; i < joiners.Length; i++)
             {
-                BiJoiner<A, B, Property_> joiner = joiners[i];
-                if (joiner is FilteringBiJoiner<A, B, Property_>)
+                BiJoiner<A, B> joiner = joiners[i];
+                if (joiner is FilteringBiJoiner<A, B>)
                 {
                     // From now on, only allow filtering joiners.
                     indexOfFirstFilter = i;
-                    filteringList.Add(((FilteringBiJoiner<A, B, Property_>)joiner).GetFilter());
+                    filteringList.Add(((FilteringBiJoiner<A, B>)joiner).GetFilter());
                 }
                 //else if (joiner.GetType().GetGenericTypeDefinition() == typeof(DefaultBiJoiner<,,>))
-                else if (joiner is DefaultBiJoiner<A, B, Property_>)
+                else if (joiner is DefaultBiJoiner<A, B>)
                 {
                     if (indexOfFirstFilter >= 0)
                     {
@@ -31,16 +31,16 @@ namespace TimefoldSharp.Core.Constraints.Streams.Common.Bi
                                 "a filtering joiner (" + joiners[indexOfFirstFilter] + ").\n" +
                                 "Maybe reorder the joiners such that filtering() joiners are later in the parameter list.");
                     }
-                    defaultJoinerList.Add((DefaultBiJoiner<A, B, Property_>)joiner);
+                    defaultJoinerList.Add((DefaultBiJoiner<A, B>)joiner);
                 }
                 else
                 {
                     throw new Exception("The joiner class (" + joiner.GetType() + ") is not supported.");
                 }
             }
-            DefaultBiJoiner<A, B, Property_> mergedJoiner = DefaultBiJoiner<A, B, Property_>.Merge(defaultJoinerList);
+            DefaultBiJoiner<A, B> mergedJoiner = DefaultBiJoiner<A, B>.Merge(defaultJoinerList);
             Func<A, B, bool> mergedFiltering = MergeFiltering(filteringList);
-            return new BiJoinerComber<A, B, Property_>(mergedJoiner, mergedFiltering);
+            return new BiJoinerComber<A, B>(mergedJoiner, mergedFiltering);
         }
 
         private static Func<A, B, bool> MergeFiltering(List<Func<A, B, bool>> filteringList)
@@ -73,18 +73,18 @@ namespace TimefoldSharp.Core.Constraints.Streams.Common.Bi
 
         private readonly Func<A, B, bool> mergedFiltering;
 
-        public BiJoinerComber(DefaultBiJoiner<A, B, Property_> mergedJoiner, Func<A, B, bool> mergedFiltering)
+        public BiJoinerComber(DefaultBiJoiner<A, B> mergedJoiner, Func<A, B, bool> mergedFiltering)
         {
             this.mergedJoiner = mergedJoiner;
             this.mergedFiltering = mergedFiltering;
         }
 
-        public void AddJoiner(DefaultBiJoiner<A, B, Property_> extraJoiner)
+        public void AddJoiner(DefaultBiJoiner<A, B> extraJoiner)
         {
-            mergedJoiner = (DefaultBiJoiner<A, B, Property_>)mergedJoiner.And(extraJoiner);
+            mergedJoiner = mergedJoiner.And(extraJoiner);
         }
 
-        public DefaultBiJoiner<A, B, Property_> GetMergedJoiner()
+        public DefaultBiJoiner<A, B> GetMergedJoiner()
         {
             return mergedJoiner;
         }

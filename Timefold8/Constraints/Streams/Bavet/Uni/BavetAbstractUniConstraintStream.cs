@@ -6,7 +6,6 @@ using TimefoldSharp.Core.Constraints.Streams.Bavet.Common;
 using TimefoldSharp.Core.Constraints.Streams.Common;
 using TimefoldSharp.Core.Constraints.Streams.Common.Bi;
 using TimefoldSharp.Core.Constraints.Streams.Common.Uni;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
 {
@@ -22,12 +21,12 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
 
         }
 
-        public BiConstraintStream<A, B> Join<B, Property_>(UniConstraintStream<B> otherStream, BiJoinerComber<A, B, Property_> joinerComber)
+        public BiConstraintStream<A, B> Join<B>(UniConstraintStream<B> otherStream, BiJoinerComber<A, B> joinerComber)
         {
             var other = (BavetAbstractUniConstraintStream<B>)otherStream;
             var leftBridge = new BavetForeBridgeUniConstraintStream<A>(constraintFactory, this);
             var rightBridge = new BavetForeBridgeUniConstraintStream<B>(constraintFactory, other);
-            var joinStream = new BavetJoinBiConstraintStream<A, B, Property_>(constraintFactory, leftBridge, rightBridge,
+            var joinStream = new BavetJoinBiConstraintStream<A, B>(constraintFactory, leftBridge, rightBridge,
                     joinerComber.GetMergedJoiner(), joinerComber.GetMergedFiltering());
             return constraintFactory.Share(joinStream, joinStream_ =>
             {
@@ -52,17 +51,17 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
             return default(JustificationMapping_);
         }
 
-        public BiConstraintStream<A, B> Join<B, Property_>(Type otherClass, BiJoiner<A, B, Property_> joiner1, BiJoiner<A, B, Property_> joiner2)
+        public BiConstraintStream<A, B> Join<B>(Type otherClass, BiJoiner<A, B> joiner1, BiJoiner<A, B> joiner2)
         {
-            return Join(otherClass, new BiJoiner<A, B, Property_>[] { joiner1, joiner2 });
+            return Join<B>(otherClass, new BiJoiner<A, B>[] { joiner1, joiner2 });
         }
 
-        public BiConstraintStream<A, B> Join<B, Property_>(Type otherClass, params BiJoiner<A, B, Property_>[] joiners)
+        public BiConstraintStream<A, B> Join<B>(Type otherClass, params BiJoiner<A, B>[] joiners)
         {
             if (GetRetrievalSemantics() == RetrievalSemantics.STANDARD)
             {
                 var a = GetConstraintFactory().ForEach<B>(otherClass);
-                return Join(a, joiners);
+                return Join<B>(a, joiners);
             }
             else
             {
@@ -71,9 +70,9 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
             }
         }
 
-        public BiConstraintStream<A, B> Join<B, Property_>(UniConstraintStream<B> otherStream, params BiJoiner<A, B, Property_>[] joiners)
+        public BiConstraintStream<A, B> Join<B>(UniConstraintStream<B> otherStream, params BiJoiner<A, B>[] joiners)
         {
-            BiJoinerComber<A, B, Property_> joinerComber = BiJoinerComber<A, B, Property_>.Comb(joiners);
+            BiJoinerComber<A, B> joinerComber = BiJoinerComber<A, B>.Comb(joiners);
             return Join(otherStream, joinerComber);
         }
 

@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TimefoldSharp.Core.API.Score.Stream;
-using TimefoldSharp.Core.API.Score.Stream.Bi;
+﻿using TimefoldSharp.Core.API.Score.Stream;
 using TimefoldSharp.Core.API.Score.Stream.Uni;
-using TimefoldSharp.Core.Constraints.Streams.Common.Bi;
 
 namespace TimefoldSharp.Core.Constraints.Streams.Common.Uni
-{ 
+{
     public class UniConstraintBuilderImpl<A> : AbstractConstraintBuilder<A, A>, UniConstraintBuilder<A>
     {
         public UniConstraintBuilderImpl(UniConstraintConstructor<A> constraintConstructor, ScoreImpactType impactType, API.Score.Score constraintWeight)
-            :base((ConstraintConstructor<A,A>)constraintConstructor, impactType, constraintWeight)
+            : base((ConstraintConstructor<A, A>)constraintConstructor, impactType, constraintWeight)
         {
 
         }

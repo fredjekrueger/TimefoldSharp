@@ -3,7 +3,6 @@ using TimefoldSharp.Core.API.Domain.Entity;
 using TimefoldSharp.Core.API.Domain.ValueRange;
 using TimefoldSharp.Core.API.Domain.Variable;
 using TimefoldSharp.Core.API.Score;
-using TimefoldSharp.Core.API.Solver;
 using TimefoldSharp.Core.Config.Util;
 using TimefoldSharp.Core.Impl.Domain.Common.Accessor;
 using TimefoldSharp.Core.Impl.Domain.Policy;
@@ -344,7 +343,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Entity.Descriptor
             bool hasPinningFilter = pinningFilterClass != typeof(NullPinningFilter);
             if (hasPinningFilter)
             {
-                IPinningFilter pinningFilter = ConfigUtils.NewInstance<IPinningFilter>("pinningFilterClass", pinningFilterClass);
+                IPinningFilter pinningFilter = ConfigUtils.NewInstance<IPinningFilter>(pinningFilterClass);
                 declaredMovableEntitySelectionFilter = new SelectionFilter<object>();
                 declaredMovableEntitySelectionFilter.Accept = (scoreDirector, selection) => !pinningFilter.Accept(scoreDirector.GetWorkingSolution(), selection);
             }

@@ -6,6 +6,6 @@ namespace TimefoldSharp.Core.Constraints.Streams.Common.Uni
 {
     public interface InnerUniConstraintStream<A> : UniConstraintStream<A>
     {
-        BiConstraintStream<A, B> Join<B, Property_>(UniConstraintStream<B> otherStream, BiJoinerComber<A, B, Property_> joinerComber);
+        BiConstraintStream<A, B> Join<B>(UniConstraintStream<B> otherStream, BiJoinerComber<A, B> joinerComber);
     }
 }

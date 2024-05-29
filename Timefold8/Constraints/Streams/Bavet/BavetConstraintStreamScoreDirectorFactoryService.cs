@@ -22,7 +22,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet
 
             return new Func<AbstractScoreDirectorFactory>(() =>
             {
-                ConstraintProvider constraintProvider = ConfigUtils.NewInstance<ConstraintProvider>(config, "constraintProviderClass", config.ConstraintProviderClass);
+                ConstraintProvider constraintProvider = ConfigUtils.NewInstance<ConstraintProvider>(config.ConstraintProviderClass);
                 ConfigUtils.ApplyCustomProperties(constraintProvider, "constraintProviderClass", config.ConstraintProviderCustomProperties, "constraintProviderCustomProperties");
                 return BuildScoreDirectorFactory(solutionDescriptor, constraintProvider, environmentMode);
             });

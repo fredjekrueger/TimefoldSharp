@@ -39,7 +39,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common
                 throw new Exception("Impossible state: the stream (" + this + ") does not have a parent.");
             }
             parent.CollectActiveConstraintStreams(constraintStreamSet);
-            constraintStreamSet.Add(this); //JDEF ADDIFNOTEXIST
+            constraintStreamSet.Add(this);
         }
 
         protected BavetAbstractConstraintStream(BavetConstraintFactory constraintFactory, RetrievalSemantics retrievalSemantics)

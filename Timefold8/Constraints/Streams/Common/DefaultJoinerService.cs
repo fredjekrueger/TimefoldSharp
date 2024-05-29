@@ -7,9 +7,9 @@ namespace TimefoldSharp.Core.Constraints.Streams.Common
 {
     public sealed class DefaultJoinerService : JoinerService
     {
-        public BiJoiner<A, B, Property_> NewBiJoiner<A, B, Property_>(Func<A, Property_> leftMapping, JoinerType joinerType, Func<B, Property_> rightMapping)
+        public BiJoiner<A, B> NewBiJoiner<A, B>(Func<A, object> leftMapping, JoinerType joinerType, Func<B, object> rightMapping)
         {
-            return new DefaultBiJoiner<A, B, Property_>(leftMapping, joinerType, rightMapping);
+            return new DefaultBiJoiner<A, B>(leftMapping, joinerType, rightMapping);
         }
     }
 }

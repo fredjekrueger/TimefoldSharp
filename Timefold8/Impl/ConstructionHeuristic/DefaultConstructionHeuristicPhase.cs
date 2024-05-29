@@ -1,4 +1,5 @@
 ﻿using Serilog;
+using TimefoldSharp.Core.API.Score.Buildin.HardSoft;
 using TimefoldSharp.Core.Impl.ConstructionHeuristic.decider;
 using TimefoldSharp.Core.Impl.ConstructionHeuristic.Placer;
 using TimefoldSharp.Core.Impl.ConstructionHeuristic.Scope;
@@ -65,9 +66,19 @@ namespace TimefoldSharp.Core.Impl.ConstructionHeuristic
 
             foreach (var placement in entityPlacer)
             {
+
                 ConstructionHeuristicStepScope stepScope = new ConstructionHeuristicStepScope(phaseScope);
                 StepStarted(stepScope);
-                decider.DecideNextStep(stepScope, placement); //-26 0 1
+
+                
+
+                decider.DecideNextStep(stepScope, placement);
+
+                /*if (((HardSoftScore)(stepScope.GetScore())).InitScore() == -140) //hierboven dan de volgende keer is niet ok na decideNextStep
+                {
+
+                }*/
+
                 if (stepScope.GetStep() == null)
                 {
                     if (phaseTermination.IsPhaseTerminated(phaseScope))
@@ -88,6 +99,7 @@ namespace TimefoldSharp.Core.Impl.ConstructionHeuristic
                     break;
                 }
                 DoStep(stepScope);
+               
                 StepEnded(stepScope);
                 phaseScope.SetLastCompletedStepScope(stepScope);
                 if (phaseTermination.IsPhaseTerminated(phaseScope))

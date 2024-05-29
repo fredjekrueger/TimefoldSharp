@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TimefoldSharp.Examples.EmployeeScheduling
+﻿namespace TimefoldSharp.Examples.EmployeeScheduling
 {
     public static class ListExtensions
     {

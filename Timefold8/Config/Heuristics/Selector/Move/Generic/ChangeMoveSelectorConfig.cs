@@ -1,6 +1,4 @@
-﻿using TimefoldSharp.Core.Config.Heuristics.Selector.Common;
-using TimefoldSharp.Core.Config.Heuristics.Selector.Common.Decorator;
-using TimefoldSharp.Core.Config.Heuristics.Selector.Entity;
+﻿using TimefoldSharp.Core.Config.Heuristics.Selector.Entity;
 using TimefoldSharp.Core.Config.Heuristics.Selector.Value;
 using TimefoldSharp.Core.Config.Solver;
 using TimefoldSharp.Core.Helpers;

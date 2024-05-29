@@ -1,6 +1,4 @@
-﻿using Serilog.Core;
-using System.Collections;
-using TimefoldSharp.Core.API.Score;
+﻿using System.Collections;
 using TimefoldSharp.Core.Impl.Domain.Entity.Descriptor;
 using TimefoldSharp.Core.Impl.Heurisitic.Selector.Common.Decorator;
 using TimefoldSharp.Core.Impl.Heurisitic.Selector.Common.Iterator;

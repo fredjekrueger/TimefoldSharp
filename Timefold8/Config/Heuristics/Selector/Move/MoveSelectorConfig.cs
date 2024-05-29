@@ -1,9 +1,6 @@
-﻿using System.Security.AccessControl;
-using TimefoldSharp.Core.Config.Heuristics.Selector.Common;
+﻿using TimefoldSharp.Core.Config.Heuristics.Selector.Common;
 using TimefoldSharp.Core.Config.Heuristics.Selector.Common.Decorator;
 using TimefoldSharp.Core.Config.Util;
-using TimefoldSharp.Core.Helpers;
-using TimefoldSharp.Core.Impl.Heurisitic.Selector.Common.Decorator;
 
 namespace TimefoldSharp.Core.Config.Heuristics.Selector.Move
 {

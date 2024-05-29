@@ -8,17 +8,10 @@ namespace TimefoldSharp.Core.Config.Util
 {
     public class ConfigUtils
     {
-        public static T NewInstance<T>(string propertyName, Type type)
+        public static T NewInstance<T>(Type type)
         {
             return (T)Activator.CreateInstance(type);
         }
-
-
-        public static T NewInstance<T>(object configBean, string propertyName, Type type)
-        {
-            return (T)Activator.CreateInstance(type);
-        }
-
 
         public static T InheritOverwritableProperty<T>(T original, T inherited)
         {

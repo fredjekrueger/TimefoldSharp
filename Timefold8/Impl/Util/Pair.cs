@@ -14,6 +14,4 @@
             return new PairImpl<A, B>(key, value);
         }
     }
-
-
 }

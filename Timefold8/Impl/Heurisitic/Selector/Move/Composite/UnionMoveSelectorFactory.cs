@@ -29,8 +29,7 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move.Composite
                             + uMoveConfig.GetSelectorProbabilityWeightFactoryClass()
                             + ") has non-random randomSelection (" + randomSelection + ").");
                 }
-                selectorProbabilityWeightFactory = ConfigUtils.NewInstance<SelectionProbabilityWeightFactory<MoveSelector>>(config,
-                        "selectorProbabilityWeightFactoryClass", uMoveConfig.GetSelectorProbabilityWeightFactoryClass());
+                selectorProbabilityWeightFactory = ConfigUtils.NewInstance<SelectionProbabilityWeightFactory<MoveSelector>>(uMoveConfig.GetSelectorProbabilityWeightFactoryClass());
             }
             else if (randomSelection)
             {

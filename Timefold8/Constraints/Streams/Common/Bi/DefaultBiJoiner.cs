@@ -3,36 +3,36 @@ using TimefoldSharp.Core.API.Score.Stream.Bi;
 
 namespace TimefoldSharp.Core.Constraints.Streams.Common.Bi
 {
-    public class DefaultBiJoiner<A, B, Property_> : AbstractJoiner<B, Property_>, BiJoiner<A, B, Property_>
+    public class DefaultBiJoiner<A, B> : AbstractJoiner<B>, BiJoiner<A, B>
     {
-        private readonly Func<A, Property_>[] leftMappings;
+        private readonly Func<A, object>[] leftMappings;
 
-        public Func<A, Property_> GetLeftMapping(int index)
+        public Func<A, object> GetLeftMapping(int index)
         {
-            return (Func<A, Property_>)leftMappings[index];
+            return (Func<A, object>)leftMappings[index];
         }
 
-        public DefaultBiJoiner(Func<A, Property_> leftMapping, JoinerType joinerType, Func<B, Property_> rightMapping) : base(rightMapping, joinerType)
+        public DefaultBiJoiner(Func<A, object> leftMapping, JoinerType joinerType, Func<B, object> rightMapping) : base(rightMapping, joinerType)
         {
-            this.leftMappings = new Func<A, Property_>[] { leftMapping };
+            this.leftMappings = new Func<A, object>[] { leftMapping };
         }
 
-        public DefaultBiJoiner(Func<A, Property_>[] leftMappings, JoinerType[] joinerTypes, Func<B, Property_>[] rightMappings) : base(rightMappings, joinerTypes)
+        public DefaultBiJoiner(Func<A, object>[] leftMappings, JoinerType[] joinerTypes, Func<B, object>[] rightMappings) : base(rightMappings, joinerTypes)
         {
             this.leftMappings = leftMappings;
         }
 
 
 
-        public DefaultBiJoiner<A, B, Property_> And(BiJoiner<A, B, Property_> otherJoiner)
+        public DefaultBiJoiner<A, B> And(BiJoiner<A, B> otherJoiner)
         {
-            DefaultBiJoiner<A, B, Property_> castJoiner = (DefaultBiJoiner<A, B, Property_>)otherJoiner;
+            DefaultBiJoiner<A, B> castJoiner = (DefaultBiJoiner<A, B>)otherJoiner;
             int joinerCount = GetJoinerCount();
             int castJoinerCount = castJoiner.GetJoinerCount();
             int newJoinerCount = joinerCount + castJoinerCount;
             JoinerType[] newJoinerTypes = new JoinerType[newJoinerCount];
-            Func<A, Property_>[] newLeftMappings = new Func<A, Property_>[newJoinerCount];
-            Func<B, Property_>[] newRightMappings = new Func<B, Property_>[newJoinerCount];
+            Func<A, object>[] newLeftMappings = new Func<A, object>[newJoinerCount];
+            Func<B, object>[] newRightMappings = new Func<B, object>[newJoinerCount];
             newJoinerTypes = ExtendArray(this.joinerTypes, newJoinerCount);
             newLeftMappings = ExtendArray(this.leftMappings, newJoinerCount);
             newRightMappings = ExtendArray(this.rightMappings, newJoinerCount);
@@ -48,7 +48,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Common.Bi
                 newLeftMappings[newJoinerIndex] = castJoiner.GetLeftMapping(i);
                 newRightMappings[newJoinerIndex] = castJoiner.GetRightMapping(i);
             }
-            return new DefaultBiJoiner<A, B, Property_>(newLeftMappings, newJoinerTypes, newRightMappings);
+            return new DefaultBiJoiner<A, B>(newLeftMappings, newJoinerTypes, newRightMappings);
         }
 
         T[] ExtendArray<T>(T[] source, int length)
@@ -61,9 +61,9 @@ namespace TimefoldSharp.Core.Constraints.Streams.Common.Bi
             return newArray;
         }
 
-        private static readonly DefaultBiJoiner<A, B, Property_> NONE = new DefaultBiJoiner<A, B, Property_>(new Func<A, Property_>[0], new JoinerType[0], new Func<B, Property_>[0]);
+        private static readonly DefaultBiJoiner<A, B> NONE = new DefaultBiJoiner<A, B>(new Func<A, object>[0], new JoinerType[0], new Func<B, object>[0]);
 
-        public static DefaultBiJoiner<A, B, Property_> Merge(List<DefaultBiJoiner<A, B, Property_>> joinerList)
+        public static DefaultBiJoiner<A, B> Merge(List<DefaultBiJoiner<A, B>> joinerList)
         {
             if (joinerList.Count() == 1)
             {
@@ -74,7 +74,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Common.Bi
             return result;
         }
 
-        BiJoiner<A, B, Property_> BiJoiner<A, B, Property_>.And(BiJoiner<A, B, Property_> otherJoiner)
+        BiJoiner<A, B> BiJoiner<A, B>.And(BiJoiner<A, B> otherJoiner)
         {
             return And(otherJoiner);
         }

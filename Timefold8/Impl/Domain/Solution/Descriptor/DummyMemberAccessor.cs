@@ -37,7 +37,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Solution.Descriptor
             return null;
         }
 
-        public Func<Fact_, Result_> GetGetterFunction<Fact_, Result_>()
+        public Func<Fact_, object> GetGetterFunction<Fact_>()
         {
             return null;
         }

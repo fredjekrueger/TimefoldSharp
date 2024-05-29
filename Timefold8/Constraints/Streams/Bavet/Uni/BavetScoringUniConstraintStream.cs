@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using TimefoldSharp.Core.API.Score;
-using TimefoldSharp.Core.Constraints.Streams.Bavet.Bi;
+﻿using System.Numerics;
 using TimefoldSharp.Core.Constraints.Streams.Bavet.Common;
 using TimefoldSharp.Core.Constraints.Streams.Common.Inliner;
 
@@ -21,7 +14,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
         private BavetConstraint constraint;
 
         public BavetScoringUniConstraintStream(BavetConstraintFactory constraintFactory, BavetAbstractUniConstraintStream<A> parent, Func<A, int> intMatchWeigher)
-            :  this(constraintFactory, parent, intMatchWeigher, null, null)
+            : this(constraintFactory, parent, intMatchWeigher, null, null)
         {
             if (intMatchWeigher == null)
             {
@@ -53,7 +46,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
             var constraintMatchEnabled = buildHelper.GetScoreInliner().IsConstraintMatchEnabled();
             var scoreImpacter = constraintMatchEnabled ? BuildScoreImpacterWithConstraintMatch() : BuildScoreImpacter();
             var weightedScoreImpacter = buildHelper.GetScoreInliner().BuildWeightedScoreImpacter(constraint);
-            var scorer = new UniScorer<A, ScoreContext>(weightedScoreImpacter, scoreImpacter, buildHelper.ReserveTupleStoreIndex(parent.GetTupleSource()));
+            var scorer = new UniScorer<A>(weightedScoreImpacter, scoreImpacter, buildHelper.ReserveTupleStoreIndex(parent.GetTupleSource()));
             buildHelper.PutInsertUpdateRetract(this, scorer);
         }
 
@@ -61,21 +54,24 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
         {
             if (intMatchWeigher != null)
             {
-                return (impacter, a) => {
+                return (impacter, a) =>
+                {
                     int matchWeight = intMatchWeigher(a);
                     return impacter.ImpactScore(matchWeight, null);
                 };
             }
             else if (longMatchWeigher != null)
             {
-                return (impacter, a)=> {
+                return (impacter, a) =>
+                {
                     long matchWeight = longMatchWeigher(a);
                     return impacter.ImpactScore(matchWeight, null);
                 };
             }
             else if (bigDecimalMatchWeigher != null)
             {
-                return (impacter, a)=> {
+                return (impacter, a) =>
+                {
                     BigInteger matchWeight = bigDecimalMatchWeigher(a);
                     return impacter.ImpactScore(matchWeight, null);
                 };
@@ -88,32 +84,32 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
 
         private Func<IWeightedScoreImpacter, A, UndoScoreImpacter> BuildScoreImpacterWithConstraintMatch()
         {
-           /*if (intMatchWeigher != null)
-            {
-                return (impacter, a)=> {
-                    int matchWeight = intMatchWeigher(a);
-                    return ImpactWithConstraintMatch(impacter, matchWeight, a);
-                };
-            }
-            else if (longMatchWeigher != null)
-            {
-                return (impacter, a)=> {
-                    long matchWeight = longMatchWeigher(a);
-                    return ImpactWithConstraintMatch(impacter, matchWeight, a);
-                };
-            }
-            else if (bigDecimalMatchWeigher != null)
-            {
-                return (impacter, a)=> {
-                    BigInteger matchWeight = bigDecimalMatchWeigher(a);
-                    return ImpactWithConstraintMatch(impacter, matchWeight, a);
-                };
-            }
-            else
-            {
-                throw new Exception("Impossible state: neither of the supported match weighers provided.");
-            }*/
-           throw new NotImplementedException();
+            /*if (intMatchWeigher != null)
+             {
+                 return (impacter, a)=> {
+                     int matchWeight = intMatchWeigher(a);
+                     return ImpactWithConstraintMatch(impacter, matchWeight, a);
+                 };
+             }
+             else if (longMatchWeigher != null)
+             {
+                 return (impacter, a)=> {
+                     long matchWeight = longMatchWeigher(a);
+                     return ImpactWithConstraintMatch(impacter, matchWeight, a);
+                 };
+             }
+             else if (bigDecimalMatchWeigher != null)
+             {
+                 return (impacter, a)=> {
+                     BigInteger matchWeight = bigDecimalMatchWeigher(a);
+                     return ImpactWithConstraintMatch(impacter, matchWeight, a);
+                 };
+             }
+             else
+             {
+                 throw new Exception("Impossible state: neither of the supported match weighers provided.");
+             }*/
+            throw new NotImplementedException();
         }
 
         public void SetConstraint(BavetConstraint constraint)

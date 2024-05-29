@@ -125,9 +125,9 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common.Index
                 return 0;
             }
             if (reversed)
-                return ((IComparable)o1).CompareTo((IComparable)o2);
-            else
                 return ((IComparable)o2).CompareTo((IComparable)o1);
+            else
+                return ((IComparable)o1).CompareTo((IComparable)o2);
         }
     }
 }

@@ -1,7 +1,4 @@
-﻿using TimefoldSharp.Core.Config.Heuristics.Selector.Common;
-using TimefoldSharp.Core.Config.Heuristics.Selector.Common.Decorator;
-using TimefoldSharp.Core.Config.Solver;
-using TimefoldSharp.Core.Config.Util;
+﻿using TimefoldSharp.Core.Config.Solver;
 using TimefoldSharp.Core.Helpers;
 
 namespace TimefoldSharp.Core.Config.Heuristics.Selector.Move.Composite

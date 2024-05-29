@@ -26,7 +26,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
 
         public override void CollectActiveConstraintStreams(HashSet<BavetAbstractConstraintStream> constraintStreamSet)
         {
-            constraintStreamSet.Add(this); //JDEF ADDIFNOTEXIST
+            constraintStreamSet.Add(this);
         }
 
         public override string ToString()
@@ -65,7 +65,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
                 return false;
             }
             BavetForEachUniConstraintStream<A> that = (BavetForEachUniConstraintStream<A>)other;
-            return forEachClass.Equals(that.forEachClass) &&((filter == null && that.filter == null) || filter.Equals(that.filter));
+            return forEachClass.Equals(that.forEachClass) && ((filter == null && that.filter == null) || filter.Equals(that.filter));
         }
 
     }

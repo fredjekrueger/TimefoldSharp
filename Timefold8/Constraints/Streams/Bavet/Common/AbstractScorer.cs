@@ -3,8 +3,7 @@ using TimefoldSharp.Core.Constraints.Streams.Common.Inliner;
 
 namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common
 {
-    public abstract class AbstractScorer<Context_> : TupleLifecycle
-        where Context_ : ScoreContext
+    public abstract class AbstractScorer : TupleLifecycle
     {
 
         protected IWeightedScoreImpacter weightedScoreImpacter;

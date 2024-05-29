@@ -12,7 +12,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Common.Accessor.Gizmo
             return type.Name + "$Timefold$MemberAccessor$" + memberType + "$" + memberName;
         }
 
-        internal static MemberAccessor BuildGizmoMemberAccessor(MemberInfo member, Type annotationClass, GizmoClassLoader classLoader)
+        internal static MemberAccessor BuildGizmoMemberAccessor(MemberInfo member, Type annotationClass)
         {
             throw new NotImplementedException();
         }

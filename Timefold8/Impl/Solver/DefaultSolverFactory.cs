@@ -127,7 +127,7 @@ namespace TimefoldSharp.Core.Impl.Solver
                                     + ") has a non-null randomType (" + solverConfig.RandomType
                                     + ") or a non-null randomSeed (" + solverConfig.RandomSeed + ").");
                 }
-                randomFactory = ConfigUtils.NewInstance<RandomFactory>(solverConfig, "randomFactoryClass", solverConfig.RandomFactoryClass);
+                randomFactory = ConfigUtils.NewInstance<RandomFactory>(solverConfig.RandomFactoryClass);
             }
             else
             {

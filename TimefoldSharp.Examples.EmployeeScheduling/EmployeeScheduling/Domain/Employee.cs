@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using TimefoldSharp.Core.API.Domain.Lookup;
+﻿using TimefoldSharp.Core.API.Domain.Lookup;
 
 namespace TimefoldSharp.Examples.EmployeeScheduling.EmployeeScheduling.Domain
 {

@@ -1,5 +1,4 @@
-﻿using TimefoldSharp.Core.Constraints.Streams.Bavet.Common;
-using TimefoldSharp.Core.Constraints.Streams.Bavet.Common.Tuple;
+﻿using TimefoldSharp.Core.Constraints.Streams.Bavet.Common.Tuple;
 
 namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
 {

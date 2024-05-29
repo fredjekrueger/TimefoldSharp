@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TimefoldSharp.Core.API.Domain.Entity;
+﻿using TimefoldSharp.Core.API.Domain.Entity;
 using TimefoldSharp.Core.API.Domain.Lookup;
 using TimefoldSharp.Core.API.Domain.Variable;
 
@@ -13,7 +8,7 @@ namespace TimefoldSharp.Examples.EmployeeScheduling.EmployeeScheduling.Domain
     internal class Shift
     {
         [PlanningId]
-        public long Id { get;set; }
+        public long Id { get; set; }
 
         public DateTime Start { get; set; }
 
@@ -23,14 +18,14 @@ namespace TimefoldSharp.Examples.EmployeeScheduling.EmployeeScheduling.Domain
         public string RequiredSkill { get; set; }
 
         [PlanningVariable]
-        public Employee Employee { get;set; }
+        public Employee Employee { get; set; }
 
         public Shift()
         {
         }
 
-        public Shift(long id, DateTime start, DateTime end, string location, string requiredSkill): this(id, start, end, location, requiredSkill, null)
-        { 
+        public Shift(long id, DateTime start, DateTime end, string location, string requiredSkill) : this(id, start, end, location, requiredSkill, null)
+        {
         }
 
         public Shift(long id, DateTime start, DateTime end, string location, string requiredSkill, Employee employee)

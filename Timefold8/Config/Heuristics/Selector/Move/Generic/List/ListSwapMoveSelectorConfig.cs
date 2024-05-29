@@ -1,7 +1,4 @@
-﻿using TimefoldSharp.Core.Config.Heuristics.Selector.Common;
-using TimefoldSharp.Core.Config.Heuristics.Selector.Common.Decorator;
-
-namespace TimefoldSharp.Core.Config.Heuristics.Selector.Move.Generic.List
+﻿namespace TimefoldSharp.Core.Config.Heuristics.Selector.Move.Generic.List
 {
     public class ListSwapMoveSelectorConfig : MoveSelectorConfig<ListSwapMoveSelectorConfig>
     {

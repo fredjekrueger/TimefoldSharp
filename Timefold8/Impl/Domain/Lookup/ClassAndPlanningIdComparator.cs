@@ -7,7 +7,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Lookup
         private readonly MemberAccessorFactory memberAccessorFactory;
         private readonly bool failFastIfNoPlanningId;
 
-        public ClassAndPlanningIdComparator(MemberAccessorFactory memberAccessorFactory,  bool failFastIfNoPlanningId)
+        public ClassAndPlanningIdComparator(MemberAccessorFactory memberAccessorFactory, bool failFastIfNoPlanningId)
         {
             this.memberAccessorFactory = memberAccessorFactory;
             this.failFastIfNoPlanningId = failFastIfNoPlanningId;

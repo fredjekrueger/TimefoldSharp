@@ -2,7 +2,7 @@
 
 namespace TimefoldSharp.Core.Constraints.Streams.Common.Bi
 {
-    public sealed class FilteringBiJoiner<A, B, Parameter_> : BiJoiner<A, B, Parameter_>
+    public sealed class FilteringBiJoiner<A, B> : BiJoiner<A, B>
     {
         private readonly Func<A, B, bool> filter;
 
@@ -11,7 +11,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Common.Bi
             this.filter = filter;
         }
 
-        public BiJoiner<A, B, Parameter_> And(BiJoiner<A, B, Parameter_> otherJoiner)
+        public BiJoiner<A, B> And(BiJoiner<A, B> otherJoiner)
         {
             throw new NotImplementedException();
         }

@@ -52,7 +52,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Score.Descriptor
                 {
                     throw new Exception("The solutionClass (" + solutionClass + ").");
                 }
-                return ConfigUtils.NewInstance<Definition.ScoreDefinition>(scoreMemberAccessor + " with @" + typeof(PlanningScoreAttribute).Name, "scoreDefinitionClass", scoreDefinitionClass);
+                return ConfigUtils.NewInstance<Definition.ScoreDefinition>(scoreDefinitionClass);
             }
             //if (!typeof(IBendableScore<AbstractScore>).IsAssignableFrom(scoreType))
             if (true)

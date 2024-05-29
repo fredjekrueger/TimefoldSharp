@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TimefoldSharp.Core.API.Score.Buildin.HardSoft;
+﻿using TimefoldSharp.Core.API.Score.Buildin.HardSoft;
 using TimefoldSharp.Core.API.Score.Stream;
 using TimefoldSharp.Examples.EmployeeScheduling.EmployeeScheduling.Domain;
 
@@ -57,16 +51,16 @@ namespace TimefoldSharp.Examples.EmployeeScheduling.EmployeeScheduling.Solver
 
         Constraint NoOverlappingShifts(ConstraintFactory constraintFactory)
         {
-            return constraintFactory.ForEachUniquePair(typeof(Shift), Joiners.Equal<Shift, object>(s => s.Employee),
-                        Joiners.Overlapping<Shift, object>(s => s.Start, s => s.End))
+            return constraintFactory.ForEachUniquePair(typeof(Shift), Joiners.Equal<Shift>(s => s.Employee),
+                        Joiners.Overlapping<Shift>(s => s.Start, s => s.End))
                 .Penalize(HardSoftScore.ONE_HARD, GetMinuteOverlap)
                 .AsConstraint("Overlapping shift");
         }
 
         Constraint AtLeast10HoursBetweenTwoShifts(ConstraintFactory constraintFactory)
         {
-            return constraintFactory.ForEachUniquePair(typeof(Shift), Joiners.Equal<Shift, object>(s => s.Employee),
-                            Joiners.LessThanOrEqual<Shift, Shift, object>(s => s.End, s => s.Start))
+            return constraintFactory.ForEachUniquePair(typeof(Shift), Joiners.Equal<Shift>(s => s.Employee),
+                            Joiners.LessThanOrEqual<Shift, Shift>(s => s.End, s => s.Start))
                     .Filter((firstShift, secondShift) => (secondShift.Start - firstShift.End).TotalHours < 10)
                     .Penalize(HardSoftScore.ONE_HARD, (firstShift, secondShift) =>
                     {
@@ -78,8 +72,8 @@ namespace TimefoldSharp.Examples.EmployeeScheduling.EmployeeScheduling.Solver
 
         Constraint OneShiftPerDay(ConstraintFactory constraintFactory)
         {
-            return constraintFactory.ForEachUniquePair(typeof(Shift), Joiners.Equal<Shift, object>(s => s.Employee),
-                        Joiners.Equal<Shift, object>(shift => shift.Start.Date))
+            return constraintFactory.ForEachUniquePair(typeof(Shift), Joiners.Equal<Shift>(s => s.Employee),
+                        Joiners.Equal<Shift>(shift => shift.Start.Date))
                 .Penalize(HardSoftScore.ONE_HARD)
                 .AsConstraint("Max one shift per day");
         }
@@ -87,8 +81,8 @@ namespace TimefoldSharp.Examples.EmployeeScheduling.EmployeeScheduling.Solver
         Constraint UnavailableEmployee(ConstraintFactory constraintFactory)
         {
             return constraintFactory.ForEach<Shift>(typeof(Shift))
-                .Join(typeof(Availability), Joiners.Equal<Shift, Availability, object>(shift => shift.Start.Date, a => a.Date),
-                                Joiners.Equal<Shift, Availability, object>(s => s.Employee, a => a.Employee))
+                .Join(typeof(Availability), Joiners.Equal<Shift, Availability>(shift => shift.Start.Date, a => a.Date),
+                                Joiners.Equal<Shift, Availability>(s => s.Employee, a => a.Employee))
                         .Filter((shift, availability) => availability.AvailabilityType == AvailabilityType.UNAVAILABLE)
                         .Penalize(HardSoftScore.ONE_HARD, (shift, availability) => GetShiftDurationInMinutes(shift))
                         .AsConstraint("Unavailable employee");
@@ -97,8 +91,8 @@ namespace TimefoldSharp.Examples.EmployeeScheduling.EmployeeScheduling.Solver
         Constraint DesiredDayForEmployee(ConstraintFactory constraintFactory)
         {
             return constraintFactory.ForEach<Shift>(typeof(Shift))
-                .Join(typeof(Availability), Joiners.Equal<Shift, Availability, object>(shift => shift.Start.Date, a => a.Date),
-                                Joiners.Equal<Shift, Availability, object>(s => s.Employee, a => a.Employee))
+                .Join(typeof(Availability), Joiners.Equal<Shift, Availability>(shift => shift.Start.Date, a => a.Date),
+                                Joiners.Equal<Shift, Availability>(s => s.Employee, a => a.Employee))
                         .Filter((shift, availability) => availability.AvailabilityType == AvailabilityType.DESIRED)
                         .Reward(HardSoftScore.ONE_SOFT, (shift, availability) => GetShiftDurationInMinutes(shift))
                         .AsConstraint("Desired day for employee");
@@ -107,8 +101,8 @@ namespace TimefoldSharp.Examples.EmployeeScheduling.EmployeeScheduling.Solver
         Constraint UndesiredDayForEmployee(ConstraintFactory constraintFactory)
         {
             return constraintFactory.ForEach<Shift>(typeof(Shift))
-                        .Join(typeof(Availability), Joiners.Equal<Shift, Availability, object>(shift => shift.Start.Date, a => a.Date),
-                                 Joiners.Equal<Shift, Availability, object>(s => s.Employee, a => a.Employee))
+                        .Join(typeof(Availability), Joiners.Equal<Shift, Availability>(shift => shift.Start.Date, a => a.Date),
+                                 Joiners.Equal<Shift, Availability>(s => s.Employee, a => a.Employee))
                         .Filter((shift, availability) => availability.AvailabilityType == AvailabilityType.UNDESIRED)
                         .Penalize(HardSoftScore.ONE_SOFT, (shift, availability) => GetShiftDurationInMinutes(shift))
                         .AsConstraint("Undesired day for employee");

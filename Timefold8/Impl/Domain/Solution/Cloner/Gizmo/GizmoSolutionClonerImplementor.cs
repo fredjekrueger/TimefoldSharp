@@ -6,7 +6,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Solution.Cloner.Gizmo
 {
     public class GizmoSolutionClonerImplementor
     {
-        public static SolutionCloner CreateClonerFor(SolutionDescriptor solutionDescriptor, GizmoClassLoader gizmoClassLoader)
+        public static SolutionCloner CreateClonerFor(SolutionDescriptor solutionDescriptor)
         {
             throw new NotImplementedException();
         }

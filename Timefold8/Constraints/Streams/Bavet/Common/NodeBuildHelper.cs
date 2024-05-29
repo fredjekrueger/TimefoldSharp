@@ -1,5 +1,4 @@
 ﻿using TimefoldSharp.Core.API.Score.Stream;
-using TimefoldSharp.Core.Constraints.Streams.Bavet.Bi;
 using TimefoldSharp.Core.Constraints.Streams.Bavet.Common.Tuple;
 using TimefoldSharp.Core.Constraints.Streams.Common.Inliner;
 
