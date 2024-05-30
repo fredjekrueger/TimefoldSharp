@@ -43,18 +43,12 @@ namespace TimefoldSharp.Core.Impl.Solver.Termination
 
         public void ResetTerminateEarly()
         {
-            lock (lockerTerminateEarly)
-            {
-                terminatedEarly = false;
-            }
+            terminatedEarly = false;
         }
 
         public void EndProblemFactChangesProcessing()
         {
-            lock (lockerIsEveryProblemFactChangeProcessed)
-            {
-                problemFactChangesBeingProcessed = false;
-            }
+            problemFactChangesBeingProcessed = false;
         }
 
         public bool WaitForRestartSolverDecision()
@@ -83,34 +77,22 @@ namespace TimefoldSharp.Core.Impl.Solver.Termination
             }
         }
 
-        object lockerTerminateEarly = new object();
         public bool TerminateEarly()
         {
             bool terminationEarlySuccessful;
-            lock (lockerTerminateEarly)
-            {
-                terminationEarlySuccessful = !terminatedEarly;
-                terminatedEarly = true;
-                Monitor.PulseAll(lockerTerminateEarly);
-            }
+            terminationEarlySuccessful = !terminatedEarly;
+            terminatedEarly = true;
             return terminationEarlySuccessful;
         }
 
-        object lockerIsEveryProblemFactChangeProcessed = new object();
         public bool IsEveryProblemFactChangeProcessed()
         {
-            lock (lockerIsEveryProblemFactChangeProcessed)
-            {
-                return problemFactChangeQueue.Count == 0 && !problemFactChangesBeingProcessed;
-            }
+            return problemFactChangeQueue.Count == 0 && !problemFactChangesBeingProcessed;
         }
 
         internal bool IsTerminateEarly()
         {
-            lock (lockerTerminateEarly)
-            {
-                return terminatedEarly;
-            }
+            return terminatedEarly;
         }
 
         public BlockingCollection<ProblemChangeAdapter> StartProblemFactChangesProcessing()

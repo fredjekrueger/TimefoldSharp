@@ -41,7 +41,7 @@ namespace TimefoldSharp.Examples.EmployeeScheduling.EmployeeScheduling.Domain
 
         public override string ToString()
         {
-            return Location + " " + Start + "-" + End;
+            return Location + " " + Start + "-" + End + " : " + Employee;
         }
     }
 }

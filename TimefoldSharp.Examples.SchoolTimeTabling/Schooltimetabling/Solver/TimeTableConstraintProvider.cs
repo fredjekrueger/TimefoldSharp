@@ -33,7 +33,7 @@ namespace TimefoldSharp.Schooltimetabling.Solver
                  .Filter((lesson1, lesson2) =>
                  {
                      var between = lesson1.Timeslot.EndTime - lesson2.Timeslot.StartTime;
-                     return !(between.TotalSeconds < 0) && between.CompareTo(TimeSpan.FromMinutes(30)) <= 0;
+                     return !(between.Ticks < 0) && between.TotalMinutes <30;
                  })
                 .Penalize(HardSoftScore.ONE_SOFT)
                 .AsConstraint("Student group subject variety");
@@ -49,7 +49,7 @@ namespace TimefoldSharp.Schooltimetabling.Solver
                 .Filter((lesson1, lesson2) =>
                 {
                     var between = lesson1.Timeslot.EndTime - lesson2.Timeslot.StartTime;
-                    return !(between.TotalSeconds < 0) && between.CompareTo(TimeSpan.FromMinutes(30)) <= 0;
+                    return !(between.Ticks < 0) && between.TotalMinutes < 30;
                 })
                 .Reward(HardSoftScore.ONE_SOFT)
                 .AsConstraint("Teacher time efficiency");

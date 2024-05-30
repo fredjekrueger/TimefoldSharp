@@ -24,8 +24,6 @@ namespace TimefoldSharp.Core.Impl.Domain.Solution.Cloner
             }
         }
 
-        object lockerValueDeepCloneDecision = new object();
-        object lockerFieldDeepCloneDecision = new object();
         private bool DeepClone(SolutionDescriptor solutionDescriptor, Type fieldTypeClass, object originalValue)
         {
             if (originalValue == null)
@@ -39,15 +37,13 @@ namespace TimefoldSharp.Core.Impl.Domain.Solution.Cloner
              */
 
             bool isValueDeepCloned = false;
-            lock (lockerValueDeepCloneDecision)
+
+            Type originalClass = originalValue.GetType();
+            if (valueDeepCloneDecision == null || valueDeepCloneDecision.Clz != originalClass)
             {
-                Type originalClass = originalValue.GetType();
-                if (valueDeepCloneDecision == null || valueDeepCloneDecision.Clz != originalClass)
-                {
-                    valueDeepCloneDecision = new Metadata(originalClass, DeepCloningUtils.IsClassDeepCloned(solutionDescriptor, originalClass));
-                }
-                isValueDeepCloned = valueDeepCloneDecision.Decision;
+                valueDeepCloneDecision = new Metadata(originalClass, DeepCloningUtils.IsClassDeepCloned(solutionDescriptor, originalClass));
             }
+            isValueDeepCloned = valueDeepCloneDecision.Decision;
 
             if (isValueDeepCloned)
             { // The value has to be deep-cloned. Does not matter what the field says.
@@ -57,14 +53,13 @@ namespace TimefoldSharp.Core.Impl.Domain.Solution.Cloner
              * The decision to clone a field is constant once it has been made.
              * The fieldTypeClass is guaranteed to not change for the particular field.
              */
-            lock (lockerFieldDeepCloneDecision)
+
+            if (fieldDeepCloneDecision < 0)
             {
-                if (fieldDeepCloneDecision < 0)
-                {
-                    fieldDeepCloneDecision = (DeepCloningUtils.IsFieldDeepCloned(solutionDescriptor, field, fieldTypeClass) ? 1 : 0);
-                }
-                return fieldDeepCloneDecision == 1;
+                fieldDeepCloneDecision = (DeepCloningUtils.IsFieldDeepCloned(solutionDescriptor, field, fieldTypeClass) ? 1 : 0);
             }
+            return fieldDeepCloneDecision == 1;
+
         }
 
         internal PropertyInfo GetField()

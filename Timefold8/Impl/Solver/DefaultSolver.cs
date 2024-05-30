@@ -17,7 +17,6 @@ namespace TimefoldSharp.Core.Impl.Solver
     //OC
     public class DefaultSolver : AbstractSolver
     {
-        object lockerSolving = new object();
         bool solving = false;
 
         protected EnvironmentMode environmentMode;
@@ -67,8 +66,7 @@ namespace TimefoldSharp.Core.Impl.Solver
 
         public override bool IsSolving()
         {
-            lock (lockerSolving)
-                return solving;
+            return solving;
         }
 
         public override bool IsEveryProblemFactChangeProcessed()
@@ -105,7 +103,7 @@ namespace TimefoldSharp.Core.Impl.Solver
 
             // No tags for these metrics; they are global
             var stopwatch = new Stopwatch();
-            Counter errorCounter = new Counter();
+            int errorCounter = 0;
 
             // Score Calculation Count is specific per solver
             //Metrics.gauge(SolverMetric.SCORE_CALCULATION_COUNT.getMeterId(), solverScope.getMonitoringTags(), solverScope, SolverScope::getScoreCalculationCount);
@@ -125,9 +123,9 @@ namespace TimefoldSharp.Core.Impl.Solver
                 }
                 catch (Exception e)
                 {
-                    errorCounter.Increment();
+                    errorCounter++;
                     SolvingError(solverScope, e);
-                    throw e;
+                    throw;
                 }
                 finally
                 {
@@ -149,8 +147,7 @@ namespace TimefoldSharp.Core.Impl.Solver
             Log.Debug($@"Solving ended: time spent ({solverScope.GetTimeMillisSpent()}), best score ({solverScope.GetBestScore()}), score calculation speed ({solverScope.GetScoreCalculationSpeed()}/sec), 
                 phase total ({phaseList.Count}), environment mode ({environmentMode}), move thread count ({moveThreadCountDescription}).");
 
-            lock (lockerSolving)
-                solving = false;
+            solving = false;
         }
 
         private bool CheckProblemFactChanges()
@@ -186,8 +183,7 @@ namespace TimefoldSharp.Core.Impl.Solver
 
         public void OuterSolvingStarted(SolverScope solverScope)
         {
-            lock (lockerSolving)
-                solving = true;
+            solving = true;
             basicPlumbingTermination.ResetTerminateEarly();
             solverScope.SetStartingSolverCount(0);
             solverScope.SetWorkingRandom(randomFactory.CreateRandom());
