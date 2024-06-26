@@ -10,11 +10,16 @@ namespace TimefoldSharp.Core.Impl.Domain.Variable.Descriptor
     {
         public int GlobalShadowOrder = int.MaxValue;
 
-        public abstract Demand<S> GetProvidedDemand<S>() where S : Supply.Supply;
+        public abstract Demand GetProvidedDemand<S>() where S : Supply.Supply;
 
         public bool HasVariableListener()
         {
             return true;
+        }
+
+        public override bool IsGenuineAndUninitialized(object entity)
+        {
+            return false;
         }
 
         public ShadowVariableDescriptor(EntityDescriptor entityDescriptor, MemberAccessor variableMemberAccessor) : base(entityDescriptor, variableMemberAccessor)

@@ -89,7 +89,7 @@ namespace TimefoldSharp.Core.Impl.Solver.Termination
             {
                 return null;
             }
-            else if (terminationList.Count() == 1)
+            else if (terminationList.Count == 1)
             {
                 return terminationList[0];
             }

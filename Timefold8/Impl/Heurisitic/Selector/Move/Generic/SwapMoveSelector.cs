@@ -1,6 +1,8 @@
-﻿using TimefoldSharp.Core.Impl.Domain.Entity.Descriptor;
+﻿using TimefoldSharp.Core.API.Score;
+using TimefoldSharp.Core.Impl.Domain.Entity.Descriptor;
 using TimefoldSharp.Core.Impl.Domain.Variable.Descriptor;
 using TimefoldSharp.Core.Impl.Domain.Variable.InverseRelation;
+using TimefoldSharp.Core.Impl.Domain.Variable.Supply;
 using TimefoldSharp.Core.Impl.Heurisitic.Selector.Common.Iterator;
 using TimefoldSharp.Core.Impl.Heurisitic.Selector.Entity;
 using TimefoldSharp.Core.Impl.Heurisitic.Selector.Move.Generic.Chained;
@@ -109,6 +111,29 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move.Generic
             if (anyChained)
             {
                 inverseVariableSupplyList = null;
+            }
+        }
+
+        public override void SolvingStarted(SolverScope solverScope)
+        {
+            base.SolvingStarted(solverScope);
+            if (anyChained)
+            {
+                inverseVariableSupplyList = new List<SingletonInverseVariableSupply>(variableDescriptorList.Count);
+                SupplyManager supplyManager = solverScope.ScoreDirector.GetSupplyManager();
+                foreach (var variableDescriptor in variableDescriptorList)
+                {
+                    SingletonInverseVariableSupply inverseVariableSupply;
+                    if (variableDescriptor.IsChained())
+                    {
+                        inverseVariableSupply = (SingletonInverseVariableSupply)supplyManager.Demand(new SingletonInverseVariableDemand(variableDescriptor));
+                    }
+                    else
+                    {
+                        inverseVariableSupply = null;
+                    }
+                    inverseVariableSupplyList.Add(inverseVariableSupply);
+                }
             }
         }
 

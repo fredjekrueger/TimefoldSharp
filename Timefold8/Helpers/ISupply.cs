@@ -2,7 +2,7 @@
 
 namespace TimefoldSharp.Core.Helpers
 {
-    public interface ISupply : Supply
+    /*public interface ISupply : Supply
     {
-    }
+    }*/
 }

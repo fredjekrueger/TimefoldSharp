@@ -1,5 +1,6 @@
 ﻿using TimefoldSharp.Core.API.Domain.Variable;
 using TimefoldSharp.Core.API.Domain.Variable.Listener.Support;
+using TimefoldSharp.Core.API.Score;
 using TimefoldSharp.Core.Helpers;
 using TimefoldSharp.Core.Impl.Domain.Variable.Descriptor;
 using TimefoldSharp.Core.Impl.Domain.Variable.Supply;
@@ -13,8 +14,8 @@ namespace TimefoldSharp.Core.Impl.Domain.Variable.Listener.Support
         private readonly InnerScoreDirector scoreDirector;
         private readonly NotifiableRegistry notifiableRegistry;
 
-        private readonly Dictionary<Demand<ISupply>, Supply.Supply> supplyMap = new Dictionary<Demand<ISupply>, Supply.Supply>();
-        private readonly Dictionary<Demand<ISupply>, long> demandCounterMap = new Dictionary<Demand<ISupply>, long>();
+        private readonly Dictionary<Demand, Supply.Supply> supplyMap = new Dictionary<Demand, Supply.Supply>();
+        private readonly Dictionary<Demand, long> demandCounterMap = new Dictionary<Demand, long>();
 
         public static VariableListenerSupport Create(InnerScoreDirector scoreDirector)
         {
@@ -73,7 +74,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Variable.Listener.Support
                 if (variableListener is Supply.Supply supply)
                 {
                     // Non-sourced variable listeners (ie. ones provided by the user) can never be a supply.
-                    Demand<ISupply> demand = shadowVariableDescriptor.GetProvidedDemand<ISupply>();
+                    Demand demand = shadowVariableDescriptor.GetProvidedDemand<Supply.Supply>();
                     supplyMap.Add(demand, supply);
                     demandCounterMap.Add(demand, 1L);
                 }
@@ -89,6 +90,46 @@ namespace TimefoldSharp.Core.Impl.Domain.Variable.Listener.Support
             {
                 notifiable.ResetWorkingSolution();
             }
+        }
+
+        public Supply.Supply Demand(Demand demand)
+        {
+            long activeDemandCount;
+            if (demandCounterMap.TryGetValue(demand, out var count))
+            {
+                activeDemandCount = demandCounterMap[demand] = count + 1;
+            }
+            else
+            {
+                activeDemandCount = demandCounterMap[demand] = 1L;
+            }
+            if (activeDemandCount == 1L)
+            { // This is a new demand, create the supply.
+                Supply.Supply supply = CreateSupply(demand);
+                supplyMap.Add(demand, supply);
+                return supply;
+            }
+            else
+            { // Return existing supply.
+                return supplyMap[demand];
+            }
+        }
+        private int nextGlobalOrder = 0;
+
+        private Supply.Supply CreateSupply(Demand demand)
+        {
+            var supply = demand.CreateExternalizedSupply(this);
+            if (supply is SourcedVariableListener) {
+                SourcedVariableListener variableListener = (SourcedVariableListener)supply;
+                // An external ScoreDirector can be created before the working solution is set
+                if (scoreDirector.GetWorkingSolution() != null)
+                {
+                    variableListener.ResetWorkingSolution(scoreDirector);
+                }
+                notifiableRegistry.RegisterNotifiable(variableListener.GetSourceVariableDescriptor(),
+                        AbstractNotifiable<AbstractVariableListener<object>>.BuildNotifiable(scoreDirector, variableListener, nextGlobalOrder++));
+            }
+            return supply;
         }
     }
 }

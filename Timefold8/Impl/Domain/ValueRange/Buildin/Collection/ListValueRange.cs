@@ -1,4 +1,5 @@
-﻿using TimefoldSharp.Core.Impl.Heurisitic.Selector.Common.Iterator;
+﻿using TimefoldSharp.Core.Constraints.Streams.Bavet.Common.Index;
+using TimefoldSharp.Core.Impl.Heurisitic.Selector.Common.Iterator;
 
 namespace TimefoldSharp.Core.Impl.Domain.ValueRange.Buildin.Collection
 {
@@ -14,6 +15,15 @@ namespace TimefoldSharp.Core.Impl.Domain.ValueRange.Buildin.Collection
         public override IEnumerator<T> CreateOriginalIterator()
         {
             return list.GetEnumerator();
+        }
+
+        override public T Get(long index)
+        {
+            if (index > int.MaxValue)
+            {
+                throw new Exception("The index (" + index + ") must fit in an int.");
+            }
+            return list.ElementAt((int)index);
         }
 
         public override IEnumerator<T> CreateRandomIterator(Random workingRandom)

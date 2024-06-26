@@ -78,17 +78,13 @@ namespace TimefoldSharp.Core.Impl.Heurisitic
 
         public ValueMimicRecorder GetValueMimicRecorder(String id)
         {
-            ValueMimicRecorder item = null;
-
-            valueMimicRecorderMap.TryGetValue(id, out item);
-
+            valueMimicRecorderMap.TryGetValue(id, out ValueMimicRecorder item);
             return item;
         }
 
         public EntityMimicRecorder GetEntityMimicRecorder(string id)
         {
-            EntityMimicRecorder item = null;
-            entityMimicRecorderMap.TryGetValue(id, out item);
+            entityMimicRecorderMap.TryGetValue(id, out EntityMimicRecorder item);
             return item;
         }
 

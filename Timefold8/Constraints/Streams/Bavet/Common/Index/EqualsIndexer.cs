@@ -26,8 +26,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common.Index
         public void ForEach(IndexProperties indexProperties, Action<T> tupleConsumer)
         {
             var indexKey = indexProperties.ToKey(indexKeyFrom, indexKeyTo);
-            Indexer<T> downstreamIndexer = null;
-            downstreamIndexerMap.TryGetValue(indexKey, out downstreamIndexer);
+            downstreamIndexerMap.TryGetValue(indexKey, out Indexer<T> downstreamIndexer);
             if (downstreamIndexer == null || downstreamIndexer.IsEmpty())
             {
                 return;
@@ -44,8 +43,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common.Index
         {
             var indexKey = indexProperties.ToKey(indexKeyFrom, indexKeyTo);
             // Avoids computeIfAbsent in order to not create lambdas on the hot path.
-            Indexer<T> downstreamIndexer = null;
-            downstreamIndexerMap.TryGetValue(indexKey, out downstreamIndexer);
+            downstreamIndexerMap.TryGetValue(indexKey, out Indexer<T> downstreamIndexer);
             if (downstreamIndexer == null)
             {
                 downstreamIndexer = downstreamIndexerSupplier.Invoke();

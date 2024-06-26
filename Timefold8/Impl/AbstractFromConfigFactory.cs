@@ -48,7 +48,7 @@ namespace TimefoldSharp.Core.Impl
         protected GenuineVariableDescriptor GetTheOnlyVariableDescriptor(EntityDescriptor entityDescriptor)
         {
             List<GenuineVariableDescriptor> variableDescriptorList = entityDescriptor.GetGenuineVariableDescriptorList();
-            if (variableDescriptorList.Count() != 1)
+            if (variableDescriptorList.Count != 1)
             {
                 throw new Exception("The config (" + config + ") has no configured variableName for entityClas it cannot be deduced automatically.");
             }

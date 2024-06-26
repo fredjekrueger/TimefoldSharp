@@ -21,7 +21,7 @@
                 {
                     throw new Exception();
                 }
-                int index = workingRandom.Next(cachedList.Count());
+                int index = workingRandom.Next(cachedList.Count);
                 return cachedList[index];
             }
         }

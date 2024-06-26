@@ -59,11 +59,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet
 
         private IAbstractForEachUniNode[] FindNodes(Type factClass)
         {
-            // Map.computeIfAbsent() would have created lambdas on the hot path, this will not.
-
-            IAbstractForEachUniNode[] nodeArray;
-
-            var found = effectiveClassToNodeArrayMap.TryGetValue(factClass, out nodeArray);
+            var found = effectiveClassToNodeArrayMap.TryGetValue(factClass, out IAbstractForEachUniNode[] nodeArray);
             if (!found)
             {
                 nodeArray = declaredClassToNodeMap

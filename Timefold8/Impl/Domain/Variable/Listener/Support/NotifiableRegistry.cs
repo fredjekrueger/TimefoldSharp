@@ -1,4 +1,5 @@
-﻿using TimefoldSharp.Core.Impl.Domain.Entity.Descriptor;
+﻿using TimefoldSharp.Core.API.Score;
+using TimefoldSharp.Core.Impl.Domain.Entity.Descriptor;
 using TimefoldSharp.Core.Impl.Domain.Solution.Descriptor;
 using TimefoldSharp.Core.Impl.Domain.Variable.Descriptor;
 
@@ -40,6 +41,11 @@ namespace TimefoldSharp.Core.Impl.Domain.Variable.Listener.Support
         public IEnumerable<Notifiable> GetAll()
         {
             return notifiableList;
+        }
+
+        public void RegisterNotifiable(VariableDescriptor source, EntityNotifiable notifiable)
+        {
+            RegisterNotifiable(new List<VariableDescriptor>() { source }, notifiable);
         }
 
         public void RegisterNotifiable(List<VariableDescriptor> sources, EntityNotifiable notifiable)

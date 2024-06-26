@@ -10,7 +10,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Variable.Listener.Support
         public VariableListenerNotifiable(
                 ScoreDirector scoreDirector,
                 VariableListener<object> variableListener,
-                List<Notification<VariableListener<object>>> notificationQueue,
+                ICollection<Notification<VariableListener<object>>> notificationQueue,
                 int globalOrder)
         : base(scoreDirector, variableListener, notificationQueue, globalOrder)
         {

@@ -60,6 +60,20 @@ namespace TimefoldSharp.Core.Constraints.Streams.Common
             throw new NotImplementedException();
         }
 
+        public void AssertCorrectImpact(long impact)
+        {
+            if (impact >= 0L)
+            {
+                return;
+            }
+            if (scoreImpactType != ScoreImpactType.MIXED)
+            {
+                throw new Exception("Negative match weight (" + impact + ") for constraint ("
+                        + GetConstraintId() + "). " +
+                        "Check constraint provider implementation.");
+            }
+        }
+
         public void AssertCorrectImpact(int impact)
         {
             if (impact >= 0)

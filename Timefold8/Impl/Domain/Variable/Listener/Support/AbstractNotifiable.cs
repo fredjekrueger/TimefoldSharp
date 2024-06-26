@@ -1,5 +1,6 @@
 ﻿using TimefoldSharp.Core.API.Domain.Variable;
 using TimefoldSharp.Core.Impl.Score.Director;
+using TimefoldSharp.Core.Impl.Util;
 
 namespace TimefoldSharp.Core.Impl.Domain.Variable.Listener.Support
 {
@@ -10,10 +11,10 @@ namespace TimefoldSharp.Core.Impl.Domain.Variable.Listener.Support
 
         private readonly ScoreDirector scoreDirector;
         private readonly T variableListener;
-        private readonly List<Notification<T>> notificationQueue;
+        private readonly ICollection<Notification<T>> notificationQueue;
         private readonly int globalOrder;
 
-        public AbstractNotifiable(ScoreDirector scoreDirector, T variableListener, List<Notification<T>> notificationQueue, int globalOrder)
+        public AbstractNotifiable(ScoreDirector scoreDirector, T variableListener, ICollection<Notification<T>> notificationQueue, int globalOrder)
         {
             this.scoreDirector = scoreDirector;
             this.variableListener = variableListener;
@@ -40,12 +41,11 @@ namespace TimefoldSharp.Core.Impl.Domain.Variable.Listener.Support
             }
             else
             {
-                /*   VariableListener<Solution_, Object> basicVariableListener = (VariableListener<Solution_, Object>)variableListener;
-                   return new VariableListenerNotifiable(scoreDirector, basicVariableListener, basicVariableListener.RequiresUniqueEntityEvents()
-                                   ? new ListBasedScalingOrderedSet<>()
-                                   : new Queue<>(),
-                           globalOrder);*/
-                throw new NotImplementedException();
+                   VariableListener<object> basicVariableListener = (VariableListener<object>)variableListener;
+                if(basicVariableListener.RequiresUniqueEntityEvents())
+                   return new VariableListenerNotifiable(scoreDirector, basicVariableListener, new ListBasedScalingOrderedSet<Notification<VariableListener<object>>>(),  globalOrder);
+                else
+                    return new VariableListenerNotifiable(scoreDirector, basicVariableListener, new List<Notification<VariableListener<object>>>(), globalOrder);//this was queue, but prob with Q not inheriting from ICOllection<T>
             }
         }
 
@@ -67,7 +67,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Variable.Listener.Support
                 notification.TriggerAfter(variableListener, scoreDirector);
                 notifiedCount++;
             }
-            if (notifiedCount != notificationQueue.Count)
+            if (notifiedCount != notificationQueue.Count())
             {
                 throw new Exception("The variableListener ( has been notified with notifiedCount (" + notifiedCount
                         + ") but after being triggered, its notificationCount (" + notificationQueue.Count()

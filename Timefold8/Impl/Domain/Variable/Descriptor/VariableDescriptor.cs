@@ -1,4 +1,5 @@
-﻿using TimefoldSharp.Core.Impl.Domain.Common.Accessor;
+﻿using TimefoldSharp.Core.API.Score;
+using TimefoldSharp.Core.Impl.Domain.Common.Accessor;
 using TimefoldSharp.Core.Impl.Domain.Entity.Descriptor;
 using TimefoldSharp.Core.Impl.Domain.Policy;
 
@@ -19,6 +20,11 @@ namespace TimefoldSharp.Core.Impl.Domain.Variable.Descriptor
             }
         }
 
+        public bool IsValuePotentialAnchor(object value)
+        {
+            return !EntityDescriptor.EntityClass.IsAssignableFrom(value.GetType());
+        }
+
         public abstract bool IsGenuineAndUninitialized(object entity);
 
         public void SetValue(object entity, object value)
@@ -26,7 +32,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Variable.Descriptor
             variableMemberAccessor.ExecuteSetter(entity, value);
         }
 
-        public String GetVariableName()
+        public string GetVariableName()
         {
             return variableName;
         }
@@ -34,6 +40,11 @@ namespace TimefoldSharp.Core.Impl.Domain.Variable.Descriptor
         public Type GetVariablePropertyType()
         {
             return variableMemberAccessor.GetClass();
+        }
+
+        public void RegisterSinkVariableDescriptor(ShadowVariableDescriptor shadowVariableDescriptor)
+        {
+            SinkVariableDescriptorList.Add(shadowVariableDescriptor);
         }
 
         public bool IsGenuineListVariable()

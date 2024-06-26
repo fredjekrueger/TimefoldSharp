@@ -42,11 +42,11 @@ namespace TimefoldSharp.Core.Impl.LocalSearch.Decider.Acceptor
                 BuildGreatDelugeAcceptor(configPolicy)
             }.Where(acceptor => acceptor != null).ToList();
 
-            if (acceptorList.Count() == 1)
+            if (acceptorList.Count == 1)
             {
                 return acceptorList[0];
             }
-            else if (acceptorList.Count() > 1)
+            else if (acceptorList.Count > 1)
             {
                 throw new NotImplementedException();
                 //return new CompositeAcceptor<>(acceptorList);

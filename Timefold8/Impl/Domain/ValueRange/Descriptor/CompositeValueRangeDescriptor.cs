@@ -1,5 +1,7 @@
-﻿using TimefoldSharp.Core.API.Domain.ValueRange;
+﻿using System.Collections.Generic;
+using TimefoldSharp.Core.API.Domain.ValueRange;
 using TimefoldSharp.Core.API.Score;
+using TimefoldSharp.Core.Impl.Domain.ValueRange.Buildin.Composite;
 using TimefoldSharp.Core.Impl.Domain.Variable.Descriptor;
 
 namespace TimefoldSharp.Core.Impl.Domain.ValueRange.Descriptor
@@ -33,7 +35,13 @@ namespace TimefoldSharp.Core.Impl.Domain.ValueRange.Descriptor
 
         public ValueRange<object> ExtractValueRange(ISolution solution)
         {
-            throw new NotImplementedException();
+            List < CountableValueRange <object>> childValueRangeList = new List<CountableValueRange<object>>(childValueRangeDescriptorList.Count);
+            foreach (var valueRangeDescriptor in childValueRangeDescriptorList)
+            {
+                EntityIndependentValueRangeDescriptor entityIndependentValueRangeDescriptor = (EntityIndependentValueRangeDescriptor)valueRangeDescriptor;
+                childValueRangeList.Add((CountableValueRange<object>)entityIndependentValueRangeDescriptor.ExtractValueRange(solution));
+            }
+            return doNullInValueRangeWrapping(new CompositeCountableValueRange<object>(childValueRangeList));
         }
 
         public override bool IsCountable()

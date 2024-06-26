@@ -100,8 +100,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Solution.Descriptor
         public EntityDescriptor FindEntityDescriptor(Type entitySubclass)
         {
 
-            EntityDescriptor cachedEntityDescriptor = null;
-            lowestEntityDescriptorMap.TryGetValue(entitySubclass, out cachedEntityDescriptor);
+            lowestEntityDescriptorMap.TryGetValue(entitySubclass, out EntityDescriptor cachedEntityDescriptor);
             if (cachedEntityDescriptor == NULL_ENTITY_DESCRIPTOR)
             { // Cache hit, no descriptor found.
                 return null;
@@ -312,7 +311,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Solution.Descriptor
             while (pairList.Count > 0)
             {
                 pairList.Sort((i1, i2) => i1.GetValue().CompareTo(i2.GetValue()));
-                Pair<ShadowVariableDescriptor, int> pair = pairList.ElementAt(0);
+                Pair<ShadowVariableDescriptor, int> pair = pairList[0];
                 pairList.RemoveAt(0);
                 ShadowVariableDescriptor shadow = pair.GetKey();
                 if (pair.GetValue() != 0)

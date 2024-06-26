@@ -3,6 +3,7 @@ using TimefoldSharp.Core.Impl.Domain.Lookup;
 using TimefoldSharp.Core.Impl.Domain.Solution.Descriptor;
 using TimefoldSharp.Core.Impl.Domain.Variable.Descriptor;
 using TimefoldSharp.Core.Impl.Domain.Variable.Listener.Support;
+using TimefoldSharp.Core.Impl.Domain.Variable.Supply;
 using TimefoldSharp.Core.Impl.Heurisitic.Move;
 
 namespace TimefoldSharp.Core.Impl.Score.Director
@@ -218,6 +219,11 @@ namespace TimefoldSharp.Core.Impl.Score.Director
         public void SetAllChangesWillBeUndoneBeforeStepEnds(bool allChangesWillBeUndoneBeforeStepEnds)
         {
             this.allChangesWillBeUndoneBeforeStepEnds = allChangesWillBeUndoneBeforeStepEnds;
+        }
+
+        public SupplyManager GetSupplyManager()
+        {
+            return variableListenerSupport;
         }
     }
 }

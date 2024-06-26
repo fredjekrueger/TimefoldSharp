@@ -12,12 +12,17 @@ namespace TimefoldSharp.Core.Impl.Domain.Variable.Listener.Support
 
         public void TriggerAfter(VariableListener<object> variableListener, ScoreDirector scoreDirector)
         {
-            throw new NotImplementedException();
+            variableListener.AfterVariableChanged(scoreDirector, entity);
         }
 
         public void TriggerBefore(VariableListener<object> variableListener, ScoreDirector scoreDirector)
         {
-            throw new NotImplementedException();
+            variableListener.BeforeVariableChanged(scoreDirector, entity);
+        }
+
+        public override string ToString()
+        {
+            return "VariableChanged(" + entity + ")";
         }
     }
 }

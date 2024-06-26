@@ -30,7 +30,7 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector
             throw new NotImplementedException();
         }
 
-        public void SolvingStarted(SolverScope solverScope)
+        public virtual void SolvingStarted(SolverScope solverScope)
         {
             workingRandom = solverScope.GetWorkingRandom();
             phaseLifecycleSupport.FireSolvingStarted(solverScope);

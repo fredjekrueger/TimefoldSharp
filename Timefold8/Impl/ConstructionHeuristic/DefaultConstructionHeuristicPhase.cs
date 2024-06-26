@@ -70,14 +70,7 @@ namespace TimefoldSharp.Core.Impl.ConstructionHeuristic
                 ConstructionHeuristicStepScope stepScope = new ConstructionHeuristicStepScope(phaseScope);
                 StepStarted(stepScope);
 
-                
-
                 decider.DecideNextStep(stepScope, placement);
-
-                /*if (((HardSoftScore)(stepScope.GetScore())).InitScore() == -140) //hierboven dan de volgende keer is niet ok na decideNextStep
-                {
-
-                }*/
 
                 if (stepScope.GetStep() == null)
                 {

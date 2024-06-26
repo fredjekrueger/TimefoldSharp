@@ -4,5 +4,6 @@
     {
         IEnumerator<T> CreateOriginalIterator();
         long GetSize();
+        T Get(long index);
     }
 }

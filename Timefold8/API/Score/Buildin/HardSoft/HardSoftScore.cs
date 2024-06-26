@@ -37,7 +37,6 @@ namespace TimefoldSharp.Core.API.Score.Buildin.HardSoft
 
         public int InitScore()
         {
-            // TODO remove default implementation in 9.0; exists only for backwards compatibility
             return initScore;
         }
 

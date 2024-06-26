@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using TimefoldSharp.Core.API.Domain.Solution;
 using TimefoldSharp.Core.API.Score.Buildin.HardSoft;
+using TimefoldSharp.Core.API.Score.Buildin.HardSoftLong;
 using TimefoldSharp.Core.API.Score.Buildin.Simple;
 using TimefoldSharp.Core.Config.Util;
 using TimefoldSharp.Core.Impl.Domain.Common.Accessor;
@@ -77,11 +78,11 @@ namespace TimefoldSharp.Core.Impl.Domain.Score.Descriptor
                 {
                     return new HardSoftScoreDefinition();
                 }
-                /*else if (scoreType == typeof(HardSoftLongScore))
+                else if (scoreType == typeof(HardSoftLongScore))
                  {
                      return new HardSoftLongScoreDefinition();
                  }
-                 else if (scoreType == typeof(HardSoftBigDecimalScore))
+                 /*else if (scoreType == typeof(HardSoftBigDecimalScore))
                  {
                      return new HardSoftBigDecimalScoreDefinition();
                  }

@@ -95,7 +95,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Policy
 
         public List<string> GetValueRangeProviderIds()
         {
-            var valueRangeProviderIds = new List<string>(fromSolutionValueRangeProviderMap.Count() + fromEntityValueRangeProviderMap.Count());
+            var valueRangeProviderIds = new List<string>(fromSolutionValueRangeProviderMap.Count + fromEntityValueRangeProviderMap.Count);
             valueRangeProviderIds.AddRange(fromSolutionValueRangeProviderMap.Keys);
             valueRangeProviderIds.AddRange(fromEntityValueRangeProviderMap.Keys);
             return valueRangeProviderIds;

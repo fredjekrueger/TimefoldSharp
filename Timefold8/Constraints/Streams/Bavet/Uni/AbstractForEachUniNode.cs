@@ -26,9 +26,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
 
         public virtual void Retract(object a)
         {
-
-            UniTuple<A> tuple;
-            tupleMap.TryGetValue(a, out tuple);
+            tupleMap.TryGetValue(a, out UniTuple<A> tuple);
             tupleMap.Remove(a);
             if (tuple == null)
             {

@@ -28,7 +28,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Bi
 
         public override string ToString()
         {
-            return "BiJoin() with " + childStreamList.Count() + " children";
+            return "BiJoin() with " + childStreamList.Count + " children";
         }
 
         public override void CollectActiveConstraintStreams(HashSet<BavetAbstractConstraintStream> constraintStreamSet)

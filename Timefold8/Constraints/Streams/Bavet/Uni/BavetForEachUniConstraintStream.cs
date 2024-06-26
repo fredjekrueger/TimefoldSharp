@@ -33,9 +33,9 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
         {
             if (filter != null)
             {
-                return "ForEach(" + forEachClass.Name + ") with filter and " + childStreamList.Count() + " children";
+                return "ForEach(" + forEachClass.Name + ") with filter and " + childStreamList.Count + " children";
             }
-            return "ForEach(" + forEachClass.Name + ") with " + childStreamList.Count() + " children";
+            return "ForEach(" + forEachClass.Name + ") with " + childStreamList.Count + " children";
         }
 
         public override void BuildNode(NodeBuildHelper buildHelper)

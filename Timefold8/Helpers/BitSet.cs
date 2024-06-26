@@ -109,7 +109,7 @@ namespace TimefoldSharp.Core.Helpers
         /// </summary>
         public void Clear()
         {
-            //Arrays.Fill(bits, 0);
+            Array.Fill(bits, 0);
         }
 
         /// <summary>

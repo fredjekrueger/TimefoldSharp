@@ -67,7 +67,7 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move.Generic
                 List<GenuineVariableDescriptor> variableDescriptorList =
                         onlyEntityDescriptor.GetGenuineVariableDescriptorList();
                 // If there is a single list variable, unfold to list swap move selector config.
-                if (variableDescriptorList.Count() == 1 && variableDescriptorList[0].IsListVariable())
+                if (variableDescriptorList.Count == 1 && variableDescriptorList[0].IsListVariable())
                 {
                     return BuildListSwapMoveSelectorConfig(variableDescriptorList[0], true);
                 }
@@ -81,12 +81,12 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move.Generic
 
         protected AbstractMoveSelectorConfig BuildUnfoldedMoveSelectorConfig(List<EntityDescriptor> entityDescriptors)
         {
-            List<AbstractMoveSelectorConfig> moveSelectorConfigList = new List<AbstractMoveSelectorConfig>(entityDescriptors.Count());
+            List<AbstractMoveSelectorConfig> moveSelectorConfigList = new List<AbstractMoveSelectorConfig>(entityDescriptors.Count);
 
             List<GenuineVariableDescriptor> variableDescriptorList = entityDescriptors.First().GetGenuineVariableDescriptorList();
 
             // Only unfold into list swap move selector for the basic scenario with 1 entity and 1 list variable.
-            if (entityDescriptors.Count == 1 && variableDescriptorList.Count() == 1 && variableDescriptorList[0].IsListVariable())
+            if (entityDescriptors.Count == 1 && variableDescriptorList.Count == 1 && variableDescriptorList[0].IsListVariable())
             {
                 // No childMoveSelectorConfig.inherit() because of unfoldedMoveSelectorConfig.inheritFolded()
                 var childMoveSelectorConfig = BuildListSwapMoveSelectorConfig(variableDescriptorList[0], false);
@@ -122,7 +122,7 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move.Generic
             }
 
             AbstractMoveSelectorConfig unfoldedMoveSelectorConfig;
-            if (moveSelectorConfigList.Count() == 1)
+            if (moveSelectorConfigList.Count == 1)
             {
                 unfoldedMoveSelectorConfig = moveSelectorConfigList[0];
             }

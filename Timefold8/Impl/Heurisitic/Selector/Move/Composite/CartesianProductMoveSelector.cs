@@ -55,8 +55,8 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move.Composite
         public OriginalCartesianProductMoveIterator(CartesianProductMoveSelector cartesianProductMoveSelector)
         {
             this.cartesianProductMoveSelector = cartesianProductMoveSelector;
-            moveIteratorList = new List<IEnumerator<Heurisitic.Move.Move>>(cartesianProductMoveSelector.childMoveSelectorList.Count());
-            for (int i = 0; i < cartesianProductMoveSelector.childMoveSelectorList.Count(); i++)
+            moveIteratorList = new List<IEnumerator<Heurisitic.Move.Move>>(cartesianProductMoveSelector.childMoveSelectorList.Count);
+            for (int i = 0; i < cartesianProductMoveSelector.childMoveSelectorList.Count; i++)
             {
                 moveIteratorList.Add(null);
             }
@@ -65,7 +65,7 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move.Composite
 
         protected override Heurisitic.Move.Move CreateUpcomingSelection()
         {
-            int childSize = moveIteratorList.Count();
+            int childSize = moveIteratorList.Count;
             int startingIndex;
             Heurisitic.Move.Move[] moveList = new Heurisitic.Move.Move[childSize];
             if (subSelections == null)
@@ -153,7 +153,7 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move.Composite
         public RandomCartesianProductMoveIterator(CartesianProductMoveSelector cartesianProductMoveSelector)
         {
             this.cartesianProductMoveSelector = cartesianProductMoveSelector;
-            moveIteratorList = new List<IEnumerator<Heurisitic.Move.Move>>(cartesianProductMoveSelector.childMoveSelectorList.Count());
+            moveIteratorList = new List<IEnumerator<Heurisitic.Move.Move>>(cartesianProductMoveSelector.childMoveSelectorList.Count);
             empty = null;
             foreach (var moveSelector in cartesianProductMoveSelector.childMoveSelectorList)
             {
@@ -177,7 +177,7 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move.Composite
                         }
                     }
                 }
-                empty = cartesianProductMoveSelector.ignoreEmptyChildIterators ? emptyCount == moveIteratorList.Count() : emptyCount > 0;
+                empty = cartesianProductMoveSelector.ignoreEmptyChildIterators ? emptyCount == moveIteratorList.Count : emptyCount > 0;
             }
             return !empty.Value;
         }
@@ -186,8 +186,8 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move.Composite
         {
             get
             {
-                var moveList = new List<Heurisitic.Move.Move>(moveIteratorList.Count());
-                for (int i = 0; i < moveIteratorList.Count(); i++)
+                var moveList = new List<Heurisitic.Move.Move>(moveIteratorList.Count);
+                for (int i = 0; i < moveIteratorList.Count; i++)
                 {
                     var moveIterator = moveIteratorList[i];
                     bool skip = false;
@@ -219,7 +219,7 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move.Composite
                     {
                         throw new Exception("All iterators of childMoveSelectorList (" + cartesianProductMoveSelector.childMoveSelectorList + ") are empty.");
                     }
-                    else if (moveList.Count() == 1)
+                    else if (moveList.Count == 1)
                     {
                         return moveList[0];
                     }

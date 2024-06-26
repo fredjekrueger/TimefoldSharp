@@ -135,10 +135,10 @@ namespace TimefoldSharp.Core.Config.Util
             {
                 return null;
             }
-            if (memberList.Count() > 1)
+            if (memberList.Count > 1)
             {
                 throw new Exception("The class (" + clazz
-                        + ") has " + memberList.Count() + " members (" + memberList + ") with a "
+                        + ") has " + memberList.Count + " members (" + memberList + ") with a "
                         + annotationClass.Name + " annotation.");
             }
             return memberList.First();
@@ -209,10 +209,8 @@ namespace TimefoldSharp.Core.Config.Util
 
         public static List<MemberInfo> GetDeclaredMembers(Type baseClass)
         {
-            List<PropertyInfo> propertyStream = baseClass.GetProperties(BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.Public).OrderBy(c => c.Name).ToList();//.sorted(alphabeticMemberComparator);
-            //List<MethodInfo> methodStream = (baseClass.GetMethods(BindingFlags.Instance | BindingFlags.Public)).ToList();//.sorted(alphabeticMemberComparator);
+            List<PropertyInfo> propertyStream = baseClass.GetProperties(BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly).OrderBy(c => c.Name).ToList();
             List<MemberInfo> returnList = new List<MemberInfo>();
-            //returnList.AddRange(methodStream);
             returnList.AddRange(propertyStream);
             return returnList;
         }
@@ -244,7 +242,7 @@ namespace TimefoldSharp.Core.Config.Util
             Type annotationClass = null;
             foreach (var detectedAnnotationClass in annotationClasses)
             {
-                if (Attribute.IsDefined(member, detectedAnnotationClass))
+                if (Attribute.IsDefined(member, detectedAnnotationClass, false))
                 {
                     if (annotationClass != null)
                     {

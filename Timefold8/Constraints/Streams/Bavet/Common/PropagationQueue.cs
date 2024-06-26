@@ -2,10 +2,10 @@
 
 namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common
 {
-    public interface PropagationQueue : Propagator
+    public interface PropagationQueue<T> : Propagator
     {
-        void Insert(ITuple item); // niet zeker of ITuple juist is hier
-        void Update(ITuple item);// niet zeker of ITuple juist is hier
-        void Retract(ITuple item, TupleState state);
+        void Insert(T item);
+        void Update(T item);
+        void Retract(T item, TupleState state);
     }
 }

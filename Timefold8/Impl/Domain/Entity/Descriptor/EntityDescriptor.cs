@@ -7,7 +7,9 @@ using TimefoldSharp.Core.Config.Util;
 using TimefoldSharp.Core.Impl.Domain.Common.Accessor;
 using TimefoldSharp.Core.Impl.Domain.Policy;
 using TimefoldSharp.Core.Impl.Domain.Solution.Descriptor;
+using TimefoldSharp.Core.Impl.Domain.Variable.Anchor;
 using TimefoldSharp.Core.Impl.Domain.Variable.Descriptor;
+using TimefoldSharp.Core.Impl.Domain.Variable.InverseRelation;
 using TimefoldSharp.Core.Impl.Heurisitic.Selector.Common.Decorator;
 using TimefoldSharp.Core.Impl.Heurisitic.Selector.Entity.Decorator;
 using TimefoldSharp.Core.Impl.Score.Director;
@@ -70,7 +72,10 @@ namespace TimefoldSharp.Core.Impl.Domain.Entity.Descriptor
             solutionDescriptor.VisitEntitiesByEntityClass(solution, EntityClass, visitor);
         }
 
-
+        public VariableDescriptor GetVariableDescriptor(string variableName)
+        {
+            return effectiveVariableDescriptorMap[variableName];
+        }
 
         public GenuineVariableDescriptor GetGenuineVariableDescriptor(string variableName)
         {
@@ -424,6 +429,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Entity.Descriptor
             {
                 if (typeof(List<>).IsAssignableFrom(memberAccessor.GetClass()))
                 {
+                    throw new NotImplementedException();
                     //GenuineVariableDescriptor<Solution_> variableDescriptor = new ListVariableDescriptor<>(this, memberAccessor);
                     //declaredGenuineVariableDescriptorMap.Add(memberName, variableDescriptor);
                 }
@@ -434,41 +440,48 @@ namespace TimefoldSharp.Core.Impl.Domain.Entity.Descriptor
             }
             else if (variableAnnotationClass == typeof(InverseRelationShadowVariableAttribute))
             {
-                //ShadowVariableDescriptor<Solution_> variableDescriptor = new InverseRelationShadowVariableDescriptor<>(this, memberAccessor);
-                //declaredShadowVariableDescriptorMap.Add(memberName, variableDescriptor);
+                ShadowVariableDescriptor variableDescriptor = new InverseRelationShadowVariableDescriptor(this, memberAccessor);
+                declaredShadowVariableDescriptorMap.Add(memberName, variableDescriptor);
             }
             else if (variableAnnotationClass == typeof(AnchorShadowVariableAttribute))
             {
-                //ShadowVariableDescriptor<Solution_> variableDescriptor = new AnchorShadowVariableDescriptor<>(this, memberAccessor);
-                //declaredShadowVariableDescriptorMap.Add(memberName, variableDescriptor);
+                ShadowVariableDescriptor variableDescriptor = new AnchorShadowVariableDescriptor(this, memberAccessor);
+                declaredShadowVariableDescriptorMap.Add(memberName, variableDescriptor);
             }
             else if (variableAnnotationClass == typeof(IndexShadowVariableAttribute))
             {
+                throw new NotImplementedException();
                 //ShadowVariableDescriptor<Solution_> variableDescriptor = new IndexShadowVariableDescriptor<>(this, memberAccessor);
                 //declaredShadowVariableDescriptorMap.Add(memberName, variableDescriptor);
             }
             else if (variableAnnotationClass == typeof(PreviousElementShadowVariableAttribute))
             {
+                throw new NotImplementedException();
                 //PreviousElementShadowVariableDescriptor<Solution_> variableDescriptor = new PreviousElementShadowVariableDescriptor<>(this, memberAccessor);
                 //declaredShadowVariableDescriptorMap.Add(memberName, variableDescriptor);
             }
             else if (variableAnnotationClass == typeof(NextElementShadowVariableAttribute))
             {
+                throw new NotImplementedException();
                 //NextElementShadowVariableDescriptor<Solution_> variableDescriptor = new NextElementShadowVariableDescriptor<>(this, memberAccessor);
                 //declaredShadowVariableDescriptorMap.Add(memberName, variableDescriptor);
             }
             else if (variableAnnotationClass == typeof(ShadowVariableAttribute))
-            {//|| variableAnnotationClass == typeof(ShadowVariable.List.class)) {
+            {
+                throw new NotImplementedException();
+                //|| variableAnnotationClass == typeof(ShadowVariable.List.class)) {
                 //ShadowVariableDescriptor<Solution_> variableDescriptor = new CustomShadowVariableDescriptor<>(this, memberAccessor);
                 //declaredShadowVariableDescriptorMap.Add(memberName, variableDescriptor);
             }
             else if (variableAnnotationClass == typeof(PiggybackShadowVariableAttribute))
             {
+                throw new NotImplementedException();
                 //ShadowVariableDescriptor<Solution_> variableDescriptor = new PiggybackShadowVariableDescriptor<>(this, memberAccessor);
                 //declaredShadowVariableDescriptorMap.Add(memberName, variableDescriptor);
             }
             else if (variableAnnotationClass == typeof(CustomShadowVariableAttribute))
             {
+                throw new NotImplementedException();
                 //ShadowVariableDescriptor<Solution_> variableDescriptor = new LegacyCustomShadowVariableDescriptor<>(this, memberAccessor);
                 //declaredShadowVariableDescriptorMap.Add(memberName, variableDescriptor);
             }

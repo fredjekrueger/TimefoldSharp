@@ -14,7 +14,6 @@
         {
             foreach (var lifecycle in lifecycles)
             {
-
                 lifecycle.Insert(tuple);
             }
         }

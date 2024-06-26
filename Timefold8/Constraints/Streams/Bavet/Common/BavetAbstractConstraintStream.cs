@@ -32,6 +32,11 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common
             return parent.GetTupleSource();
         }
 
+        public List<BavetAbstractConstraintStream> GetChildStreamList()
+        {
+            return childStreamList;
+        }
+
         public virtual void CollectActiveConstraintStreams(HashSet<BavetAbstractConstraintStream> constraintStreamSet)
         {
             if (parent == null)

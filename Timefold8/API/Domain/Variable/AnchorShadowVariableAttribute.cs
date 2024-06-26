@@ -3,5 +3,6 @@
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property)]
     public class AnchorShadowVariableAttribute : Attribute
     {
+        public string SourceVariableName { get; set; }
     }
 }

@@ -16,11 +16,21 @@ namespace TimefoldSharp.Core.Constraints.Streams.Common.Inliner
         public Func<int, ConstraintMatchSupplier, UndoScoreImpacter> ImpactFunction;
     }
 
+    public class LongImpactFunction
+    {
+        public Func<long, ConstraintMatchSupplier, UndoScoreImpacter> ImpactFunction;
+    }
+
     public static class WeightedScoreImpacterHelper
     {
         public static IWeightedScoreImpacter Of(ScoreContext context, IntImpactFunction impactFunction)
         {
             return new IntWeightedScoreImpacter(impactFunction, context);
+        }
+
+        public static IWeightedScoreImpacter Of(ScoreContext context, LongImpactFunction impactFunction)
+        {
+            return new LongWeightedScoreImpacter(impactFunction, context);
         }
     }
 }

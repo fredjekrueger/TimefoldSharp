@@ -1,11 +1,17 @@
 ﻿using TimefoldSharp.Core.API.Score;
 using TimefoldSharp.Core.API.Score.Stream.Bi;
+using TimefoldSharp.Core.API.Score.Stream.Tri;
 using TimefoldSharp.Core.API.Score.Stream.Uni;
+using TimefoldSharp.Core.Config.Solver;
 using TimefoldSharp.Core.Constraints.Streams.Bavet.Bi;
 using TimefoldSharp.Core.Constraints.Streams.Bavet.Common;
+using TimefoldSharp.Core.Constraints.Streams.Bavet.Common.Bridge;
+using TimefoldSharp.Core.Constraints.Streams.Bavet.Common.Tuple;
 using TimefoldSharp.Core.Constraints.Streams.Common;
 using TimefoldSharp.Core.Constraints.Streams.Common.Bi;
 using TimefoldSharp.Core.Constraints.Streams.Common.Uni;
+using TimefoldSharp.Core.Impl.Util;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
 {
@@ -105,5 +111,43 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
                     impactType, constraintWeight);
         }
 
+        public UniConstraintBuilder<A> PenalizeLong(Score constraintWeight, Func<A, long> matchWeigher)
+        {
+            return InnerImpact(constraintWeight, matchWeigher, ScoreImpactType.PENALTY);
+        }
+
+        public UniConstraintBuilder<A> InnerImpact(Score constraintWeight, Func<A, long> matchWeigher, ScoreImpactType scoreImpactType)
+        {
+            var stream = ShareAndAddChild(new BavetScoringUniConstraintStream<A>(constraintFactory, this, matchWeigher));
+            return NewTerminator(stream, constraintWeight, scoreImpactType);
+        }
+
+        public API.Score.Stream.Tri.TriConstraintStream<GroupKeyA_, GroupKeyB_, Result_> GroupBy<GroupKeyA_, GroupKeyB_, ResultContainer_, Result_>(Func<A, GroupKeyA_> groupKeyAMapping, Func<A, GroupKeyB_> groupKeyBMapping, UniConstraintCollector<A, ResultContainer_, Result_> collector)
+        {
+            GroupNodeConstructor<TriTuple<GroupKeyA_, GroupKeyB_, Result_>> nodeConstructor =
+                GroupNodeConstructorHelper.Of<TriTuple<GroupKeyA_, GroupKeyB_, Result_>>((groupStoreIndex, undoStoreIndex, tupleLifecycle, outputStoreSize, environmentMode) =>
+                new Group2Mapping1CollectorUniNode<A, GroupKeyA_, GroupKeyB_, Result_, ResultContainer_>(groupKeyAMapping, groupKeyBMapping, groupStoreIndex, undoStoreIndex, collector, tupleLifecycle, outputStoreSize, environmentMode));
+            return BuildTriGroupBy(nodeConstructor);
+        }
+
+        public BiConstraintStream<GroupKey_, Result_> GroupBy<GroupKey_, ResultContainer_, Result_>(Func<A, GroupKey_> groupKeyMapping, UniConstraintCollector<A, ResultContainer_, Result_> collector)
+        {
+            GroupNodeConstructor<BiTuple<GroupKey_, Result_>> nodeConstructor =
+                GroupNodeConstructorHelper.Of<BiTuple<GroupKey_, Result_>>((groupStoreIndex, undoStoreIndex, tupleLifecycle, outputStoreSize, environmentMode)
+                => new Group1Mapping1CollectorUniNode<A, GroupKey_, Result_, ResultContainer_>(groupKeyMapping, groupStoreIndex, undoStoreIndex, collector, tupleLifecycle, outputStoreSize, environmentMode));
+            return BuildBiGroupBy(nodeConstructor);
+        }
+
+        private TriConstraintStream<NewA, NewB, NewC> BuildTriGroupBy<NewA, NewB, NewC>(GroupNodeConstructor<TriTuple<NewA, NewB, NewC>> nodeConstructor)
+        {
+            var stream = ShareAndAddChild(new BavetTriGroupUniConstraintStream<A, NewA, NewB, NewC>(constraintFactory, this, nodeConstructor));
+            return constraintFactory.Share(new BavetAftBridgeTriConstraintStream<NewA, NewB, NewC>(constraintFactory, stream), stream.SetAftBridge);
+        }
+
+        private BiConstraintStream<NewA, NewB> BuildBiGroupBy<NewA, NewB>(GroupNodeConstructor<BiTuple<NewA, NewB>> nodeConstructor)
+        {
+            var stream = ShareAndAddChild(new BavetBiGroupUniConstraintStream<A, NewA, NewB>(constraintFactory, this, nodeConstructor));
+            return constraintFactory.Share(new BavetAftBridgeBiConstraintStream<NewA, NewB>(constraintFactory, stream), stream.SetAftBridge);
+        }
     }
 }

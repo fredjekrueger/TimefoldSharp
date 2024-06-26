@@ -65,7 +65,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Common.Bi
 
         public static DefaultBiJoiner<A, B> Merge(List<DefaultBiJoiner<A, B>> joinerList)
         {
-            if (joinerList.Count() == 1)
+            if (joinerList.Count == 1)
             {
                 return joinerList[0];
             }

@@ -38,6 +38,11 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet
 
         }
 
+        public EnvironmentMode GetEnvironmentMode()
+        {
+            return environmentMode;
+        }
+
         public override UniConstraintStream<A> ForEach<A>(Type sourceClass)
         {
             Func<A, bool> nullityFilter = GetNullityFilter<A>(sourceClass);

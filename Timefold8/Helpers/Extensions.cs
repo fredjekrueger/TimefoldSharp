@@ -6,10 +6,9 @@
     {
         public static TKey HigherKey<TKey, TValue>(this SortedDictionary<TKey, TValue> dictionary, TKey key)
         {
-            List<TKey> list;
-            var indices = GetPossibleIndices(dictionary, key, true, out list);
+            var indices = GetPossibleIndices(dictionary, key, true, out List<TKey> list);
             if (indices.Item2 == list.Count)
-                return default(TKey);
+                return default;
 
             return list[indices.Item2];
         }
@@ -50,6 +49,7 @@
         }
 
 
+
         // Extension method to mimic Java's computeIfAbsent
         public static TValue GetOrAdd<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, Func<TKey, TValue> valueFactory)
         {
@@ -75,4 +75,16 @@
             return newValue;
         }
     }
+
+    public static class EnumeratorExtensions
+    {
+        public static IEnumerable<T> AsEnumerable<T>(this IEnumerator<T> enumerator)
+        {
+            while (enumerator.MoveNext())
+            {
+                yield return enumerator.Current;
+            }
+        }
+    }
+
 }

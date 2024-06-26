@@ -218,7 +218,7 @@ namespace TimefoldSharp.Core.Impl.ConstructionHeuristic
 
         private MoveSelectorConfig<AbstractMoveSelectorConfig> CheckSingleMoveSelectorConfig()
         {
-            if (constructionHeuristicPhaseConfig.GetMoveSelectorConfigList().Count() != 1)
+            if (constructionHeuristicPhaseConfig.GetMoveSelectorConfigList().Count != 1)
             {
                 throw new Exception("For the constructionHeuristicType ( element to nest multiple MoveSelectors.");
             }

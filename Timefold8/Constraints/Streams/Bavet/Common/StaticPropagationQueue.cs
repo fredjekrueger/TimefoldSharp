@@ -2,7 +2,7 @@
 
 namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common
 {
-    public class StaticPropagationQueue : PropagationQueue
+    public class StaticPropagationQueue : PropagationQueue<ITuple>
     {
 
         private readonly List<ITuple> retractQueue;

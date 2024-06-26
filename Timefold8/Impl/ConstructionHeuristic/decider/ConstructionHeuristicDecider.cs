@@ -29,13 +29,11 @@ namespace TimefoldSharp.Core.Impl.ConstructionHeuristic.decider
             forager.SolvingStarted(solverScope);
         }
 
-        static int counter = 0;
         public void DecideNextStep(ConstructionHeuristicStepScope stepScope, Placement placement)
         {
             int moveIndex = 0;
             foreach (var move in placement)
             {
-                counter++;
                 ConstructionHeuristicMoveScope moveScope = new ConstructionHeuristicMoveScope(stepScope, moveIndex, move);
                 moveIndex++;
                 DoMove(moveScope);

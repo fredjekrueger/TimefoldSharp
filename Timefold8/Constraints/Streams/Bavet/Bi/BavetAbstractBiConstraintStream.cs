@@ -38,6 +38,11 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Bi
             return NewTerminator(stream, scoreImpactType, constraintWeight);
         }
 
+        public BiConstraintBuilder<A, B> InnerImpact(Score constraintWeight, Func<A, B, long> matchWeigher, ScoreImpactType scoreImpactType)
+        {
+            var stream = ShareAndAddChild(new BavetScoringBiConstraintStream<A, B>(constraintFactory, this, matchWeigher));
+            return NewTerminator(stream, scoreImpactType, constraintWeight);
+        }
 
 
         /*public BiConstraintBuilder<A, B> Penalize(IAbstractScore constraintWeight)
@@ -84,6 +89,11 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Bi
         public BiConstraintBuilder<A, B> Reward(Score constraintWeight)
         {
             return Reward(constraintWeight, (a, b) => 1);
+        }
+
+        public BiConstraintBuilder<A, B> PenalizeLong(Score constraintWeight, Func<A, B, long> matchWeigher)
+        {
+            return InnerImpact(constraintWeight, matchWeigher, ScoreImpactType.PENALTY);
         }
     }
 }

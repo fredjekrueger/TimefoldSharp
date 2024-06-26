@@ -13,5 +13,24 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common
         {
             this.leftTuple = leftTuple;
         }
+
+        public override TupleState GetState()
+        {
+            return state;
+        }
+
+        public override Tuple_ GetTuple()
+        {
+            return leftTuple;
+        }
+
+        public override void SetState(TupleState state)
+        {
+            this.state = state;
+        }
+        public override string ToString()
+        {
+            return "Counter(" + leftTuple + ")";
+        }
     }
 }

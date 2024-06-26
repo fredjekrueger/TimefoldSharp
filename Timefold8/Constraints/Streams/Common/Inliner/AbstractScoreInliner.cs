@@ -34,9 +34,11 @@ namespace TimefoldSharp.Core.Constraints.Streams.Common.Inliner
             }
             else if (scoreDefinition is HardSoftScoreDefinition)
             {
-                var temp = new HardSoftScoreInliner(constraintWeightMap.ToDictionary(k => k.Key, v => v.Value), constraintMatchEnabled);
-                return temp as ScoreInliner_;
-                //hier stonden nog veel andere
+                return new HardSoftScoreInliner(constraintWeightMap.ToDictionary(k => k.Key, v => v.Value), constraintMatchEnabled) as ScoreInliner_;
+            }
+            else if (scoreDefinition is HardSoftLongScoreDefinition)
+            {
+                return new HardSoftLongScoreInliner(constraintWeightMap.ToDictionary(k => k.Key, v => v.Value), constraintMatchEnabled) as ScoreInliner_;
             }
             else
             {

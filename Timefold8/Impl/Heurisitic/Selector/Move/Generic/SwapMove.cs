@@ -7,8 +7,8 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move.Generic
 {
     public class SwapMove : AbstractMove
     {
-        private object leftEntity;
-        private object rightEntity;
+        protected object leftEntity;
+        protected object rightEntity;
         protected List<GenuineVariableDescriptor> variableDescriptorList;
 
         public SwapMove(List<GenuineVariableDescriptor> variableDescriptorList, Object leftEntity, Object rightEntity)

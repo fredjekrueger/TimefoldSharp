@@ -43,7 +43,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Variable.Descriptor
 
         public int GetListSize(object entity)
         {
-            return GetListVariable(entity).Count();
+            return GetListVariable(entity).Count;
         }
 
         public List<object> GetListVariable(object entity)

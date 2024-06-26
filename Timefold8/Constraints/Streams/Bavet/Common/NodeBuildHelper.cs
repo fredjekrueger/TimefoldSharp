@@ -1,5 +1,6 @@
 ﻿using TimefoldSharp.Core.API.Score.Stream;
 using TimefoldSharp.Core.Constraints.Streams.Bavet.Common.Tuple;
+using TimefoldSharp.Core.Constraints.Streams.Bavet.Uni;
 using TimefoldSharp.Core.Constraints.Streams.Common.Inliner;
 
 namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common
@@ -58,29 +59,32 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common
 
         public BavetAbstractConstraintStream GetNodeCreatingStream(AbstractNode node)
         {
-            BavetAbstractConstraintStream item;
-            nodeCreatorMap.TryGetValue(node, out item);
+            nodeCreatorMap.TryGetValue(node, out BavetAbstractConstraintStream item);
             return item;
+        }
+
+        public void AddNode(AbstractNode node, BavetAbstractConstraintStream creator)
+        {
+            AddNode(node, creator, creator);
         }
 
         public void AddNode(AbstractNode node, BavetAbstractConstraintStream creator, BavetAbstractConstraintStream parent)
         {
             reversedNodeList.Add(node);
             nodeCreatorMap.Add(node, creator);
-            /*if (!(node is AbstractForEachUniNode<object>)) 
+            if (!(node is IAbstractForEachUniNode)) 
             {
                 if (parent == null)
                 {
                     throw new Exception("Impossible state: The node (" + node + ") has no parent (" + parent + ").");
                 }
                 PutInsertUpdateRetract(parent, node as TupleLifecycle);
-            }*/
+            }
         }
 
         public int ExtractTupleStoreSize(ConstraintStream tupleSourceStream)
         {
-            int? lastIndex;
-            if (!storeIndexMap.TryGetValue(tupleSourceStream, out lastIndex))
+            if (!storeIndexMap.TryGetValue(tupleSourceStream, out int? lastIndex))
                 storeIndexMap.Add(tupleSourceStream, int.MinValue);
 
             return (lastIndex == null) ? 0 : lastIndex.Value + 1;

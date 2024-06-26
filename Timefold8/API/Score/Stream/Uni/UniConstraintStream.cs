@@ -1,4 +1,6 @@
-﻿using TimefoldSharp.Core.API.Score.Stream.Bi;
+﻿using TimefoldSharp.Core.API.Score.Buildin.HardSoftLong;
+using TimefoldSharp.Core.API.Score.Stream.Bi;
+using TimefoldSharp.Core.API.Score.Stream.Tri;
 
 namespace TimefoldSharp.Core.API.Score.Stream.Uni
 {
@@ -10,5 +12,12 @@ namespace TimefoldSharp.Core.API.Score.Stream.Uni
 
         UniConstraintStream<A> Filter(Func<A, bool> predicate);
         UniConstraintBuilder<A> Penalize(Score constraintWeight);
+        UniConstraintBuilder<A> PenalizeLong(Score constraintWeight, Func<A, long> matchWeigher);
+
+        TriConstraintStream<GroupKeyA_, GroupKeyB_, Result_> GroupBy<GroupKeyA_, GroupKeyB_, ResultContainer_, Result_>
+            (Func<A, GroupKeyA_> groupKeyAMapping, Func<A, GroupKeyB_> groupKeyBMapping, UniConstraintCollector<A, ResultContainer_, Result_> collector);
+
+        BiConstraintStream<GroupKey_, Result_> GroupBy<GroupKey_, ResultContainer_, Result_>(
+            Func<A, GroupKey_> groupKeyMapping, UniConstraintCollector<A, ResultContainer_, Result_> collector);
     }
 }

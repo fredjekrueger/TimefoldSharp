@@ -1,6 +1,7 @@
 ﻿using TimefoldSharp.Core.API.Score;
 using TimefoldSharp.Core.Impl.Domain.Solution.Descriptor;
 using TimefoldSharp.Core.Impl.Domain.Variable.Descriptor;
+using TimefoldSharp.Core.Impl.Domain.Variable.Supply;
 using TimefoldSharp.Core.Impl.Heurisitic.Move;
 
 namespace TimefoldSharp.Core.Impl.Score.Director
@@ -27,6 +28,7 @@ namespace TimefoldSharp.Core.Impl.Score.Director
         void ChangeVariableFacade(VariableDescriptor variableDescriptor, object entity, object newValue);
         void BeforeVariableChanged(VariableDescriptor variableDescriptor, object entity);
         void AfterVariableChanged(VariableDescriptor variableDescriptor, object entity);
-        void AssertWorkingScoreFromScratch(API.Score.Score workingScore, Object completedAction);
+        void AssertWorkingScoreFromScratch(API.Score.Score workingScore, object completedAction);
+        SupplyManager GetSupplyManager();
     }
 }

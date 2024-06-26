@@ -1,5 +1,6 @@
 ﻿using TimefoldSharp.Core.Impl.Domain.Variable.Descriptor;
 using TimefoldSharp.Core.Impl.Domain.Variable.InverseRelation;
+using TimefoldSharp.Core.Impl.Domain.Variable.Supply;
 using TimefoldSharp.Core.Impl.Heurisitic.Selector.Common.Iterator;
 using TimefoldSharp.Core.Impl.Heurisitic.Selector.Entity;
 using TimefoldSharp.Core.Impl.Heurisitic.Selector.Value;
@@ -34,6 +35,16 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move.Generic
             if (chained)
             {
                 inverseVariableSupply = null;
+            }
+        }
+
+        public override void SolvingStarted(SolverScope solverScope)
+        {
+            base.SolvingStarted(solverScope);
+            if (chained)
+            {
+                SupplyManager supplyManager = solverScope.ScoreDirector.GetSupplyManager();
+                inverseVariableSupply = supplyManager.Demand(new SingletonInverseVariableDemand(valueSelector.GetVariableDescriptor()))as SingletonInverseVariableSupply;
             }
         }
 

@@ -19,6 +19,19 @@ namespace TimefoldSharp.Core.Impl.Domain.ValueRange.Buildin.Composite
             throw new NotImplementedException();
         }
 
+        public override T Get(long index)
+        {
+            if (index == size - 1L)
+            {
+                return default(T);
+            }
+            else
+            {
+                return childValueRange.Get(index);
+            }
+        }
+
+
         public override IEnumerator<T> CreateRandomIterator(Random workingRandom)
         {
             throw new NotImplementedException();

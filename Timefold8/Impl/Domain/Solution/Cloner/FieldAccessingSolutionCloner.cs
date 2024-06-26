@@ -125,7 +125,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Solution.Cloner
             {
                 return null;
             }
-            object existingClone = null;
+            object existingClone;
             originalToCloneMap.TryGetValue(original, out existingClone);
 
             if (existingClone != null)

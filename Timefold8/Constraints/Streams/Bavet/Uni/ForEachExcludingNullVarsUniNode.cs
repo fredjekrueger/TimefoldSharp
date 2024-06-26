@@ -33,9 +33,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
 
         public override void Update(object a)
         {
-            UniTuple<A> tuple = null;
-
-            if (!tupleMap.TryGetValue(a, out tuple))
+            if (!tupleMap.TryGetValue(a, out UniTuple<A> tuple))
             { // The tuple was never inserted because it did not pass the filter.
                 Insert(a);
             }
