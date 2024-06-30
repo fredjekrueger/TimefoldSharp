@@ -14,7 +14,7 @@ internal class Program
         .WithSolutionClass(typeof(TimeTable))
         .WithEntityClasses(typeof(Lesson))
         .WithConstraintProviderClass(typeof(TimeTableConstraintProvider))
-        .WithTerminationSpentLimit(TimeSpan.FromSeconds(2));
+        .WithTerminationSpentLimit(TimeSpan.FromSeconds(5));
 
         SolverFactory solverFactory = SolverFactory.Create(config);
         TimeTable problem = GenerateDemoData();
