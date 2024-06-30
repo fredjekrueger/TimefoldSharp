@@ -7,8 +7,8 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
 
         private readonly Func<A, bool> filter;
 
-        public ForEachExcludingNullVarsUniNode(Type forEachClass, Func<A, bool> filter, TupleLifecycle nextNodesTupleLifecycle, int outputStoreSize)
-                : base(forEachClass, nextNodesTupleLifecycle, outputStoreSize)
+        public ForEachExcludingNullVarsUniNode(Func<A, bool> filter, TupleLifecycle nextNodesTupleLifecycle, int outputStoreSize)
+                : base(nextNodesTupleLifecycle, outputStoreSize)
         {
             this.filter = filter;
         }

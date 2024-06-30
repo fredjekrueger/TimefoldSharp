@@ -66,7 +66,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
         {
             if (GetRetrievalSemantics() == RetrievalSemantics.STANDARD)
             {
-                var a = GetConstraintFactory().ForEach<B>(otherClass);
+                var a = GetConstraintFactory().ForEach<B>();
                 return Join<B>(a, joiners);
             }
             else

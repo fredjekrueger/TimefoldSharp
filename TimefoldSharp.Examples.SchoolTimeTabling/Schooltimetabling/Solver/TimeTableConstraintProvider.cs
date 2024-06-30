@@ -25,7 +25,7 @@ namespace TimefoldSharp.Schooltimetabling.Solver
         {
             // A student group dislikes sequential lessons on the same subject.
             return constraintFactory
-                    .ForEach<Lesson>(typeof(Lesson))
+                    .ForEach<Lesson>()
                     .Join(typeof(Lesson), Joiners.Equal<Lesson>(l => l.Subject),
                                         Joiners.Equal<Lesson>(l => l.StudentGroup),
                                         Joiners.Equal<Lesson>(lesson => lesson.Timeslot.DayOfWeek))
@@ -43,7 +43,7 @@ namespace TimefoldSharp.Schooltimetabling.Solver
         {
             // A teacher prefers to teach sequential lessons and dislikes gaps between lessons.
             return constraintFactory
-                    .ForEach<Lesson>(typeof(Lesson))
+                    .ForEach<Lesson>()
                 .Join(typeof(Lesson), Joiners.Equal<Lesson>(l => l.Teacher),
                                         Joiners.Equal<Lesson>((lesson) => lesson.Timeslot.DayOfWeek))
                 .Filter((lesson1, lesson2) =>

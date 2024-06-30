@@ -5,8 +5,8 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
     public sealed class ForEachIncludingNullVarsUniNode<A> : AbstractForEachUniNode<A>
     {
 
-        public ForEachIncludingNullVarsUniNode(Type forEachClass, TupleLifecycle nextNodesTupleLifecycle, int outputStoreSize)
-                : base(forEachClass, nextNodesTupleLifecycle, outputStoreSize)
+        public ForEachIncludingNullVarsUniNode(TupleLifecycle nextNodesTupleLifecycle, int outputStoreSize)
+                : base(nextNodesTupleLifecycle, outputStoreSize)
         {
         }
 

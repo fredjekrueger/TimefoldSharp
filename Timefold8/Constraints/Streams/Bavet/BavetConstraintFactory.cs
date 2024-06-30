@@ -43,10 +43,10 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet
             return environmentMode;
         }
 
-        public override UniConstraintStream<A> ForEach<A>(Type sourceClass)
+        public override UniConstraintStream<A> ForEach<A>()
         {
-            Func<A, bool> nullityFilter = GetNullityFilter<A>(sourceClass);
-            return Share(new BavetForEachUniConstraintStream<A>(this, sourceClass, nullityFilter, RetrievalSemantics.STANDARD));
+            Func<A, bool> nullityFilter = GetNullityFilter<A>();
+            return Share(new BavetForEachUniConstraintStream<A>(this,  nullityFilter, RetrievalSemantics.STANDARD));
         }
 
         public Stream_ Share<Stream_>(Stream_ stream) where Stream_ : BavetAbstractConstraintStream
@@ -75,9 +75,9 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet
             return generated;
         }
 
-        private Func<A, bool> GetNullityFilter<A>(Type fromClass)
+        private Func<A, bool> GetNullityFilter<A>()
         {
-            EntityDescriptor entityDescriptor = GetSolutionDescriptor().FindEntityDescriptor(fromClass);
+            EntityDescriptor entityDescriptor = GetSolutionDescriptor().FindEntityDescriptor(typeof(A));
             if (entityDescriptor != null && entityDescriptor.HasAnyGenuineVariables())
             {
                 return (Func<A, bool>)entityDescriptor.GetHasNoNullVariables<A>();

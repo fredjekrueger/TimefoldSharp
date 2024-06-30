@@ -7,20 +7,12 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
 {
     public sealed class BavetForEachUniConstraintStream<A> : BavetAbstractUniConstraintStream<A>, TupleSource
     {
-
-        private readonly Type forEachClass;
-
         private readonly Func<A, bool> filter;
 
-        public BavetForEachUniConstraintStream(BavetConstraintFactory constraintFactory, Type forEachClass,
-            Func<A, bool> filter, RetrievalSemantics retrievalSemantics) : base(constraintFactory, retrievalSemantics)
+        public BavetForEachUniConstraintStream(BavetConstraintFactory constraintFactory, Func<A, bool> filter, RetrievalSemantics retrievalSemantics) 
+            : base(constraintFactory, retrievalSemantics)
         {
 
-            this.forEachClass = forEachClass;
-            if (forEachClass == null)
-            {
-                throw new Exception("The forEachClass (null) cannot be null.");
-            }
             this.filter = filter;
         }
 
@@ -33,9 +25,9 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
         {
             if (filter != null)
             {
-                return "ForEach(" + forEachClass.Name + ") with filter and " + childStreamList.Count + " children";
+                return "ForEach(" + nameof(A)+ ") with filter and " + childStreamList.Count + " children";
             }
-            return "ForEach(" + forEachClass.Name + ") with " + childStreamList.Count + " children";
+            return "ForEach(" + nameof(A) + ") with " + childStreamList.Count + " children";
         }
 
         public override void BuildNode(NodeBuildHelper buildHelper)
@@ -43,15 +35,15 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
             TupleLifecycle tupleLifecycle = buildHelper.GetAggregatedTupleLifecycle(childStreamList);
             int outputStoreSize = buildHelper.ExtractTupleStoreSize(this);
             if (filter == null)
-                buildHelper.AddNode(new ForEachIncludingNullVarsUniNode<A>(forEachClass, tupleLifecycle, outputStoreSize), this, null);
+                buildHelper.AddNode(new ForEachIncludingNullVarsUniNode<A>(tupleLifecycle, outputStoreSize), this, null);
             else
-                buildHelper.AddNode(new ForEachExcludingNullVarsUniNode<A>(forEachClass, filter, tupleLifecycle, outputStoreSize), this, null);
+                buildHelper.AddNode(new ForEachExcludingNullVarsUniNode<A>(filter, tupleLifecycle, outputStoreSize), this, null);
 
         }
 
         public override int GetHashCode()
         {
-            return Utils.CombineHashCodes(forEachClass, filter);
+            return Utils.CombineHashCodes(typeof(A), filter);
         }
 
         public override bool Equals(object other)
@@ -65,7 +57,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
                 return false;
             }
             BavetForEachUniConstraintStream<A> that = (BavetForEachUniConstraintStream<A>)other;
-            return forEachClass.Equals(that.forEachClass) && ((filter == null && that.filter == null) || filter.Equals(that.filter));
+            return ((filter == null && that.filter == null) || filter.Equals(that.filter));
         }
 
     }

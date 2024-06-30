@@ -28,7 +28,7 @@ namespace TimefoldSharp.Examples.Orderpicking.Orderpicking.Solver
      */
         Constraint MinimizeOrderSplitByTrolley(ConstraintFactory constraintFactory)
         {
-            return constraintFactory.ForEach<TrolleyStep>(typeof(TrolleyStep))
+            return constraintFactory.ForEach<TrolleyStep>()
                 .GroupBy(trolleyStep => trolleyStep.OrderItem.Order, ConstraintCollectors.CountDistinctLong<TrolleyStep>(t => t.Trolley))
                 .PenalizeLong(HardSoftLongScore.ONE_SOFT, (order, trolleySpreadCount) => trolleySpreadCount * 1000)
                 .AsConstraint("Minimize order split by trolley");
@@ -42,7 +42,7 @@ namespace TimefoldSharp.Examples.Orderpicking.Orderpicking.Solver
      */
         Constraint MinimizeDistanceFromPreviousTrolleyStep(ConstraintFactory constraintFactory)
         {
-            return constraintFactory.ForEach<TrolleyStep>(typeof(TrolleyStep))
+            return constraintFactory.ForEach<TrolleyStep>()
                 .PenalizeLong(HardSoftLongScore.ONE_SOFT,
                         trolleyStep => Warehouse.CalculateDistance(trolleyStep.PreviousElement.GetLocation(), trolleyStep.GetLocation()))
                 .AsConstraint("Minimize the distance from the previous trolley step");
@@ -56,7 +56,7 @@ namespace TimefoldSharp.Examples.Orderpicking.Orderpicking.Solver
      */
         Constraint MinimizeDistanceFromLastTrolleyStepToPathOrigin(ConstraintFactory constraintFactory)
         {
-            return constraintFactory.ForEach<TrolleyStep>(typeof(TrolleyStep))
+            return constraintFactory.ForEach<TrolleyStep>()
                 .Filter(t => t.IsLast())
                 .PenalizeLong(HardSoftLongScore.ONE_SOFT, trolleyStep => Warehouse.CalculateDistance(trolleyStep.GetLocation(), trolleyStep.Trolley.GetLocation()))
                 .AsConstraint("Minimize the distance from last trolley step to the path origin");
@@ -68,7 +68,7 @@ namespace TimefoldSharp.Examples.Orderpicking.Orderpicking.Solver
      */
         Constraint RequiredNumberOfBuckets(ConstraintFactory constraintFactory)
         {
-            return constraintFactory.ForEach<TrolleyStep>(typeof(TrolleyStep))
+            return constraintFactory.ForEach<TrolleyStep>()
                 //raw total volume per order
                 .GroupBy(trolleyStep => trolleyStep.Trolley, trolleyStep => trolleyStep.OrderItem.Order, ConstraintCollectors.Sum<TrolleyStep>(trolleyStep => trolleyStep.OrderItem.Product.Volume))
                 //required buckets per order

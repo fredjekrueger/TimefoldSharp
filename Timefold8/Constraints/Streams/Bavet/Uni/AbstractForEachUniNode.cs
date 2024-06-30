@@ -15,11 +15,9 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
         private readonly int outputStoreSize;
         protected readonly Dictionary<object, UniTuple<A>> tupleMap = new Dictionary<object, UniTuple<A>>();
         private readonly StaticPropagationQueue propagationQueue;
-        private readonly Type forEachClass;
 
-        public AbstractForEachUniNode(Type forEachClass, TupleLifecycle nextNodesTupleLifecycle, int outputStoreSize)
+        public AbstractForEachUniNode(TupleLifecycle nextNodesTupleLifecycle, int outputStoreSize)
         {
-            this.forEachClass = forEachClass;
             this.outputStoreSize = outputStoreSize;
             this.propagationQueue = new StaticPropagationQueue(nextNodesTupleLifecycle);
         }
@@ -76,7 +74,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Uni
 
         public Type GetForEachClass()
         {
-            return forEachClass;
+            return typeof(A);
         }
 
         public override Propagator GetPropagator()

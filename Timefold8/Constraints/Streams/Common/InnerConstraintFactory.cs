@@ -25,33 +25,26 @@ namespace TimefoldSharp.Core.Constraints.Streams.Common
             return constraints.Select(c => (Constraint_)c).ToList();
         }
 
-        public abstract UniConstraintStream<A> ForEach<A>(Type sourceClass);
+        public abstract UniConstraintStream<A> ForEach<A>();
 
         public BiConstraintStream<A, A> ForEachUniquePair<A>(params BiJoiner<A, A>[] joiners)
         {
             BiJoinerComber<A, A> joinerComber = BiJoinerComber<A, A>.Comb(joiners);
-            joinerComber.AddJoiner(BuildLessThanId<A>(typeof(A)));
-            return ((InnerUniConstraintStream<A>)ForEach<A>(typeof(A))).Join(ForEach<A>(typeof(A)), joinerComber);
+            joinerComber.AddJoiner(BuildLessThanId<A>());
+            return ((InnerUniConstraintStream<A>)ForEach<A>()).Join(ForEach<A>(), joinerComber);
         }
 
-        public BiConstraintStream<A, A> ForEachUniquePair<A>(Type sourceClass, BiJoiner<A, A> joiner1, BiJoiner<A, A> joiner2)
+        public BiConstraintStream<A, A> ForEachUniquePair<A>(BiJoiner<A, A> joiner1, BiJoiner<A, A> joiner2)
         {
-            return ForEachUniquePair(sourceClass, new BiJoiner<A, A>[] { joiner1, joiner2 });
-        }
-
-        public BiConstraintStream<A, A> ForEachUniquePair<A>(Type sourceClass, params BiJoiner<A, A>[] joiners)
-        {
-            BiJoinerComber<A, A> joinerComber = BiJoinerComber<A, A>.Comb(joiners);
-            joinerComber.AddJoiner(BuildLessThanId<A>(sourceClass));
-            return ((InnerUniConstraintStream<A>)ForEach<A>(sourceClass)).Join(ForEach<A>(sourceClass), joinerComber);
+            return ForEachUniquePair(new BiJoiner<A, A>[] { joiner1, joiner2 });
         }
 
         public abstract SolutionDescriptor GetSolutionDescriptor();
 
-        private DefaultBiJoiner<A, A> BuildLessThanId<A>(Type sourceClass)
+        private DefaultBiJoiner<A, A> BuildLessThanId<A>()
         {
             SolutionDescriptor solutionDescriptor = GetSolutionDescriptor();
-            MemberAccessor planningIdMemberAccessor = solutionDescriptor.GetPlanningIdAccessor(sourceClass);
+            MemberAccessor planningIdMemberAccessor = solutionDescriptor.GetPlanningIdAccessor(typeof(A));
             if (planningIdMemberAccessor == null)
             {
                 throw new Exception("The fromClass  annotation,"
