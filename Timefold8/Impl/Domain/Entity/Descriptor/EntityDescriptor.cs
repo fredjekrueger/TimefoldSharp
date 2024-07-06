@@ -34,7 +34,6 @@ namespace TimefoldSharp.Core.Impl.Domain.Entity.Descriptor
             typeof(CustomShadowVariableAttribute) };
 
         private readonly SolutionDescriptor solutionDescriptor;
-        private readonly Func<object, bool> isInitializedPredicate;
         private List<GenuineVariableDescriptor> effectiveGenuineVariableDescriptorList;
         private Func<object, bool> hasNoNullVariables;
         private List<EntityDescriptor> inheritedEntityDescriptorList;
@@ -44,8 +43,6 @@ namespace TimefoldSharp.Core.Impl.Domain.Entity.Descriptor
         private Dictionary<string, ShadowVariableDescriptor> declaredShadowVariableDescriptorMap;
         private Dictionary<string, ShadowVariableDescriptor> effectiveShadowVariableDescriptorMap;
         private Dictionary<string, VariableDescriptor> effectiveVariableDescriptorMap;
-        private Dictionary<string, MemberAccessor> entityMemberAccessorMap = new Dictionary<string, MemberAccessor>();
-        private Dictionary<string, MemberAccessor> entityCollectionMemberAccessorMap = new Dictionary<string, MemberAccessor>();
         private List<SelectionFilter<object>> declaredPinEntityFilterList;
 
         private SelectionFilter<object> effectiveMovableEntitySelectionFilter;
@@ -56,8 +53,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Entity.Descriptor
         {
             this.solutionDescriptor = solutionDescriptor;
             this.EntityClass = entityClass;
-            isInitializedPredicate = (o) => IsInitialized(o);
-            hasNoNullVariables = (o) => HasNoNullVariables(o);
+            hasNoNullVariables = HasNoNullVariables;
         }
 
         public List<Object> ExtractEntities(ISolution solution)
@@ -79,8 +75,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Entity.Descriptor
 
         public GenuineVariableDescriptor GetGenuineVariableDescriptor(string variableName)
         {
-            GenuineVariableDescriptor res = null;
-            effectiveGenuineVariableDescriptorMap.TryGetValue(variableName, out res);
+            effectiveGenuineVariableDescriptorMap.TryGetValue(variableName, out GenuineVariableDescriptor res);
             return res;
         }
 

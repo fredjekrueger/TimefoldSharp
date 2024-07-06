@@ -55,33 +55,31 @@ internal class Program
         {
             List<List<Lesson>> cellList = roomList.Select(room =>
             {
-                Dictionary<Room, List<Lesson>> byRoomMap;
-                lessonMap.TryGetValue(timeslot, out byRoomMap);
+                lessonMap.TryGetValue(timeslot, out Dictionary<Room, List<Lesson>> byRoomMap);
                 if (byRoomMap == null)
                 {
                     return new List<Lesson>();
                 }
-                List<Lesson> cellLessonList;
-                byRoomMap.TryGetValue(room, out cellLessonList);
+                byRoomMap.TryGetValue(room, out List<Lesson> cellLessonList);
                 return cellLessonList ?? new List<Lesson>();
             }).ToList();
 
             if (cellList.Count > 0)
             {
-                info += ("| " + String.Format("{0,-10}", timeslot.DayOfWeek.ToString().Substring(0, 3) + " " + timeslot.StartTime.Hour + ":" + timeslot.StartTime.Minute) + " | "
+                info += "| " + String.Format("{0,-10}", timeslot.DayOfWeek.ToString().Substring(0, 3) + " " + timeslot.StartTime.Hour + ":" + timeslot.StartTime.Minute) + " | "
     + cellList.Select(cellLessonList => String.Format("{0,-10}",
-    cellLessonList.Any() ? cellLessonList.Select(lesson => lesson.Subject).Aggregate((current, next) => current + ", " + next) : ""))
-        .Aggregate((current, next) => current + " | " + next) + " |") + Environment.NewLine;
+    cellLessonList.Count > 0 ? cellLessonList.Select(lesson => lesson.Subject).Aggregate((current, next) => current + ", " + next) : ""))
+        .Aggregate((current, next) => current + " | " + next) + " |" + Environment.NewLine;
                 {
                     info += ("|            | "
                         + cellList.Select(cellLessonList => String.Format("{0,-10}",
-                               cellLessonList.Any() ? cellLessonList.Select(lesson => lesson.Teacher).Aggregate((current, next) => current + ", " + next) : ""))
+                               cellLessonList.Count > 0 ? cellLessonList.Select(lesson => lesson.Teacher).Aggregate((current, next) => current + ", " + next) : ""))
                                 .Aggregate((current, next) => current + " | " + next)
                         + " |") + Environment.NewLine;
                 }
                 info += ("|            | "
                 + cellList.Select(cellLessonList => String.Format("{0,-10}",
-                        cellLessonList.Any() ? cellLessonList.Select(Lesson => Lesson.StudentGroup).Aggregate((current, next) => current + ", " + next) : ""))
+                        cellLessonList.Count > 0 ? cellLessonList.Select(Lesson => Lesson.StudentGroup).Aggregate((current, next) => current + ", " + next) : ""))
                         .Aggregate((current, next) => current + " | " + next)
                 + " |") + Environment.NewLine;
             }
@@ -89,7 +87,7 @@ internal class Program
         }
         List<Lesson> unassignedLessons = lessonList.Where(l => l.Timeslot == null || l.Room == null)
                 .ToList();
-        if (unassignedLessons.Any())
+        if (unassignedLessons.Count > 0)
         {
             info += Environment.NewLine;
             info += ("Unassigned lessons") + Environment.NewLine;

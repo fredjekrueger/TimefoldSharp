@@ -349,16 +349,6 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Value
             return valueSelector;
         }
 
-        private ValueSelector applyReinitializeVariableFiltering(bool applyReinitializeVariableFiltering,
-            GenuineVariableDescriptor variableDescriptor, ValueSelector valueSelector)
-        {
-            if (applyReinitializeVariableFiltering && !variableDescriptor.IsListVariable())
-            {
-                valueSelector = new ReinitializeVariableValueSelector(valueSelector);
-            }
-            return valueSelector;
-        }
-
         protected ValueSelector BuildMimicReplaying(HeuristicConfigPolicy configPolicy)
         {
             if (config.GetId() != null

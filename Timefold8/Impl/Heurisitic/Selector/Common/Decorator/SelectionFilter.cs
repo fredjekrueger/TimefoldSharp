@@ -25,15 +25,12 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Common.Decorator
             })
         .Distinct()
         .ToArray();
-            switch (distinctFilterArray.Length)
+            return distinctFilterArray.Length switch
             {
-                case 0:
-                    return CompositeSelectionFilter<T>.NOOP;
-                case 1:
-                    return distinctFilterArray[0];
-                default:
-                    return new CompositeSelectionFilter<T>(distinctFilterArray);
-            }
+                0 => CompositeSelectionFilter<T>.NOOP,
+                1 => distinctFilterArray[0],
+                _ => new CompositeSelectionFilter<T>(distinctFilterArray),
+            };
         }
 
         public virtual Func<ScoreDirector, T, bool> Accept { get; set; }

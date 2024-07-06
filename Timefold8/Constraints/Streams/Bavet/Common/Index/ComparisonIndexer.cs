@@ -7,7 +7,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common.Index
     {
         private readonly int indexKeyPosition;
         private readonly Func<Indexer<T>> downstreamIndexerSupplier;
-        private readonly IComparer<object> keyComparator;
+        private readonly KeyComparator keyComparator;
         private readonly bool hasOrEquals;
         private readonly SortedDictionary<object, Indexer<T>> comparisonMap;
 
@@ -86,8 +86,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common.Index
         {
             var indexKey = indexProperties.ToKey(indexKeyPosition);
             // Avoids computeIfAbsent in order to not create lambdas on the hot path.
-            Indexer<T> downstreamIndexer;
-            comparisonMap.TryGetValue(indexKey, out downstreamIndexer);
+            comparisonMap.TryGetValue(indexKey, out Indexer<T> downstreamIndexer);
             if (downstreamIndexer == null)
             {
                 downstreamIndexer = downstreamIndexerSupplier.Invoke();

@@ -51,7 +51,7 @@ namespace TimefoldSharp.Core.Impl.Heurisitic.Selector.Move.Decorator
             {
                 return childMoveSelector.GetSize() * 10L;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new NotImplementedException();
             }

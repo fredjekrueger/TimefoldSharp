@@ -115,10 +115,10 @@ namespace TimefoldSharp.Core.Impl.Domain.Variable.Descriptor
         protected void ProcessValueRangeRefs(DescriptorPolicy descriptorPolicy, string[] valueRangeProviderRefs)
         {
             MemberAccessor[] valueRangeProviderMemberAccessors;
-            if (valueRangeProviderRefs == null || valueRangeProviderRefs.Count() == 0)
+            if (valueRangeProviderRefs == null || valueRangeProviderRefs.Length == 0)
             {
                 valueRangeProviderMemberAccessors = FindAnonymousValueRangeMemberAccessors(descriptorPolicy);
-                if (valueRangeProviderMemberAccessors.Count() == 0)
+                if (valueRangeProviderMemberAccessors.Length == 0)
                 {
                     throw new Exception("The entityCla and no matching anonymous value range providers were found.");
                 }
@@ -127,13 +127,13 @@ namespace TimefoldSharp.Core.Impl.Domain.Variable.Descriptor
             {
                 valueRangeProviderMemberAccessors = valueRangeProviderRefs.Select(refe => FindValueRangeMemberAccessor(descriptorPolicy, refe)).ToArray();
             }
-            var valueRangeDescriptorList = new List<ValueRangeDescriptor>(valueRangeProviderMemberAccessors.Count());
-            bool addNullInValueRange = IsNullable() && valueRangeProviderMemberAccessors.Count() == 1;
+            var valueRangeDescriptorList = new List<ValueRangeDescriptor>(valueRangeProviderMemberAccessors.Length);
+            bool addNullInValueRange = IsNullable() && valueRangeProviderMemberAccessors.Length == 1;
             foreach (var valueRangeProviderMemberAccessor in valueRangeProviderMemberAccessors)
             {
                 valueRangeDescriptorList.Add(BuildValueRangeDescriptor(descriptorPolicy, valueRangeProviderMemberAccessor, addNullInValueRange));
             }
-            if (valueRangeDescriptorList.Count() == 1)
+            if (valueRangeDescriptorList.Count == 1)
             {
                 ValueRangeDescriptor = valueRangeDescriptorList.ElementAt(0);
             }
@@ -155,7 +155,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Variable.Descriptor
             }
             else
             {
-                List<string> providerIds = descriptorPolicy.GetValueRangeProviderIds();
+                descriptorPolicy.GetValueRangeProviderIds();
                 throw new Exception("The entit");
             }
         }
@@ -213,7 +213,7 @@ namespace TimefoldSharp.Core.Impl.Domain.Variable.Descriptor
                                 return false;
                             }
                             Type[] generics = valueRangeType.GenericTypeArguments;
-                            if (generics.Count() != 1)
+                            if (generics.Length != 1)
                             {
                                 return false;
                             }

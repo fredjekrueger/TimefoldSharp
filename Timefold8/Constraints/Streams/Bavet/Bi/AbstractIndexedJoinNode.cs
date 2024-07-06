@@ -72,8 +72,8 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Bi
             }
             else
             {
-                var rightEntry = (ElementAwareListEntry<UniTuple<Right_>>)rightTuple.GetStore<ElementAwareListEntry<UniTuple<Right_>>>(inputStoreIndexRightEntry);
-                var outTupleListRight = (ElementAwareList<OutTuple_>)rightTuple.GetStore<ElementAwareList<OutTuple_>>(inputStoreIndexRightOutTupleList);
+                var rightEntry = rightTuple.GetStore<ElementAwareListEntry<UniTuple<Right_>>>(inputStoreIndexRightEntry);
+                var outTupleListRight = rightTuple.GetStore<ElementAwareList<OutTuple_>>(inputStoreIndexRightOutTupleList);
                 indexerRight.Remove(oldIndexProperties, rightEntry);
                 outTupleListRight.ForEach(RetractOutTuple);
                 // outTupleListRight is now empty
