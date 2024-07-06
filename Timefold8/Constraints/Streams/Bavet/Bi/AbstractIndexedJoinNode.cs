@@ -56,7 +56,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Bi
         public override void UpdateRight(ITuple rt)
         {
             var rightTuple = (UniTuple<Right_>)rt;
-            IndexProperties oldIndexProperties = (IndexProperties)rightTuple.GetStore(inputStoreIndexRightProperties);
+            var oldIndexProperties = rightTuple.GetStore<IndexProperties>(inputStoreIndexRightProperties);
             if (oldIndexProperties == null)
             {
                 // No fail fast if null because we don't track which tuples made it through the filter predicate(s)
@@ -72,8 +72,8 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Bi
             }
             else
             {
-                ElementAwareListEntry<UniTuple<Right_>> rightEntry = (ElementAwareListEntry<UniTuple<Right_>>)rightTuple.GetStore(inputStoreIndexRightEntry);
-                ElementAwareList<OutTuple_> outTupleListRight = (ElementAwareList<OutTuple_>)rightTuple.GetStore(inputStoreIndexRightOutTupleList);
+                var rightEntry = (ElementAwareListEntry<UniTuple<Right_>>)rightTuple.GetStore<ElementAwareListEntry<UniTuple<Right_>>>(inputStoreIndexRightEntry);
+                var outTupleListRight = (ElementAwareList<OutTuple_>)rightTuple.GetStore<ElementAwareList<OutTuple_>>(inputStoreIndexRightOutTupleList);
                 indexerRight.Remove(oldIndexProperties, rightEntry);
                 outTupleListRight.ForEach(RetractOutTuple);
                 // outTupleListRight is now empty
@@ -86,10 +86,6 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Bi
         public override void InsertLeft(ITuple leftTuple)
         {
             var left = (LeftTuple_)leftTuple;
-            if (leftTuple.GetStore(inputStoreIndexLeftProperties) != null)
-            {
-                throw new Exception("Impossible state: the input for the tuple (" + leftTuple + ") was already added in the tupleStore.");
-            }
             IndexProperties indexProperties = CreateIndexPropertiesLeft(left);
 
             ElementAwareList<OutTuple_> outTupleListLeft = new ElementAwareList<OutTuple_>();
@@ -100,11 +96,6 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Bi
         public override void InsertRight(ITuple rightTuple)
         {
             var right = (UniTuple<Right_>)rightTuple;
-            if (rightTuple.GetStore(inputStoreIndexRightProperties) != null)
-            {
-                throw new Exception("Impossible state: the input for the tuple (" + rightTuple
-                        + ") was already added in the tupleStore.");
-            }
             IndexProperties indexProperties = mappingRight.Invoke((Right_)right.factA);
 
             ElementAwareList<OutTuple_> outTupleListRight = new ElementAwareList<OutTuple_>();
@@ -145,7 +136,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Bi
 
         public override void UpdateLeft(ITuple leftTuple)
         {
-            var oldIndexProperties = (IndexProperties)leftTuple.GetStore(inputStoreIndexLeftProperties);
+            var oldIndexProperties = leftTuple.GetStore<IndexProperties>(inputStoreIndexLeftProperties);
             if (oldIndexProperties == null)
             {
                 // No fail fast if null because we don't track which tuples made it through the filter predicate(s)
@@ -161,8 +152,8 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Bi
             }
             else
             {
-                var leftEntry = (ElementAwareListEntry<LeftTuple_>)leftTuple.GetStore(inputStoreIndexLeftEntry);
-                var outTupleListLeft = (ElementAwareList<OutTuple_>)leftTuple.GetStore(inputStoreIndexLeftOutTupleList);
+                var leftEntry = leftTuple.GetStore<ElementAwareListEntry<LeftTuple_>>(inputStoreIndexLeftEntry);
+                var outTupleListLeft = leftTuple.GetStore<ElementAwareList<OutTuple_>>(inputStoreIndexLeftOutTupleList);
                 indexerLeft.Remove(oldIndexProperties, leftEntry);
                 outTupleListLeft.ForEach(RetractOutTuple);
                 // outTupleListLeft is now empty

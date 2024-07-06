@@ -184,11 +184,6 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common
 
         public void Insert(ITuple tuple)
         {
-            if (tuple.GetStore(groupStoreIndex) != null)
-            {
-                throw new Exception("Impossible state: the input for the tuple (" + tuple
-                        + ") was already added in the tupleStore.");
-            }
             GroupKey_ userSuppliedKey;
             if (hasMultipleGroups)
                 userSuppliedKey = groupKeyFunction.Invoke((InTuple_)tuple);
@@ -199,7 +194,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common
 
         public void Update(ITuple tuple)
         {
-            var oldGroup = (Group<OutTuple_, ResultContainer_>)tuple.GetStore(groupStoreIndex);
+            var oldGroup = tuple.GetStore<Group<OutTuple_, ResultContainer_>>(groupStoreIndex);
             if (oldGroup == null)
             {
                 // No fail fast if null because we don't track which tuples made it through the filter predicate(s)
@@ -208,7 +203,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common
             }
             if (hasCollector)
             {
-                var undoAccumulator = (Action)tuple.GetStore(undoStoreIndex);
+                var undoAccumulator = tuple.GetStore<Action>(undoStoreIndex);
                 undoAccumulator.Invoke();
             }
 

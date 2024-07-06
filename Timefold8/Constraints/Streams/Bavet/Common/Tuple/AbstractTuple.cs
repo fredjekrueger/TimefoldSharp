@@ -5,7 +5,7 @@
     {
         TupleState State { get; set; }
 
-        object GetStore(int index);
+        T GetStore<T>(int index);
         void SetStore(int index, object value);
         object RemoveStore(int index);
     }
@@ -42,9 +42,9 @@
             return value;
         }
 
-        public object GetStore(int index)
+        public T GetStore<T>(int index)
         {
-            return storeIsArray ? arrayStore[index] : store;
+            return storeIsArray ? (T)arrayStore[index] : (T)store;
         }
 
         public void SetStore(int index, object value)

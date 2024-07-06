@@ -57,11 +57,6 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common
         public override void InsertRight(ITuple rt)
         {
             UniTuple<Right_> rightTuple = (UniTuple<Right_>)rt;
-            if (rightTuple.GetStore(inputStoreIndexRightEntry) != null)
-            {
-                throw new Exception("Impossible state: the input for the tuple (" + rightTuple
-                        + ") was already added in the tupleStore.");
-            }
             var rightEntry = rightTupleList.Add(rightTuple);
             rightTuple.SetStore(inputStoreIndexRightEntry, rightEntry);
             var outTupleListRight = new ElementAwareList<OutTuple_>();

@@ -17,11 +17,6 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common
 
         public void Insert(ITuple tuple)
         {
-            if (tuple.GetStore(inputStoreIndex) != null)
-            {
-                throw new Exception("Impossible state: the input for the tuple (" + tuple
-                        + ") was already added in the tupleStore.");
-            }
             tuple.SetStore(inputStoreIndex, Impact(tuple));
         }
 
@@ -29,7 +24,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common
 
         public void Retract(ITuple tuple)
         {
-            UndoScoreImpacter undoScoreImpacter = (UndoScoreImpacter)tuple.GetStore(inputStoreIndex);
+            UndoScoreImpacter undoScoreImpacter = tuple.GetStore<UndoScoreImpacter>(inputStoreIndex);
             // No fail fast if null because we don't track which tuples made it through the filter predicate(s)
             if (undoScoreImpacter != null)
             {
@@ -40,7 +35,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common
 
         public void Update(ITuple tuple)
         {
-            UndoScoreImpacter undoScoreImpacter = (UndoScoreImpacter)tuple.GetStore(inputStoreIndex);
+            UndoScoreImpacter undoScoreImpacter = tuple.GetStore<UndoScoreImpacter>(inputStoreIndex);
             // No fail fast if null because we don't track which tuples made it through the filter predicate(s)
             if (undoScoreImpacter != null)
             {

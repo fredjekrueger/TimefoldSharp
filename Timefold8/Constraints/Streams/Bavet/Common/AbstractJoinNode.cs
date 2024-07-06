@@ -34,10 +34,10 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common
         protected void InsertOutTuple(LeftTuple_ leftTuple, UniTuple<Right_> rightTuple)
         {
             OutTuple_ outTuple = CreateOutTuple(leftTuple, rightTuple);
-            ElementAwareList<OutTuple_> outTupleListLeft = (ElementAwareList<OutTuple_>)leftTuple.GetStore(inputStoreIndexLeftOutTupleList);
+            ElementAwareList<OutTuple_> outTupleListLeft = leftTuple.GetStore<ElementAwareList<OutTuple_>>(inputStoreIndexLeftOutTupleList);
             ElementAwareListEntry<OutTuple_> outEntryLeft = outTupleListLeft.Add(outTuple);
             outTuple.SetStore(outputStoreIndexLeftOutEntry, outEntryLeft);
-            ElementAwareList<OutTuple_> outTupleListRight = (ElementAwareList<OutTuple_>)rightTuple.GetStore(inputStoreIndexRightOutTupleList);
+            ElementAwareList<OutTuple_> outTupleListRight = rightTuple.GetStore<ElementAwareList<OutTuple_>>(inputStoreIndexRightOutTupleList);
             ElementAwareListEntry<OutTuple_> outEntryRight = outTupleListRight.Add(outTuple);
             outTuple.SetStore(outputStoreIndexRightOutEntry, outEntryRight);
             propagationQueue.Insert(outTuple);
@@ -46,7 +46,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common
         protected void InnerUpdateLeft(LeftTuple_ leftTuple, Action<Action<UniTuple<Right_>>> rightTupleConsumer)
         {
             // Prefer an update over retract-insert if possible
-            var outTupleListLeft = (ElementAwareList<OutTuple_>)leftTuple.GetStore(inputStoreIndexLeftOutTupleList);
+            var outTupleListLeft = leftTuple.GetStore<ElementAwareList<OutTuple_>>(inputStoreIndexLeftOutTupleList);
             // Propagate the update for downstream filters, matchWeighers, ...
             if (!isFiltering)
             {
@@ -59,7 +59,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common
             {
                 rightTupleConsumer.Invoke(rightTuple =>
                 {
-                    var rightOutList = (ElementAwareList<OutTuple_>)rightTuple.GetStore(inputStoreIndexRightOutTupleList);
+                    var rightOutList = rightTuple.GetStore<ElementAwareList<OutTuple_>>(inputStoreIndexRightOutTupleList);
                     ProcessOutTupleUpdate(leftTuple, rightTuple, rightOutList, outTupleListLeft, outputStoreIndexRightOutEntry);
                 });
             }
@@ -70,7 +70,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common
         protected void InnerUpdateRight(UniTuple<Right_> rightTuple, Action<Action<LeftTuple_>> leftTupleConsumer)
         {
             // Prefer an update over retract-insert if possible
-            ElementAwareList<OutTuple_> outTupleListRight = (ElementAwareList<OutTuple_>)rightTuple.GetStore(inputStoreIndexRightOutTupleList);
+            ElementAwareList<OutTuple_> outTupleListRight = rightTuple.GetStore< ElementAwareList<OutTuple_>>(inputStoreIndexRightOutTupleList);
             if (!isFiltering)
             {
                 // Propagate the update for downstream filters, matchWeighers, ...
@@ -84,7 +84,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common
             {
                 leftTupleConsumer.Invoke(leftTuple =>
                 {
-                    ElementAwareList<OutTuple_> leftOutList = (ElementAwareList<OutTuple_>)leftTuple.GetStore(inputStoreIndexLeftOutTupleList);
+                    ElementAwareList<OutTuple_> leftOutList = leftTuple.GetStore< ElementAwareList<OutTuple_>>(inputStoreIndexLeftOutTupleList);
                     ProcessOutTupleUpdate(leftTuple, rightTuple, leftOutList, outTupleListRight, outputStoreIndexLeftOutEntry);
                 });
             }
@@ -95,7 +95,7 @@ namespace TimefoldSharp.Core.Constraints.Streams.Bavet.Common
             // Hack: the outTuple has no left/right input tuple reference, use the left/right outList reference instead.
             foreach (OutTuple_ outTuple in outTupleList)
             {
-                ElementAwareListEntry<OutTuple_> outEntry = (ElementAwareListEntry<OutTuple_>)outTuple.GetStore(outputStoreIndexOutEntry);
+                ElementAwareListEntry<OutTuple_> outEntry = outTuple.GetStore<ElementAwareListEntry<OutTuple_>>(outputStoreIndexOutEntry);
                 ElementAwareList<OutTuple_> outEntryList = outEntry.GetList();
                 if (outList == outEntryList)
                 {
